@@ -190,7 +190,7 @@
 
     /* Field Section used for displaying and editing value of cell */
     var valueFieldSection = {
-      template: '<span v-if="!enabled" @dblclick="toggleInput" class="editableField">{{this.entry[this.columnname]}}</span>'+
+      template: '<span v-if="!enabled" @click="toggleInput" class="editableField">{{this.entry[this.columnname]}}</span>'+
           '<div v-else-if="enabled" class="input-group">'+
           '  <input type="text" class="form-control" v-model="datavalue" @keyup.enter="saveThis" @keyup.esc="cancelThis">'+
           '  <span class="input-group-btn">'+
