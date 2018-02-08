@@ -1,12 +1,8 @@
-# vue2-bootstrap-table
+# yapsr-vue2-bootstrap-table
 
 vue-bootstrap-table is a sortable and searchable table, with Bootstrap styling, for Vue.js.
 
-### VUE 2 : 1.1.8
-
-### Vue 1 : [jbaysolutions/vue-bootstrap-table](https://github.com/jbaysolutions/vue-bootstrap-table)
-
-### [Demo](https://jbaysolutions.github.io/vue2-bootstrap-table/examples/01-basic.html)
+### [Demo](https://yapsr.github.io/yapsr-vue2-bootstrap-table/examples/01-basic.html)
 
 <!--
 ## Table of Contents
@@ -24,12 +20,6 @@ TODO UPDATE DOCS
 TODO UPDATE CHANGELOG
 
 -->
-
-#### Projects using vue-bootstrap-table
-
-- [Draxed](https://www.draxed.com/?utm_source=github&utm_medium=web&utm_campaign=vue-bootstrap-table)
-
-*Know of others? Create a PR to let me know!*
 
 ## Features
 
@@ -51,12 +41,12 @@ TODO UPDATE CHANGELOG
 
 ## Installation
 
-Install the vue-bootstrap-table [package](https://www.npmjs.org/package/vue2-bootstrap-table2) package using [npm](https://www.npmjs.com/):
+Install the yapsr-vue-bootstrap-table [package](https://www.npmjs.org/package/yapsr-vue2-bootstrap-table2) package using [npm](https://www.npmjs.com/):
 
-	npm install vue2-bootstrap-table2
+	npm install yapsr-vue2-bootstrap-table2
 
 
-Or add the js script to your html (download from [releases](https://github.com/jbaysolutions/vue2-bootstrap-table/releases)):
+Or add the js script to your html (download from [releases](https://github.com/yapsr/yapsr-vue2-bootstrap-table/releases)):
  
     <script src="vue-bootstrap-table.js"></script>
 
@@ -490,57 +480,5 @@ If you have a feature request, please add it as an issue or make a pull request.
 
 ### 1.1.8
 
-* Bug fix - Issue 5 - Axios config not being loaded with GET method and Delegate false.
-
-### 1.1.7
-
-* Allowing Axios configuration to be passed for the requests
-
-### 1.1.6
-
-* Search case sensitivity configurable
-
-### 1.1.5
-
-* Row Click Handler added
-
-### 1.1.4
-
-* Fix- delegate now doesn't use echo
-
-### 1.1.3
-
-* Define a Render Function support by column
-* Define Column Styles by column
-* Define Cell Styles by column
-
-### 1.1.2
-
-* Fix to Sorting
-* Added Multicolumn Sorting
-* Fix dynamic adding rows with update to interface
-* Ajax with multicolumn sorting
-
-### 1.1.1
-
-* Added more Events
-
-### 1.1.0
-
-* Remote data loading (through ajax call)
-* Remote data processing (through ajax calls)
-* Loading overlay
-
-### 1.0.2
-
-* Pagination working
-* Editing cells on the table
-* Configuration Improvements
-
-### 1.0.1
-
-* Bug fix
-
-### 1.0.0
-
-* First version
+* Changed doubleclick to single click
+* First version (fork from jbaysolutions/vue2-bootstrap-table)
