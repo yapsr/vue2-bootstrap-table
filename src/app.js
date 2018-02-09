@@ -8,9 +8,8 @@ var myRenderFunction = function (colname, entry) {
 };
 
 
-// Example
-var defaultSortKeys = ['votes', 'id'];
-var defaultSortOrders = ['desc', 'asc'];
+Vue.config.debug = true;
+Vue.config.devtools = true;
 
 new Vue({
     el: '#app',
@@ -24,8 +23,8 @@ new Vue({
         paginated: true,
         multiColumnSortable: true,
         defaultFilterKey: "",
-        defaultSortKeys: defaultSortKeys,
-        defaultSortOrders: defaultSortOrders,
+        defaultSortKeys: ['votes', 'id'],
+        defaultSortOrders: ['desc', 'asc'],
         ajax: {
             enabled: false,
             url: "http://localhost:9430/data/test",
@@ -59,7 +58,7 @@ new Vue({
             {
                 name: "test",
                 title: "Test",
-                visible: true,
+                visible: false,
                 renderfunction: myRenderFunction
             }
         ],
@@ -155,8 +154,8 @@ new Vue({
             this.logging.push('Filter modified : ' + value)
         });
 
-        this.$on('sortOrderModifiedEvent', function(value) {
-            this.logging.push('SortOrder modified: ' + JSON.stringify(value))
+        this.$on('sortModifiedEvent', function(keys, orders) {
+            this.logging.push('Sort modified: ' + keys + ', ' + orders)
         });
 
         this.$on('rowClickedEvent', function(entry) {
