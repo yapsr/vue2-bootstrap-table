@@ -1,7 +1,5 @@
 <template>
     <div id="maindiv" @click="closeDropdown" @keyup.esc="closeDropdown">
-        <!--<pre>{{columns}}</pre>-->
-        <!--<pre>{{$data}}</pre>-->
         <div class="col-sm-6">
             <div v-if="showFilter" style="padding-top: 10px;padding-bottom: 10px;">
                 <div class="input-group">
@@ -36,45 +34,45 @@
             </div>
             <table class="table table-bordered table-hover table-condensed table-striped vue-table">
                 <thead>
-                    <tr>
-                        <th v-for="column in displayColsVisible" @click="sortBy($event, column.name)"
-                            track-by="column"
-                            :class="getClasses(column)">
-                            {{ column.title }}
-                        </th>
-                    </tr>
+                <tr>
+                    <th v-for="column in displayColsVisible" @click="sortBy($event, column.name)"
+                        track-by="column"
+                        :class="getClasses(column)">
+                        {{ column.title }}
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="entry in filteredValuesSorted " track-by="entry" @click="rowClickHandler($event, entry)">
-                        <td v-for="column in displayColsVisible" track-by="column"
-                            v-show="column.visible" :class="column.cellstyle">
-                            <span v-if="column.renderfunction!==false" v-html="column.renderfunction( column.name, entry )"></span>
-                            <span v-else-if="!column.editable"> {{ entry[column.name] }} </span>
-                            <value-field-section v-else
-                                :entry="entry"
-                                :columnname="column.name"></value-field-section>
-                        </td>
-                    </tr>
+                <tr v-for="entry in filteredValuesSorted " track-by="entry" @click="fireRowClickedEvent(entry)">
+                    <td v-for="column in displayColsVisible" track-by="column"
+                        v-show="column.visible" :class="column.cellstyle" @click="fireCellClickedEvent(column, entry)">
+                        <span v-if="column.renderfunction!==false" v-html="column.renderfunction( column.name, entry )"></span>
+                        <span v-else-if="!column.editable"> {{ entry[column.name] }} </span>
+                        <value-field-section v-else
+                                             :entry="entry"
+                                             :name="column.name"></value-field-section>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
         <div v-if="paginated" class="col-sm-12">
             <div class="btn-toolbar" role="toolbar" aria-label="pagination bar">
-              <div class="btn-group" role="group" aria-label="first page">
-                <button type="button" class="btn btn-default" @click="page=1">&laquo;</button>
-              </div>
-              <div class="btn-group" role="group" aria-label="pages">
-                <button v-for="index in validPageNumbers"
-                    type="button" class="btn btn-default"
-                    :class="{ active: page===index }"
-                    @click="page=index">
+                <div class="btn-group" role="group" aria-label="first page">
+                    <button type="button" class="btn btn-default" @click="page=1">&laquo;</button>
+                </div>
+                <div class="btn-group" role="group" aria-label="pages">
+                    <button v-for="index in validPageNumbers"
+                            type="button" class="btn btn-default"
+                            :class="{ active: page===index }"
+                            @click="page=index">
                         {{index}}
-                </button>
-              </div>
-              <div class="btn-group" v-if="showPaginationEtc">...</div>
-              <div class="btn-group" role="group" aria-label="last page">
-                <button type="button" class="btn btn-default" @click="page=maxPage">&raquo;</button>
-              </div>
+                    </button>
+                </div>
+                <div class="btn-group" v-if="showPaginationEtc">...</div>
+                <div class="btn-group" role="group" aria-label="last page">
+                    <button type="button" class="btn btn-default" @click="page=maxPage">&raquo;</button>
+                </div>
             </div>
         </div>
     </div>
@@ -105,12 +103,15 @@
     }
 
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 
-
-    .vue-table-loading{
+    .vue-table-loading {
         position: absolute;
         z-index: 99;
         background-color: #ddd;
@@ -162,13 +163,17 @@
         */
     }
 
-    .vue-table .arrow.dsc:after {
+    .vue-table .arrow.desc:after {
         content: "\e156";
     }
 
-
     .vue-table .editableField {
-        cursor:pointer;
+        cursor: pointer;
+    }
+
+    .vue-table div.editableField {
+        width: 100%;
+
     }
 
     /*.vue-table .selected-cell {
@@ -189,38 +194,44 @@
 
 
     /* Field Section used for displaying and editing value of cell */
-    var valueFieldSection = {
-      template: '<span v-if="!enabled" @click="toggleInput" class="editableField">{{this.entry[this.columnname]}}</span>'+
-          '<div v-else-if="enabled" class="input-group">'+
-          '  <input type="text" class="form-control" v-model="datavalue" @keyup.enter="saveThis" @keyup.esc="cancelThis">'+
-          '  <span class="input-group-btn">'+
-          '    <button class="btn btn-danger" type="button" @click="cancelThis" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'+
-          '    <button class="btn btn-primary" type="button" @click="saveThis" ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>'+
-          '  </span>'+
-          '</div>',
-      props: ['entry','columnname'],
-      data: function () {
-          return {
-            enabled: false,
-            datavalue: "",
-          }
-      },
-      methods: {
-        saveThis: function () {
-            var originalValue = this.entry[this.columnname];
-            this.entry[this.columnname] = this.datavalue;
-            this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.columnname,  this.entry);
-            this.enabled = !this.enabled;
+    let valueFieldSection = {
+        template: '<div v-if="!enabled" @click="toggleInput" class="editableField">{{this.entry[this.name]}}</div>' +
+        '<div v-else-if="enabled" class="input-group">' +
+        '  <input type="text" ref="inputfield" class="form-control" v-model="datavalue" @blur="saveThis" @keyup.enter="saveThis" @keyup.esc="cancelThis" @keyup.down="onKeyDown">' +
+        '  <span class="input-group-btn">' +
+        '    <button class="btn btn-danger" type="button" @click="cancelThis" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>' +
+        '    <button class="btn btn-primary" type="button" @click="saveThis" ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>' +
+        '  </span>' +
+        '</div>',
+        props: ['entry', 'name'],
+        data: function () {
+            return {
+                enabled: false,
+                datavalue: "",
+            }
         },
-        cancelThis: function () {
-            this.datavalue = this.entry[this.columnname];
-            this.enabled = !this.enabled;
-        },
-        toggleInput: function () {
-            this.datavalue= this.entry[this.columnname];
-            this.enabled=!this.enabled;
-        },
-      }
+        methods: {
+            saveThis: function () {
+                let originalValue = this.entry[this.name];
+                this.entry[this.name] = this.datavalue;
+                this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.name, this.entry);
+                this.enabled = !this.enabled;
+            },
+            cancelThis: function () {
+                this.datavalue = this.entry[this.name];
+                this.enabled = !this.enabled;
+            },
+            toggleInput: function () {
+                this.datavalue = this.entry[this.name];
+                this.enabled = !this.enabled;
+                if (this.enabled) {
+                    this.$nextTick(() => this.$refs.inputfield.focus())
+                }
+            },
+            onKeyDown: function () {
+                this.saveThis();
+            }
+        }
     };
 
     export default {
@@ -229,6 +240,7 @@
             'value-field-section': valueFieldSection,
         },
         props: {
+
             /**
              * The column titles, required
              */
@@ -236,6 +248,7 @@
                 type: Array,
                 required: true,
             },
+
             /**
              * The rows, an Array of objects
              */
@@ -243,6 +256,7 @@
                 type: Array,
                 required: false,
             },
+
             /**
              * Enable/disable table sorting, optional, default true
              */
@@ -260,6 +274,31 @@
                 required: false,
                 default: false,
             },
+
+            defaultSortKeys: {
+                type: Array,
+                required: false,
+                default: []
+            },
+
+            defaultSortOrders: {
+                type: Array,
+                required: false,
+                default: []
+            },
+
+            // defaultSortKeys: {
+            //     type: Array,
+            //     required: false,
+            //     default: []
+            // },
+            //
+            // defaultSortOrders: {
+            //     type: Object,
+            //     required: false,
+            //     default: {}
+            // },
+
             /**
              * Enable/disable input filter, optional, default false
              */
@@ -269,6 +308,15 @@
                 default: false,
             },
             /**
+             * Default filter key value
+             */
+            defaultFilterKey: {
+                type: String,
+                required: false,
+                default: "",
+            },
+
+            /**
              * Define if Filter search field is to work in a case Sensitive way. Default: true
              */
             filterCaseSensitive: {
@@ -276,6 +324,7 @@
                 required: false,
                 default: true,
             },
+
             /**
              * Enable/disable column picker to show/hide table columns, optional, default false
              */
@@ -284,6 +333,7 @@
                 required: false,
                 default: false,
             },
+
             /**
              * Enable/disable pagination for the table, optional, default false
              */
@@ -292,6 +342,7 @@
                 required: false,
                 default: false,
             },
+
             /**
              * If pagination is enabled defining the page size, optional, default 10
              */
@@ -300,6 +351,7 @@
                 required: false,
                 default: 10,
             },
+
             /**
              * If loading of table is to be done through ajax, then this object must be set
              */
@@ -316,20 +368,13 @@
                     }
                 }
             },
-            /**
-             * Function to handle row clicks
-             */
-            rowClickHandler: {
-                type: Function,
-                required: false,
-                default: function () {}
-            },
+
         },
         data: function () {
             return {
                 filteredSize: 0,
                 filterKey: "",
-                sortKey: [],
+                sortKeys: [],
                 sortOrders: {},
                 sortChanged: 1,
                 columnMenuOpen: false,
@@ -341,50 +386,52 @@
             };
         },
         mounted: function () {
-          this.$nextTick(function () {
-              this.loading= true;
-              this.setSortOrders();
-              var self = this;
-              this.columns.forEach(function (column) {
-                  var obj = self.buildColumnObject(column);
-                  self.displayCols.push(obj);
-              });
-              if (this.ajax.enabled) {
-                  if (!this.ajax.delegate) {
-                      this.loading= true;
-                      this.fetchData(function (data) {
-                          self.values = data.data;
-                          self.processFilter();
-                      });
-                  }else
-                      this.processFilter();
-              }else
-                  this.processFilter();
-          })
+
+            let self = this;
+
+            this.loading = true;
+
+            this.filterKey = this.defaultFilterKey;
+
+            this.setSorting();
+
+            this.setColumns();
+
+            if (this.ajax.enabled) {
+                if (!this.ajax.delegate) {
+                    this.loading = true;
+                    this.fetchData(function (data) {
+                        self.values = data.data;
+                        self.processFilter();
+                    });
+                } else {
+                    this.processFilter();
+                }
+            } else {
+                this.processFilter();
+            }
+
         },
         created: function () {
-            var self = this ;
-            this.$on('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
+            this.$on('cellDataModifiedEvent', this.fireCellDataModifiedEvent);
         },
-        beforeDestroy: function(){
-            var self = this ;
-            this.$off('cellDataModifiedEvent', self.fireCellDataModifiedEvent);
+        beforeDestroy: function () {
+            this.$off('cellDataModifiedEvent', this.fireCellDataModifiedEvent);
         },
         watch: {
             values: function () {
                 this.processFilter();
             },
             columns: function () {
+                let self = this;
                 this.displayCols = [];
-                var self = this;
                 this.columns.forEach(function (column) {
-                    var obj = self.buildColumnObject(column);
+                    let obj = self.buildColumnObject(column);
                     self.displayCols.push(obj);
                 });
-                this.setSortOrders();
             },
             showFilter: function () {
-                this.filterKey = "";
+                // this.filterKey = "";
             },
             showColumnPicker: function () {
                 this.columnMenuOpen = false;
@@ -398,7 +445,7 @@
                 this.page = 1;
                 this.processFilter();
             },
-            sortKey: function () {
+            sortKeys: function () {
                 this.processFilter();
             },
             sortChanged: function () {
@@ -411,33 +458,29 @@
                 this.processFilter();
             },
             loading: function () {
-                /*document.getElementById("loadingdiv").style.width = document.getElementById("maindiv").getBoundingClientRect().width + "px";
-                document.getElementById("loadingdiv").style.height = document.getElementById("maindiv").getBoundingClientRect().height+"px";*/
-            }
+            },
         },
         computed: {
+            filteredValuesSorted: function () {
+                return this.sortFilteredValues()
+            },
+
             displayColsVisible: function () {
-                var displayColsVisible = [];
-                for (var a in this.displayCols) {
+                let displayColsVisible = [];
+                for (let a in this.displayCols) {
                     if (this.displayCols[a].visible)
                         displayColsVisible.push(this.displayCols[a]);
                 }
                 return displayColsVisible;
             },
-            filteredValuesSorted: function () {
-                var tColsDir = [];
-                for(var i=0, len=this.sortKey.length; i < len; i++){
-                    tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase());
-                }
-                return lodashorderby(this.filteredValues, this.sortKey , tColsDir);
-            },
+
             validPageNumbers: function () {
                 // 5 page max
-                var result = [];
-                var start = 1;
+                let result = [];
+                let start = 1;
                 if (this.page > 3)
-                    start = this.page-2;
-                for ( var i = 0 ; start <= this.maxPage && i<5; start++ ) {
+                    start = this.page - 2;
+                for (let i = 0; start <= this.maxPage && i < 5; start++) {
                     result.push(start);
                     i++;
                 }
@@ -447,85 +490,91 @@
                 return Math.ceil(this.filteredSize / this.pageSize);
             },
             showPaginationEtc: function () {
-                var temp = 1;
+                let temp = 1;
                 if (this.page > 3)
-                    temp = this.page-2;
-                return ( (temp+4) < this.maxPage  );
+                    temp = this.page - 2;
+                return ((temp + 4) < this.maxPage);
+            },
+            hasDefaultSorting: function () {
+                return this.defaultSortKeys.length > 0;
             },
         },
         methods: {
-            fireCellDataModifiedEvent:function ( originalValue, newValue, columnTitle, entry) {
-                this.$parent.$emit('cellDataModifiedEvent',originalValue, newValue, columnTitle, entry);
+            fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
+                this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
+            },
+            sortFilteredValues: function () {
+                let directions = [];
+                // for (let i = 0, len = this.sortKeys.length; i < len; i++) {
+                //     directions.push(this.sortOrders[this.sortKeys[i]].toLowerCase());
+                // }
+                return lodashorderby(this.filteredValues, this.sortKeys, this.sortOrders);
             },
             processFilter: function () {
-                var self = this;
+                let self = this;
+
                 this.loading = true;
-                if ( this.ajax.enabled && this.ajax.delegate ) {
-                   this.fetchData(function (data) {
-                       self.filteredSize = data.filtered;
-                       self.filteredValues = data.data;
-                       self.loading = false;
-                   });
-                } else {
-                    var result = this.values.filter(item => {
-                                var good = false;
-                                for (var col in self.displayColsVisible) {
-                                    if (self.filterCaseSensitive) {
-                                        if (lodashincludes(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
-                                            good = true;
-                                        }
-                                    } else {
-                                        if (lodashincludes((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
-                                            good = true;
-                                        }
-                                    }
 
-                                }
-                                return good;
+                if (this.ajax.enabled && this.ajax.delegate) {
+                    this.fetchData(function (data) {
+                        self.filteredSize = data.filtered;
+                        self.filteredValues = data.data;
+                        self.loading = false;
                     });
+                } else {
+                    let result = this.values.filter(item => {
+                        let good = false;
+                        for (let col in self.displayColsVisible) {
+                            if (self.filterCaseSensitive) {
+                                if (lodashincludes(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
+                                    good = true;
+                                }
+                            } else {
+                                if (lodashincludes((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
+                                    good = true;
+                                }
+                            }
 
-                    var tColsDir = [];
-                    for(var i=0, len=this.sortKey.length; i < len; i++){
-                        tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase());
-                    }
-
-                    result = lodashorderby(result, this.sortKey, tColsDir);
+                        }
+                        return good;
+                    });
 
                     this.filteredSize = result.length;
                     if (this.paginated) {
-                        var startIndex = (this.page - 1) * this.pageSize;
-                        var tIndex = 0;
-                        var tempResult = [];
+                        let startIndex = (this.page - 1) * this.pageSize;
+                        let tIndex = 0;
+                        let tempResult = [];
                         while (tIndex < this.pageSize) {
                             if (typeof result[startIndex + tIndex] !== "undefined")
                                 tempResult.push(result[startIndex + tIndex]);
                             tIndex++;
                         }
-                        self.filteredValues = tempResult;
-                    } else
-                        self.filteredValues = result;
+                        this.filteredValues = tempResult;
+                    } else {
+                        this.filteredValues = result;
+                    }
+
                     self.loading = false;
                 }
+
+                this.fireFilterModifiedEvent(this.filterKey);
+
             },
-            fetchData: function ( dataCallBackFunction ) {
-                var self = this;
-                var ajaxParameters = {
+            fetchData: function (dataCallBackFunction) {
+                let self = this;
+                let ajaxParameters = {
                     params: {}
                 };
                 this.echo++;
                 if (this.ajax.enabled && this.ajax.delegate) {
-                    var tColsDir = [];
-                    for(var i=0, len=this.sortKey.length; i < len; i++){
-                        tColsDir.push(this.sortOrders[this.sortKey[i]].toLowerCase());
-                    }
-                    if ( this.ajax.method=== "GET" ) {
+                    if (this.ajax.method === "GET") {
                         //COPY
                         ajaxParameters = JSON.parse(JSON.stringify(this.ajax.axiosConfig));
                         ajaxParameters.params = {};
-                        ajaxParameters.params.sortcol = this.sortKey;
-                        ajaxParameters.params.sortdir = tColsDir;
+                        ajaxParameters.params.sortcol = this.sortKeys;
+                        ajaxParameters.params.sortdir = this.sortOrders;
                         ajaxParameters.params.filter = this.filterKey;
-                        if (self.paginated ) {
+                        if (self.paginated) {
                             ajaxParameters.params.page = this.page;
                             ajaxParameters.params.pagesize = this.pageSize;
                         } else {
@@ -534,11 +583,11 @@
                         }
                         ajaxParameters.params.echo = this.echo;
                     }
-                    if ( this.ajax.method=== "POST" ) {
-                        ajaxParameters.sortcol = this.sortKey;
-                        ajaxParameters.sortdir = tColsDir;
+                    if (this.ajax.method === "POST") {
+                        ajaxParameters.sortcol = this.sortKeys;
+                        ajaxParameters.sortdir =this.sortOrders;
                         ajaxParameters.filter = this.filterKey;
-                        if (self.paginated ) {
+                        if (self.paginated) {
                             ajaxParameters.page = this.page;
                             ajaxParameters.pagesize = this.pageSize;
                         } else {
@@ -547,20 +596,19 @@
                         }
                         ajaxParameters.echo = this.echo;
                     }
-                    //console.log(JSON.stringify(ajaxParameters));
                 }
-                if( this.ajax.enabled && !this.ajax.delegate ) {
-                    if ( this.ajax.method=== "GET" ) {
+                if (this.ajax.enabled && !this.ajax.delegate) {
+                    if (this.ajax.method === "GET") {
                         //COPY
                         ajaxParameters = JSON.parse(JSON.stringify(this.ajax.axiosConfig));
                         ajaxParameters.params = {};
                     }
-                    if ( this.ajax.method=== "POST" ) {
+                    if (this.ajax.method === "POST") {
                         // Do nothing at this point !
                     }
                 }
                 if (this.ajax.enabled && this.ajax.method === "GET") {
-                    axios.get(self.ajax.url, ajaxParameters )
+                    axios.get(self.ajax.url, ajaxParameters)
                         .then(response => {
                             if (this.ajax.delegate) {
                                 if (response.data.echo !== self.echo) {
@@ -575,7 +623,7 @@
                         });
                 }
                 if (this.ajax.enabled && this.ajax.method === "POST") {
-                    axios.post(self.ajax.url, qs.stringify(ajaxParameters) , this.ajax.axiosConfig )
+                    axios.post(self.ajax.url, qs.stringify(ajaxParameters), this.ajax.axiosConfig)
                         .then(response => {
                             if (this.ajax.delegate) {
                                 if (response.data.echo !== self.echo) {
@@ -593,99 +641,147 @@
                 }
             },
             buildColumnObject: function (column) {
-                var obj = {};
+                let obj = {};
                 obj.title = column.title;
-                if ( typeof column.name !== "undefined")
+                if (typeof column.name !== "undefined")
                     obj.name = column.name;
                 else
                     obj.name = column.title;
-                if ( typeof column.visible !== "undefined")
+                if (typeof column.visible !== "undefined")
                     obj.visible = column.visible;
                 else
                     obj.visible = true;
-                if ( typeof column.editable !== "undefined")
+                if (typeof column.editable !== "undefined")
                     obj.editable = column.editable;
                 else
                     obj.editable = false;
-                if ( typeof column.renderfunction !== "undefined")
+                if (typeof column.renderfunction !== "undefined")
                     obj.renderfunction = column.renderfunction;
                 else
                     obj.renderfunction = false;
-                if ( typeof column.columnstyle !== "undefined")
+                if (typeof column.columnstyle !== "undefined")
                     obj.columnstyle = column.columnstyle;
                 else
                     obj.columnstyle = "";
-                if ( typeof column.cellstyle !== "undefined")
+                if (typeof column.cellstyle !== "undefined")
                     obj.cellstyle = column.cellstyle;
                 else
                     obj.cellstyle = "";
 
                 return obj;
             },
-            setSortOrders: function () {
-                this.sortKey = [];
-                var sortOrders = {};
+            setColumns: function () {
+                let self = this;
                 this.columns.forEach(function (column) {
-                    sortOrders[column.name] = "";
+                    let obj = self.buildColumnObject(column);
+                    self.displayCols.push(obj);
                 });
-                this.sortOrders = sortOrders;
+            },
+            setSorting: function () {
+                if (this.hasDefaultSorting) {
+                    this.setDefaultSorting();
+                } else {
+                    this.sortKeys = [];
+                    this.sortOrders = [];
+                }
+            },
 
+            /**
+             * Example: { "votes":"desc", "id":"asc" }
+             *
+             * Sets
+             * this.sortKeys = ['votes', 'id']
+             * this.sortOrders = ['desc', 'asc']
+             */
+            setDefaultSorting: function () {
+                this.sortKeys = this.defaultSortKeys;
+                this.sortOrders = this.defaultSortOrders;
+            },
+            resetSortOrders: function () {
+                this.sortOrders = [];
             },
             sortBy: function (event, key) {
-                if (this.sortable) {
-                    var self = this;
 
-                    if (!this.multiColumnSortable || ( this.multiColumnSortable && !event.shiftKey)) {
-                        this.sortKey = [key];
-                        this.columns.forEach(function (column) {
-                            if (column.name !== key) {
-                                self.sortOrders[column.name] = "";
-                            }
-                        });
+                if (this.sortable) {
+
+                    let pos = 0;
+
+                    if (!this.multiColumnSortable || (this.multiColumnSortable && !event.shiftKey)) {
+                        this.sortKeys = [key];
+                        // this.columns.forEach(function (column) {
+                        //     if (column.name !== key) {
+                        //         self.sortOrders[column.name] = "";
+                        //     }
+                        // });
                     } else {
-                        if (lodashfindindex(this.sortKey, function(o) { return o === key; }) === -1) {
-                            this.sortKey.push(key);
+                        if (lodashfindindex(this.sortKeys, function (o) {
+                                return o === key;
+                            }) === -1) {
+                            this.sortKeys.push(key);
                         }
+                        pos = this.sortKeys.indexOf(key);
                     }
-                    if (this.sortOrders[key] === "") {
-                        this.sortOrders[key] = "ASC";
-                    } else if (this.sortOrders[key] === "ASC") {
-                        this.sortOrders[key] = "DESC";
+
+                    if (pos > this.sortKeys.length-1) {
+                        this.sortKeys[pos] = "asc"
+                    } else if (this.sortOrders[pos] === "asc") {
+                        this.sortOrders[pos] = "desc";
                     } else {
-                        this.sortOrders[key] = "ASC";
+                        this.sortOrders[pos] = "asc";
                     }
 
                     this.sortChanged = this.sortChanged * -1;
+
+                    this.fireSortOrderModifiedEvent(this.sortOrders);
+
                 }
             },
             getClasses: function (column) {
-                var classes = [column.columnstyle];
-                var key = column.name;
+                let classes = [column.columnstyle];
+                let key = column.name;
                 if (this.sortable) {
                     classes.push("arrow");
-                    /*if (this.sortKey === key) {
+                    /*if (this.sortKeys === key) {
                         classes.push("active");
                     }*/
-                    if (lodashfindindex(this.sortKey, function(o) { return o === key; }) !== -1) {
+                    if (lodashfindindex(this.sortKeys, function (o) {
+                            return o === key;
+                        }) !== -1) {
                         classes.push("active");
                     }
 
-                    if (this.sortOrders[key] === "ASC") {
+                    let pos = this.sortKeys.indexOf(key);
+                    if (this.sortOrders[[pos]] === "asc") {
                         classes.push("asc");
-                    } else if (this.sortOrders[key] === "DESC") {
-                        classes.push("dsc");
+                    } else if (this.sortOrders[pos] === "desc") {
+                        classes.push("desc");
                     }
                 }
                 return classes;
             },
             toggleColumn: function (column) {
                 column.visible = !column.visible;
+                this.fireColumnToggledEvent(column);
             },
             closeDropdown: function () {
                 this.columnMenuOpen = false;
             },
+            fireColumnToggledEvent: function (column) {
+                this.$parent.$emit('columnToggledEvent', column, this.displayColsVisible);
+            },
+            fireFilterModifiedEvent: function (filter, sort) {
+                this.$parent.$emit('filterModifiedEvent', filter, sort);
+            },
+            fireSortOrderModifiedEvent: function (sortOrders) {
+                this.$parent.$emit('sortOrderModifiedEvent', sortOrders)
+            },
+            fireRowClickedEvent: function (entry) {
+                this.$parent.$emit('rowClickedEvent', entry);
+            },
+            fireCellClickedEvent: function (entry, column) {
+                this.$parent.$emit('cellClickedEvent', entry, column);
+            }
         },
-        events: {
-        }
+        events: {}
     }
 </script>

@@ -1,35 +1,6 @@
-# vue2-bootstrap-table
+# yapsr-vue2-bootstrap-table
 
-vue-bootstrap-table is a sortable and searchable table, with Bootstrap styling, for Vue.js.
-
-### VUE 2 : 1.1.8
-
-### Vue 1 : [jbaysolutions/vue-bootstrap-table](https://github.com/jbaysolutions/vue-bootstrap-table)
-
-### [Demo](https://jbaysolutions.github.io/vue2-bootstrap-table/examples/01-basic.html)
-
-<!--
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contribute](#contribute)
-- [TODO List](#todo-list)
-
-## Demos
-
-
-TODO UPDATE DOCS
-TODO UPDATE CHANGELOG
-
--->
-
-#### Projects using vue-bootstrap-table
-
-- [Draxed](https://www.draxed.com/?utm_source=github&utm_medium=web&utm_campaign=vue-bootstrap-table)
-
-*Know of others? Create a PR to let me know!*
+yapsr-vue2-bootstrap-table is a sortable and searchable table, with Bootstrap styling, for VueJs 2+.
 
 ## Features
 
@@ -41,11 +12,12 @@ TODO UPDATE CHANGELOG
 * On Table Editing
 * Remote data loading
 * Remote data processing
+* Events
 
 
 ## Requirements
 
-* Vue 2.* (tested with 2.3.3)
+* Vue 2.* (tested with 2.5.13)
 * Bootstrap 3 css
 
 
@@ -53,12 +25,8 @@ TODO UPDATE CHANGELOG
 
 Install the vue-bootstrap-table [package](https://www.npmjs.org/package/vue2-bootstrap-table2) package using [npm](https://www.npmjs.com/):
 
-	npm install vue2-bootstrap-table2
+	npm install yapsr-vue2-bootstrap-table2
 
-
-Or add the js script to your html (download from [releases](https://github.com/jbaysolutions/vue2-bootstrap-table/releases)):
- 
-    <script src="vue-bootstrap-table.js"></script>
 
 
 ## Usage
@@ -224,14 +192,6 @@ Or add the js script to your html (download from [releases](https://github.com/j
                 }
             }
         },
-        /**
-         * Function to handle row clicks
-         */
-        rowClickHandler: {
-            type: Function,
-            required: false,
-            default: function () {}
-        },
     },
 
 ```
@@ -280,16 +240,16 @@ columns: [
     {
         title: "Test",
         visible: true,
-        renderfunction: renderTestColumn
+        renderfunction: myTestRenderFunction
     }
 ],
 ```
 
-There must be a javascript function called `renderTestColumn`  :
+There must be a javascript function called `myTestRenderFunction`  :
 
 ```javascript
 <script>
-    var renderTestColumn = function (colname, entry) {
+    var myTestRenderFunction = function (colname, entry) {
         return '<div class="btn-group" role="group" >'+
             '  <button type="button" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>'+
             '  <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'+
@@ -298,34 +258,6 @@ There must be a javascript function called `renderTestColumn`  :
 </script>
 ```
 
-### ROW Click Handler
-
-To add a Row click handler function:
-
-````html
-
-    <vue-bootstrap-table
-            [...]
-            :row-click-handler=handleRowFunction
-    >
-    </vue-bootstrap-table>
-````
-
-On your Vue instance :
-
-````javascript
-data: {
-        handleRowFunction: handleRow,
-}
-````
-
-And have the javascript function declared like so:
-
-````javascript
-var handleRow = function (event, entry) {
-    console.log("CLICK ROW: " + JSON.stringify(entry));
-};
-````
 
 Where event in the `MouseEvent` and `entry` e the complete entry corresponding to the row.
 
@@ -438,10 +370,18 @@ Example:
 ## Events
 
 * `cellDataModifiedEvent` - When a cell is edited, an `cellDataModifiedEvent` event is dispatched.
-* `ajaxLoadedEvent` - When ajax call is executed successfully an `ajaxLoadedEvent` event is dispatched.
-* `ajaxLoadingError` -When ajax call is executed unsuccessfully an  `ajaxLoadingError` event is dispatched.
+* `ajaxLoadedEvent` -  When ajax call is executed successfully an `ajaxLoadedEvent` event is dispatched.
+* `ajaxLoadingError` - When ajax call is executed unsuccessfully an  `ajaxLoadingError` event is dispatched.
+* `columnToggledEvent` - When a column was toggled 
+* `filterModifiedEvent` - When a filter was changed
+* `sortOrderModifiedEvent` - When the sorting order was changed
+* `rowClickedEvent` - When a row is clicked  
+* `cellClickedEvent` - When a cell is clicked
+
 
 ### Handling Events
+
+Examples:
 
 ```javascript
     created: function () {
@@ -481,6 +421,7 @@ If you have a feature request, please add it as an issue or make a pull request.
 - [x] Pagination
 - [x] Editing
 - [x] Ajax
+- [x] Basic events
 - [ ] Responsive
 - [ ] Dates sorting
 - [ ] Keyboard navigation
@@ -488,59 +429,14 @@ If you have a feature request, please add it as an issue or make a pull request.
 
 ## Changelog
 
+### 1.2.0 
+
+* Altered behaviour when clicking / blurring on editable field
+* Added events
+* Renamed some methods
+* Deleted row handler function, replaced by onCellClickedEvent
+
 ### 1.1.8
 
-* Bug fix - Issue 5 - Axios config not being loaded with GET method and Delegate false.
+* Forked from jbaysolution/vue2-bootstrap-table
 
-### 1.1.7
-
-* Allowing Axios configuration to be passed for the requests
-
-### 1.1.6
-
-* Search case sensitivity configurable
-
-### 1.1.5
-
-* Row Click Handler added
-
-### 1.1.4
-
-* Fix- delegate now doesn't use echo
-
-### 1.1.3
-
-* Define a Render Function support by column
-* Define Column Styles by column
-* Define Cell Styles by column
-
-### 1.1.2
-
-* Fix to Sorting
-* Added Multicolumn Sorting
-* Fix dynamic adding rows with update to interface
-* Ajax with multicolumn sorting
-
-### 1.1.1
-
-* Added more Events
-
-### 1.1.0
-
-* Remote data loading (through ajax call)
-* Remote data processing (through ajax calls)
-* Loading overlay
-
-### 1.0.2
-
-* Pagination working
-* Editing cells on the table
-* Configuration Improvements
-
-### 1.0.1
-
-* Bug fix
-
-### 1.0.0
-
-* First version

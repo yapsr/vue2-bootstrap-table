@@ -37,8 +37,10 @@
                     :paginated="paginated"
                     :multi-column-sortable="multiColumnSortable"
                     :ajax="ajax"
-                    :row-click-handler=handleRowFunction
                     :filter-case-sensitive=false
+                    :default-filter-key="defaultFilterKey"
+                    :default-sort-keys="defaultSortKeys"
+                    :default-sort-orders="defaultSortOrders"
             >
             </vue-bootstrap-table>
         </div>

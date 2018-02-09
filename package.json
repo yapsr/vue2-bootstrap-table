@@ -1,6 +1,6 @@
 {
   "name": "yapsr-vue2-bootstrap-table2",
-  "version": "1.1.8",
+  "version": "1.2.0",
   "description": "A sortable and searchable vue table, as a Vue component, using bootstrap styling.",
   "keywords": [
     "table",
@@ -15,7 +15,7 @@
   ],
   "main": "dist/vue-bootstrap-table.min.js",
   "scripts": {
-    "dev": "webpack-dev-server --host 0.0.0.0 --inline --hot",
+    "dev": "webpack-dev-server --host 0.0.0.0 --port 8081 --inline --hot",
     "build": "cross-env NODE_ENV=production && webpack --progress --hide-modules",
     "dist": "webpack --progress --hide-modules --config webpack.build.js && cross-env NODE_ENV=production webpack --progress --hide-modules --config  webpack.build.min.js"
   },

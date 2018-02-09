@@ -1,15 +1,16 @@
 import VueBootstrapTable from './VueBootstrapTable.vue';
 
-var renderfu = function (colname, entry) {
+var myRenderFunction = function (colname, entry) {
     return '<div class="btn-group" role="group" >'+
         '  <button type="button" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>'+
         '  <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'+
         '</div><span>'+JSON.stringify(entry)+'</span>';
 };
 
-var handleRow = function (event, entry) {
-    console.log("CLICK ROW: " + JSON.stringify(entry));
-};
+
+// Example
+var defaultSortKeys = ['votes', 'id'];
+var defaultSortOrders = ['desc', 'asc'];
 
 new Vue({
     el: '#app',
@@ -22,7 +23,9 @@ new Vue({
         showPicker: true,
         paginated: true,
         multiColumnSortable: true,
-        handleRowFunction: handleRow,
+        defaultFilterKey: "",
+        defaultSortKeys: defaultSortKeys,
+        defaultSortOrders: defaultSortOrders,
         ajax: {
             enabled: false,
             url: "http://localhost:9430/data/test",
@@ -48,83 +51,128 @@ new Vue({
                 editable: true,
             },
             {
+                title: "Votes",
+                name: "votes",
+                visible: true,
+                editable: true,
+            },
+            {
+                name: "test",
                 title: "Test",
                 visible: true,
-                renderfunction: renderfu
+                renderfunction: myRenderFunction
             }
         ],
         values: [
-            {
-                "id": 1,
-                "title": "john",
-            },
+
             {
                 "id": 1,
                 "title": "mary",
+                "votes": 12
             },
             {
-                "id": 1,
+                "id": 2,
                 "title": "jack",
+                "votes": 12
             },
             {
-                "id": 1,
+                "id": 3,
                 "title": "joe",
+                "votes": 87
             },
             {
-                "id": 2,
+                "id": 4,
                 "title": "ana",
+                "votes": 21
             },
             {
-                "id": 2,
+                "id": 5,
                 "title": "rita",
+                "votes": 87
             },
             {
-                "id": 2,
+                "id": 6,
                 "title": "mario",
+                "votes": 12
             },
             {
-                "id": 2,
+                "id": 7,
                 "title": "luigi",
+                "votes": 87
             },
             {
-                "id": 2,
+                "id": 8,
                 "title": "mickey",
+                "votes": 12
             },
             {
-                "id": 3,
+                "id": 9,
                 "title": "donald",
+                "votes": 12
             },
             {
-                "id": 3,
+                "id": 10,
                 "title": "juliet",
+                "votes": 0
+            },
+            {
+                "id": 11,
+                "title": "paul",
+                "votes": 5
             }
 
         ]
     },
     created: function () {
-        var self = this;
+
         this.$on('cellDataModifiedEvent',
             function( originalValue, newValue, columnTitle, entry) {
-                self.logging.push("cellDataModifiedEvent - Original Value : " + originalValue +
+                this.logging.push("cellDataModifiedEvent - Original Value : " + originalValue +
                                          " | New Value : " + newValue +
                                          " | Column : " + columnTitle +
                                          " | Complete Entry : " +  entry );
             }
         );
+
         this.$on('ajaxLoadedEvent',
             function( data ) {
                 this.logging.push("ajaxLoadedEvent - data : " + data );
             }
         );
+
         this.$on('ajaxLoadingError',
             function( error ) {
                 this.logging.push("ajaxLoadingError - error : " + error );
             }
         );
+
+        this.$on('columnToggledEvent', function(column, visibleColumns) {
+            this.logging.push('Column toggled ' + column.name +
+                " | Visible columns : " + JSON.stringify(visibleColumns))
+        });
+
+        this.$on('filterModifiedEvent', function(value) {
+            this.logging.push('Filter modified : ' + value)
+        });
+
+        this.$on('sortOrderModifiedEvent', function(value) {
+            this.logging.push('SortOrder modified: ' + JSON.stringify(value))
+        });
+
+        this.$on('rowClickedEvent', function(entry) {
+            this.logging.push('Row clicked: ' + JSON.stringify(entry)
+            )
+        });
+
+        this.$on('cellClickedEvent', function(entry, column) {
+            this.logging.push('Cell clicked: ' + column +
+                ' | entry: ' + JSON.stringify(entry.name)
+            )
+        });
+
     },
     methods: {
         addItem: function () {
-            var self = this;
             var item = {
                 "id": this.values.length + 1,
                 "name": "name " + (this.values.length + 1)
