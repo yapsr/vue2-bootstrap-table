@@ -273,29 +273,34 @@
                 default: false,
             },
 
+            /**
+             * Array of sort keys to start with
+             *
+             * Example: ['votes'] or ['votes', 'id']
+             *
+             */
             defaultSortKeys: {
                 type: Array,
                 required: false,
-                default: []
+                default: function() {
+                    return [];
+                }
             },
 
+            /**
+             * Array of sort orders to start with, corresponding with defaultSortKeys
+             *
+             * Example: ['asc'] or ['desc', 'asc']
+             *
+             */
             defaultSortOrders: {
                 type: Array,
                 required: false,
-                default: []
+                default: function() {
+                    return [];
+                }
             },
 
-            // defaultSortKeys: {
-            //     type: Array,
-            //     required: false,
-            //     default: []
-            // },
-            //
-            // defaultSortOrders: {
-            //     type: Object,
-            //     required: false,
-            //     default: {}
-            // },
 
             /**
              * Enable/disable input filter, optional, default false
