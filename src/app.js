@@ -23,7 +23,7 @@ new Vue({
         paginated: true,
         multiColumnSortable: true,
         defaultFilterKey: "",
-        defaultSortKeys: ['votes', 'id'];,
+        defaultSortKeys: ['votes', 'id'],
         defaultSortOrders: ['desc', 'asc'],
         ajax: {
             enabled: false,
