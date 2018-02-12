@@ -37,18 +37,20 @@
                 <tr>
                     <th v-for="column in displayColsVisible" @click="sortBy($event, column.name)"
                         track-by="column"
-                        :class="getClasses(column)">
+                        :class="getColumnClasses(column)">
                         {{ column.title }}
                     </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="entry in filteredValuesSorted " track-by="entry" @click="fireRowClickedEvent(entry)">
-                    <td v-for="column in displayColsVisible" track-by="column"
-                        v-show="column.visible" :class="column.cellstyle" @click="fireCellClickedEvent(column, entry)">
-                        <span v-if="column.renderfunction!==false" v-html="column.renderfunction( column.name, entry )"></span>
-                        <span v-else-if="!column.editable">{{ entry[column.name] }}</span>
-                        <value-field-section v-else :entry="entry" :name="column.name"></value-field-section>
+                    <td v-for="column in displayColsVisible" track-by="column" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
+                        <value-field-section :column="column" :entry="entry"></value-field-section>
+                    </td>
+                </tr>
+                <tr class="footer">
+                    <td v-for="column in displayColsVisible" track-by="column" v-show="column.visible" :class="getCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
+                        <span v-html="footerRendered(column)"></span>
                     </td>
                 </tr>
                 </tbody>
@@ -165,22 +167,23 @@
         content: "\e156";
     }
 
-    .vue-table .editableField {
+    .vue-table td.editable {
         cursor: pointer;
     }
 
-    .vue-table div.editableField {
+    .vue-table div.editable {
         width: 100%;
-
     }
 
-    /*.vue-table .selected-cell {
+    /*
+    .vue-table .selected-cell {
         background-color: #F7C072;
     }
 
     .vue-table .selected-row {
         background-color: #FAE1BE !important;
-    }*/
+    }
+    */
 </style>
 <script>
 
@@ -193,42 +196,78 @@
 
     /* Field Section used for displaying and editing value of cell */
     let valueFieldSection = {
-        template: '<div v-if="!enabled" @click="toggleInput" class="editableField">{{this.entry[this.name]}}</div>' +
-        '<div v-else-if="enabled" class="input-group">' +
-        '  <input type="text" ref="inputfield" class="form-control" v-model="datavalue" @blur="saveThis" @keyup.enter="saveThis" @keyup.esc="cancelThis" @keyup.down="onKeyDown">' +
-        '  <span class="input-group-btn">' +
-        '    <button class="btn btn-danger" type="button" @click="cancelThis" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>' +
-        '    <button class="btn btn-primary" type="button" @click="saveThis" ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>' +
-        '  </span>' +
-        '</div>',
-        props: ['entry', 'name'],
+        template: '<div>' +
+        '<span v-if="!column.editable" v-html="rendered"></span>' +
+        '<span v-else-if="!enabled" @click="toggleInput" v-html="rendered"></span>' +
+        '<span v-else>' +
+        '  <input type="text" ref="inputfield"  class="form-control" v-model="datavalue" ' +
+        '   @blur="saveThis" ' +
+        '   @keyup.enter="saveThis" ' +
+        '   @keyup.tab="saveThis" ' +
+        '   @keyup.esc="cancelThis" ' +
+        '   @keyup.down="onKeyDown" ' +
+        '   @keyup.up="onKeyUp" ' +
+        '   @keyup.left="onKeyLeft" ' +
+        '   @keyup.right="onKeyRight"' +
+        '></span></div>',
+        props: ['column', 'entry'],
         data: function () {
             return {
                 enabled: false,
                 datavalue: "",
             }
         },
+        computed: {
+            rendered: function () {
+                let value = this.$parent.sortValue(this.column, this.entry);
+                if (typeof this.column.renderFunction==='function') {
+                    return this.column.renderFunction(value, this.column, this.entry);
+                } else {
+                    return value;
+                }
+            }
+        },
         methods: {
             saveThis: function () {
-                let originalValue = this.entry[this.name];
+                let originalValue = this.entry[this.column.name];
                 this.entry[this.name] = this.datavalue;
-                this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.name, this.entry);
+                this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.column.name, this.entry);
                 this.enabled = !this.enabled;
             },
             cancelThis: function () {
-                this.datavalue = this.entry[this.name];
+                console.log('cancelThis');
+                // this.datavalue = this.entry[this.column.name];
                 this.enabled = !this.enabled;
             },
             toggleInput: function () {
-                this.datavalue = this.entry[this.name];
+                console.log('toggleInput');
                 this.enabled = !this.enabled;
                 if (this.enabled) {
+                    this.datavalue = this.entry[this.column.name];
                     this.$nextTick(() => this.$refs.inputfield.focus())
                 }
             },
             onKeyDown: function () {
+                console.log('onKeyDown');
                 this.saveThis();
-            }
+//                this.enabled = false;
+            },
+            onKeyUp: function () {
+                console.log('onKeyUp');
+                this.saveThis();
+                //            this.enabled = !this.enabled;
+            },
+            onKeyLeft: function () {
+                console.log('onKeyLeft');
+                this.saveThis();
+                //              this.enabled = !this.enabled;
+            },
+            onKeyRight: function () {
+                console.log('onKeyRight');
+                this.saveThis();
+//                this.enabled = !this.enabled;
+            },
+
         }
     };
 
@@ -282,7 +321,7 @@
             defaultSortKeys: {
                 type: Array,
                 required: false,
-                default: function() {
+                default: function () {
                     return [];
                 }
             },
@@ -296,7 +335,7 @@
             defaultSortOrders: {
                 type: Array,
                 required: false,
-                default: function() {
+                default: function () {
                     return [];
                 }
             },
@@ -371,6 +410,14 @@
                     }
                 }
             },
+
+            extraComputed: {
+                type: Object,
+                required: false,
+                default: function () {
+                    return {};
+                }
+            }
 
         },
         data: function () {
@@ -501,20 +548,48 @@
             hasDefaultSorting: function () {
                 return this.defaultSortKeys.length > 0;
             },
+
         },
         methods: {
+            footerRendered: function(column) {
+
+                let value = null;
+
+                if (column.footerComputed) {
+                    value = this.extraComputed[column.footerComputed](column, this.filteredValues, this.values);
+                }
+
+                if (typeof value !=='undefined') {
+                    if (typeof column.footerRenderFunction === 'function') {
+                        return column.footerRenderFunction(value, column, this.filteredValues, this.values);
+                    } else {
+                        return value;
+                    }
+                }
+
+            },
+            sortValue: function (column, entry) {
+                let result = '';
+                if (column.computed) {
+                    result = this.getExtraComputed(column, entry);
+                } else {
+                    result = entry[column.name];
+                }
+                // console.log('sortValue', column.name, entry, result);
+                return result;
+            },
+            getExtraComputed(column, entry) {
+                return this.extraComputed[column.computed](column, entry);
+            },
             fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
                 this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
             },
             sortFilteredValues: function () {
-                let directions = [];
-                // for (let i = 0, len = this.sortKeys.length; i < len; i++) {
-                //     directions.push(this.sortOrders[this.sortKeys[i]].toLowerCase());
-                // }
                 return lodashorderby(this.filteredValues, this.sortKeys, this.sortOrders);
             },
             processFilter: function () {
                 let self = this;
+                let result = [];
 
                 this.loading = true;
 
@@ -525,22 +600,44 @@
                         self.loading = false;
                     });
                 } else {
-                    let result = this.values.filter(item => {
-                        let good = false;
-                        for (let col in self.displayColsVisible) {
-                            if (self.filterCaseSensitive) {
-                                if (lodashincludes(item[self.displayColsVisible[col].name] + "", self.filterKey + "")) {
-                                    good = true;
-                                }
-                            } else {
-                                if (lodashincludes((item[self.displayColsVisible[col].name] + "").toLowerCase(), (self.filterKey + "").toLowerCase())) {
-                                    good = true;
-                                }
+
+                    let column = [];
+                    let computedColumnName;
+                    let computedColumnValue;
+
+                    for (let i in this.values) {
+                        for (let j in self.displayColsVisible) {
+                            column = self.displayColsVisible[j];
+                            this.values[i][ column.name ] = this.sortValue(column, this.values[i]);;
+                        }
+                    }
+
+                    result = this.values;
+
+                    let result = this.values.filter(entry => {
+
+                        let i = 0;
+                        let haystack = "";
+                        let column = [];
+                        let q = self.filterKey + "";
+                        if (!self.filterCaseSensitive) {
+                            q = q.toLowerCase();
+                        }
+
+                        for (let i in self.displayColsVisible) {
+                            column = self.displayColsVisible[i];
+                            haystack = self.sortValue(column, entry) || "";
+                            // console.log(i, column, entry, haystack);
+                            if (!self.filterCaseSensitive && typeof haystack === 'string') {
+                                haystack = haystack.toLowerCase();
                             }
 
+                            if (lodashincludes(haystack, q)) {
+                                return true;
+                            }
                         }
-                        return good;
-                    });
+                        return false;
+                    })
 
                     this.filteredSize = result.length;
                     if (this.paginated) {
@@ -588,7 +685,7 @@
                     }
                     if (this.ajax.method === "POST") {
                         ajaxParameters.sortcol = this.sortKeys;
-                        ajaxParameters.sortdir =this.sortOrders;
+                        ajaxParameters.sortdir = this.sortOrders;
                         ajaxParameters.filter = this.filterKey;
                         if (self.paginated) {
                             ajaxParameters.page = this.page;
@@ -658,18 +755,30 @@
                     obj.editable = column.editable;
                 else
                     obj.editable = false;
-                if (typeof column.renderfunction !== "undefined")
-                    obj.renderfunction = column.renderfunction;
+                if (typeof column.renderFunction !== "undefined")
+                    obj.renderFunction = column.renderFunction;
                 else
-                    obj.renderfunction = false;
-                if (typeof column.columnstyle !== "undefined")
-                    obj.columnstyle = column.columnstyle;
+                    obj.renderFunction = false;
+                if (typeof column.computed !== "undefined")
+                    obj.computed = column.computed;
                 else
-                    obj.columnstyle = "";
-                if (typeof column.cellstyle !== "undefined")
-                    obj.cellstyle = column.cellstyle;
+                    obj.computed = false;
+                if (typeof column.footerComputed !== "undefined")
+                    obj.footerComputed = column.footerComputed;
                 else
-                    obj.cellstyle = "";
+                    obj.footerComputed = false;
+                if (typeof column.footerRenderFunction !== "undefined")
+                    obj.footerRenderFunction = column.footerRenderFunction;
+                else
+                    obj.footerRenderFunction = false;
+                if (typeof column.columnClasses !== "undefined")
+                    obj.columnClasses = column.columnClasses;
+                else
+                    obj.columnClasses = "";
+                if (typeof column.cellClasses !== "undefined")
+                    obj.cellClasses = column.cellClasses;
+                else
+                    obj.cellClasses = "";
 
                 return obj;
             },
@@ -725,7 +834,7 @@
                         pos = this.sortKeys.indexOf(key);
                     }
 
-                    if (pos > this.sortKeys.length-1) {
+                    if (pos > this.sortKeys.length - 1) {
                         this.sortKeys[pos] = "asc"
                     } else if (this.sortOrders[pos] === "asc") {
                         this.sortOrders[pos] = "desc";
@@ -739,8 +848,8 @@
 
                 }
             },
-            getClasses: function (column) {
-                let classes = [column.columnstyle];
+            getColumnClasses: function (column) {
+                let classes = [column.columnClasses];
                 let key = column.name;
                 if (this.sortable) {
                     classes.push("arrow");
@@ -761,6 +870,13 @@
                     }
                 }
                 return classes;
+            },
+            getCellClasses: function (column, entry) {
+                let result = column.cellClasses;
+                if (column.editable) {
+                    result = result + " editable";
+                }
+                return result;
             },
             toggleColumn: function (column) {
                 column.visible = !column.visible;
@@ -783,6 +899,9 @@
             },
             fireCellClickedEvent: function (entry, column) {
                 this.$parent.$emit('cellClickedEvent', entry, column);
+            },
+            fireFooterCellClickedEvent: function (column) {
+                this.$parent.$emit('footerCellClickedEvent', column);
             }
         },
         events: {}

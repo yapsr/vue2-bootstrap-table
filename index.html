@@ -9,13 +9,18 @@
 </head>
 <body>
 <style>
-    .colstyletest {
+    .columnClassesTest {
         background-color: #000066;
     }
 
-    .cellstyletest {
+    .cellClassesTest {
         background-color: #a94442;
     }
+
+    .vue-table td.editable {
+        background-color:lightgreen;
+    }
+
 </style>
 
 <div class="container-fluid">
@@ -41,6 +46,7 @@
                     :default-filter-key="defaultFilterKey"
                     :default-sort-keys="defaultSortKeys"
                     :default-sort-orders="defaultSortOrders"
+                    :extra-computed="extraComputed"
             >
             </vue-bootstrap-table>
         </div>

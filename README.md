@@ -206,9 +206,9 @@ The `columns` array takes object of type:
     name: String,               // Optional: The name of the "data" property. If nothing, title is used.
     visible: Boolean,              // Optional: column visible? (Default: true)
     editable: Boolean,            // Optional: column cells editable? (Default: false)
-    columnstyle: String         // Optional: styles to be applied to the Column Header
-    cellstyle: String           // Optional: styles to be applied to the Cells of this column
-    renderfunction: Function    // Optional: Function that receives as input the column name and entry, and returns an HTML String for drawing cell
+    columnClasses: String         // Optional: styles to be applied to the Column Header
+    cellClasses: String           // Optional: styles to be applied to the Cells of this column
+    render: Function    // Optional: Function that receives as input the column name and entry, and returns an HTML String for drawing cell
 }
 ```
 
@@ -240,7 +240,7 @@ columns: [
     {
         title: "Test",
         visible: true,
-        renderfunction: myTestRenderFunction
+        render: myTestRenderFunction
     }
 ],
 ```
