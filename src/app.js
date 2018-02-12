@@ -5,13 +5,13 @@ var myRenderJSONFunction = function (column, entry) {
 };
 
 var myCalculationFunction = function (column, entry) {
-    return entry.id * entry.votes;
+    return Number(entry.id) * Number(entry.votes);
 };
 
 var myCalculationSumFunction = function (column, filteredEntries, allEntries) {
     let result = 0;
     for (let i in filteredEntries) {
-        result += filteredEntries[i][ column.name ];
+        result += Number(filteredEntries[i][ column.name ]);
     };
     return result;
 };

@@ -230,14 +230,14 @@
         methods: {
             saveThis: function () {
                 let originalValue = this.entry[this.column.name];
-                this.entry[this.name] = this.datavalue;
-                this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.column.name, this.entry);
+                this.entry[this.column.name] = this.datavalue;
                 this.enabled = !this.enabled;
+                this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.column.name, this.entry);
             },
             cancelThis: function () {
                 console.log('cancelThis');
-                // this.datavalue = this.entry[this.column.name];
-                this.enabled = !this.enabled;
+                this.datavalue = this.entry[this.column.name];
+                this.enabled = false;
             },
             toggleInput: function () {
                 console.log('toggleInput');
