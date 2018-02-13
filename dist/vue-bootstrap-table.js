@@ -70,11 +70,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var __vue_script__, __vue_template__
 	var __vue_styles__ = {}
-	__webpack_require__(2)
-	__vue_script__ = __webpack_require__(6)
+	__vue_script__ = __webpack_require__(2)
 	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
 	  console.warn("[vue-loader] src\\VueBootstrapTable.vue: named exports in *.vue files are ignored.")}
-	__vue_template__ = __webpack_require__(46)
+	__vue_template__ = __webpack_require__(48)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
@@ -102,619 +101,51 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(3);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(5)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js!../node_modules/vue-loader/lib/selector.js?type=style&index=0!./VueBootstrapTable.vue", function() {
-				var newContent = require("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js!../node_modules/vue-loader/lib/selector.js?type=style&index=0!./VueBootstrapTable.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(4)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    .vue-table {\n\n    }\n\n    /*#maindiv {\n        content: \" \";\n        box-sizing: border-box;\n        display:\n        table; width: 100%;\n    }\n*/\n    .vue-table-loading .spinner {\n        border: 16px solid #f3f3f3; /* Light grey */\n        border-top: 16px solid #3498db; /* Blue */\n        border-radius: 50%;\n        width: 120px;\n        height: 120px;\n        animation: spin 2s linear infinite;\n        position: absolute;\n        left: 50%;\n        top: 50%;\n        margin: -60px 0 0 -60px;\n    }\n\n    @keyframes spin {\n        0% {\n            transform: rotate(0deg);\n        }\n        100% {\n            transform: rotate(360deg);\n        }\n    }\n\n    .vue-table-loading {\n        position: absolute;\n        z-index: 99;\n        background-color: #ddd;\n        opacity: 0.5;\n        width: 100%;\n        height: 100%;\n    }\n\n    .vue-table-loading-hidden {\n        display: none;\n    }\n\n    table.vue-table thead > tr > th {\n        cursor: pointer;\n        padding-right: 30px !important;\n    }\n\n    /*.vue-table th.active {\n        color: red;\n    }*/\n\n    .vue-table .arrow {\n        opacity: 1;\n        position: relative;\n    }\n\n    .vue-table .arrow:after {\n        position: absolute;\n        bottom: 8px;\n        right: 8px;\n        display: block;\n        font-family: 'Glyphicons Halflings';\n        content: \"\\E150\";\n        /*\n        display: inline-block;\n        vertical-align: middle;\n        width: 0;\n        height: 0;\n        margin-left: 5px;\n        opacity: 0.66;*/\n    }\n\n    .vue-table .arrow.asc:after {\n        content: \"\\E155\";\n        /*\n        border-left: 4px solid transparent;\n        border-right: 4px solid transparent;\n        border-bottom: 4px solid #000;\n        */\n    }\n\n    .vue-table .arrow.desc:after {\n        content: \"\\E156\";\n    }\n\n    .vue-table td.editable {\n        cursor: pointer;\n    }\n\n    .vue-table div.editable {\n        width: 100%;\n    }\n\n    /*\n    .vue-table .selected-cell {\n        background-color: #F7C072;\n    }\n\n    .vue-table .selected-row {\n        background-color: #FAE1BE !important;\n    }\n    */\n", "", {"version":3,"sources":["/./src/VueBootstrapTable.vue?1a60651e"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IAgFA;;KAEA;;IAEA;;;;;;EAMA;IACA;QACA,2BAAA,CAAA,gBAAA;QACA,+BAAA,CAAA,UAAA;QACA,mBAAA;QACA,aAAA;QACA,cAAA;QACA,mCAAA;QACA,mBAAA;QACA,UAAA;QACA,SAAA;QACA,wBAAA;KACA;;IAEA;QACA;YACA,wBAAA;SACA;QACA;YACA,0BAAA;SACA;KACA;;IAEA;QACA,mBAAA;QACA,YAAA;QACA,uBAAA;QACA,aAAA;QACA,YAAA;QACA,aAAA;KACA;;IAEA;QACA,cAAA;KACA;;IAEA;QACA,gBAAA;QACA,+BAAA;KACA;;IAEA;;OAEA;;IAEA;QACA,WAAA;QACA,mBAAA;KACA;;IAEA;QACA,mBAAA;QACA,YAAA;QACA,WAAA;QACA,eAAA;QACA,oCAAA;QACA,iBAAA;QACA;;;;;;wBAMA;KACA;;IAEA;QACA,iBAAA;QACA;;;;UAIA;KACA;;IAEA;QACA,iBAAA;KACA;;IAEA;QACA,gBAAA;KACA;;IAEA;QACA,YAAA;KACA;;IAEA;;;;;;;;MAQA","file":"VueBootstrapTable.vue","sourcesContent":["<template>\r\n    <div id=\"maindiv\" @click=\"closeDropdown\" @keyup.esc=\"closeDropdown\">\r\n        <div class=\"col-sm-6\">\r\n            <div v-if=\"showFilter\" style=\"padding-top: 10px;padding-bottom: 10px;\">\r\n                <div class=\"input-group\">\r\n                    <input type=\"text\" class=\"form-control\" placeholder=\"Filter\" v-model=\"filterKey\">\r\n                    <div class=\"input-group-addon\">\r\n                        <i class=\"glyphicon glyphicon-search\"></i>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"col-sm-6\">\r\n            <div v-if=\"showColumnPicker\" style=\"padding-top: 10px;padding-bottom: 10px;float:right;\">\r\n                <div class=\"btn-group\" :class=\"{'open' : columnMenuOpen}\">\r\n                    <button @click.stop.prevent=\"columnMenuOpen = !columnMenuOpen\" @keyup.esc=\"columnMenuOpen = false\"\r\n                            type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"\r\n                            aria-haspopup=\"true\">\r\n                        Columns <span class=\"caret\"></span>\r\n                    </button>\r\n                    <ul class=\"dropdown-menu\">\r\n                        <li v-for=\"column in displayCols\">\r\n                            <a href=\"#\" @click.stop.prevent=\"toggleColumn(column)\">\r\n                                <i v-if=\"column.visible\" class=\"glyphicon glyphicon-ok\"></i> {{column.title}}\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"col-sm-12\">\r\n            <div id=\"loadingdiv\" :class=\"{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}\">\r\n                <div class=\"spinner\"></div>\r\n            </div>\r\n            <table class=\"table table-bordered table-hover table-condensed table-striped vue-table\">\r\n                <thead>\r\n                <tr>\r\n                    <th v-for=\"column in displayColsVisible\" @click=\"sortBy($event, column.name)\"\r\n                        track-by=\"column\"\r\n                        :class=\"getColumnClasses(column)\">\r\n                        {{ column.title }}\r\n                    </th>\r\n                </tr>\r\n                </thead>\r\n                <tbody>\r\n                <tr v-for=\"entry in filteredValuesSorted \" track-by=\"entry\" @click=\"fireRowClickedEvent(entry)\">\r\n                    <td v-for=\"column in displayColsVisible\" track-by=\"column\" v-show=\"column.visible\" :class=\"getCellClasses(column, entry)\" @click=\"fireCellClickedEvent(column, entry)\">\r\n                        <value-field-section :column=\"column\" :entry=\"entry\"></value-field-section>\r\n                    </td>\r\n                </tr>\r\n                <tr class=\"footer\">\r\n                    <td v-for=\"column in displayColsVisible\" track-by=\"column\" v-show=\"column.visible\" :class=\"getCellClasses(column)\" @click=\"fireFooterCellClickedEvent(column)\">\r\n                        <span v-html=\"footerRendered(column)\"></span>\r\n                    </td>\r\n                </tr>\r\n                </tbody>\r\n            </table>\r\n        </div>\r\n        <div v-if=\"paginated\" class=\"col-sm-12\">\r\n            <div class=\"btn-toolbar\" role=\"toolbar\" aria-label=\"pagination bar\">\r\n                <div class=\"btn-group\" role=\"group\" aria-label=\"first page\">\r\n                    <button type=\"button\" class=\"btn btn-default\" @click=\"page=1\">&laquo;</button>\r\n                </div>\r\n                <div class=\"btn-group\" role=\"group\" aria-label=\"pages\">\r\n                    <button v-for=\"index in validPageNumbers\"\r\n                            type=\"button\" class=\"btn btn-default\"\r\n                            :class=\"{ active: page===index }\"\r\n                            @click=\"page=index\">\r\n                        {{index}}\r\n                    </button>\r\n                </div>\r\n                <div class=\"btn-group\" v-if=\"showPaginationEtc\">...</div>\r\n                <div class=\"btn-group\" role=\"group\" aria-label=\"last page\">\r\n                    <button type=\"button\" class=\"btn btn-default\" @click=\"page=maxPage\">&raquo;</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n<style>\r\n    .vue-table {\r\n\r\n    }\r\n\r\n    /*#maindiv {\r\n        content: \" \";\r\n        box-sizing: border-box;\r\n        display:\r\n        table; width: 100%;\r\n    }\r\n*/\r\n    .vue-table-loading .spinner {\r\n        border: 16px solid #f3f3f3; /* Light grey */\r\n        border-top: 16px solid #3498db; /* Blue */\r\n        border-radius: 50%;\r\n        width: 120px;\r\n        height: 120px;\r\n        animation: spin 2s linear infinite;\r\n        position: absolute;\r\n        left: 50%;\r\n        top: 50%;\r\n        margin: -60px 0 0 -60px;\r\n    }\r\n\r\n    @keyframes spin {\r\n        0% {\r\n            transform: rotate(0deg);\r\n        }\r\n        100% {\r\n            transform: rotate(360deg);\r\n        }\r\n    }\r\n\r\n    .vue-table-loading {\r\n        position: absolute;\r\n        z-index: 99;\r\n        background-color: #ddd;\r\n        opacity: 0.5;\r\n        width: 100%;\r\n        height: 100%;\r\n    }\r\n\r\n    .vue-table-loading-hidden {\r\n        display: none;\r\n    }\r\n\r\n    table.vue-table thead > tr > th {\r\n        cursor: pointer;\r\n        padding-right: 30px !important;\r\n    }\r\n\r\n    /*.vue-table th.active {\r\n        color: red;\r\n    }*/\r\n\r\n    .vue-table .arrow {\r\n        opacity: 1;\r\n        position: relative;\r\n    }\r\n\r\n    .vue-table .arrow:after {\r\n        position: absolute;\r\n        bottom: 8px;\r\n        right: 8px;\r\n        display: block;\r\n        font-family: 'Glyphicons Halflings';\r\n        content: \"\\e150\";\r\n        /*\r\n        display: inline-block;\r\n        vertical-align: middle;\r\n        width: 0;\r\n        height: 0;\r\n        margin-left: 5px;\r\n        opacity: 0.66;*/\r\n    }\r\n\r\n    .vue-table .arrow.asc:after {\r\n        content: \"\\e155\";\r\n        /*\r\n        border-left: 4px solid transparent;\r\n        border-right: 4px solid transparent;\r\n        border-bottom: 4px solid #000;\r\n        */\r\n    }\r\n\r\n    .vue-table .arrow.desc:after {\r\n        content: \"\\e156\";\r\n    }\r\n\r\n    .vue-table td.editable {\r\n        cursor: pointer;\r\n    }\r\n\r\n    .vue-table div.editable {\r\n        width: 100%;\r\n    }\r\n\r\n    /*\r\n    .vue-table .selected-cell {\r\n        background-color: #F7C072;\r\n    }\r\n\r\n    .vue-table .selected-row {\r\n        background-color: #FAE1BE !important;\r\n    }\r\n    */\r\n</style>\r\n<script>\r\n\r\n    import axios from 'axios';\r\n    import qs from 'qs';\r\n    import lodashorderby from 'lodash.orderby';\r\n    import lodashincludes from 'lodash.includes';\r\n    import lodashfindindex from 'lodash.findindex';\r\n\r\n\r\n    /* Field Section used for displaying and editing value of cell */\r\n    let valueFieldSection = {\r\n        template: '<div>' +\r\n        '<span v-if=\"!column.editable\" v-html=\"rendered\"></span>' +\r\n        '<span v-else-if=\"!enabled\" @click=\"toggleInput\" v-html=\"rendered\"></span>' +\r\n        '<span v-else>' +\r\n        '  <input type=\"text\" ref=\"inputfield\"  class=\"form-control\" v-model=\"entryValue\" ' +\r\n        '   @blur=\"saveThis\" ' +\r\n        '   @keyup.enter=\"saveThis\" ' +\r\n        '   @keyup.tab=\"saveThis\" ' +\r\n        '   @keyup.esc=\"cancelThis\" ' +\r\n        '   @keyup.down=\"onKeyDown\" ' +\r\n        '   @keyup.up=\"onKeyUp\" ' +\r\n        '   @keyup.left=\"onKeyLeft\" ' +\r\n        '   @keyup.right=\"onKeyRight\"' +\r\n        '></span></div>',\r\n        props: ['column', 'entry'],\r\n        data: function () {\r\n            return {\r\n                enabled: false,\r\n                entryValue: \"\",\r\n            }\r\n        },\r\n        computed: {\r\n            rendered: function () {\r\n                let value = this.$parent.sortValue(this.column, this.entry);\r\n                if (typeof this.column.renderFunction==='function') {\r\n                    return this.column.renderFunction(value, this.column, this.entry);\r\n                } else {\r\n                    return value;\r\n                }\r\n            }\r\n        },\r\n        methods: {\r\n            saveThis: function () {\r\n                let originalValue = this.entry[this.column.name];\r\n                this.entry[this.column.name] = this.entryValue;\r\n                this.enabled = !this.enabled;\r\n                this.$parent.$emit('cellDataModifiedEvent', originalValue, this.entryValue, this.column.name, this.entry);\r\n            },\r\n            cancelThis: function () {\r\n                console.log('cancelThis');\r\n                this.entryValue = this.entry[this.column.name];\r\n                this.enabled = false;\r\n            },\r\n            toggleInput: function () {\r\n                console.log('toggleInput');\r\n                this.enabled = !this.enabled;\r\n                if (this.enabled) {\r\n                    this.entryValue = this.entry[this.column.name];\r\n                    this.$nextTick(() => this.$refs.inputfield.focus())\r\n                }\r\n            },\r\n            onKeyDown: function () {\r\n                console.log('onKeyDown');\r\n                this.saveThis();\r\n//                this.enabled = false;\r\n            },\r\n            onKeyUp: function () {\r\n                console.log('onKeyUp');\r\n                this.saveThis();\r\n                //            this.enabled = !this.enabled;\r\n            },\r\n            onKeyLeft: function () {\r\n                console.log('onKeyLeft');\r\n                this.saveThis();\r\n                //              this.enabled = !this.enabled;\r\n            },\r\n            onKeyRight: function () {\r\n                console.log('onKeyRight');\r\n                this.saveThis();\r\n//                this.enabled = !this.enabled;\r\n            },\r\n\r\n        }\r\n    };\r\n\r\n    export default {\r\n        name: \"VueBootstrapTable\",\r\n        components: {\r\n            'value-field-section': valueFieldSection,\r\n        },\r\n        props: {\r\n\r\n            /**\r\n             * The column titles, required\r\n             */\r\n            columns: {\r\n                type: Array,\r\n                required: true,\r\n            },\r\n\r\n            /**\r\n             * The rows, an Array of objects\r\n             */\r\n            values: {\r\n                type: Array,\r\n                required: false,\r\n            },\r\n\r\n            /**\r\n             * Enable/disable table sorting, optional, default true\r\n             */\r\n            sortable: {\r\n                type: Boolean,\r\n                required: false,\r\n                default: true,\r\n            },\r\n            /**\r\n             * Enable/disable table multicolumn sorting, optional, default false.\r\n             * Also sortable must be enabled for this function to work.\r\n             */\r\n            multiColumnSortable: {\r\n                type: Boolean,\r\n                required: false,\r\n                default: false,\r\n            },\r\n\r\n            /**\r\n             * Array of sort keys to start with\r\n             *\r\n             * Example: ['votes'] or ['votes', 'id']\r\n             *\r\n             */\r\n            defaultSortKeys: {\r\n                type: Array,\r\n                required: false,\r\n                default: function () {\r\n                    return [];\r\n                }\r\n            },\r\n\r\n            /**\r\n             * Array of sort orders to start with, corresponding with defaultSortKeys\r\n             *\r\n             * Example: ['asc'] or ['desc', 'asc']\r\n             *\r\n             */\r\n            defaultSortOrders: {\r\n                type: Array,\r\n                required: false,\r\n                default: function () {\r\n                    return [];\r\n                }\r\n            },\r\n\r\n\r\n            /**\r\n             * Enable/disable input filter, optional, default false\r\n             */\r\n            showFilter: {\r\n                type: Boolean,\r\n                required: false,\r\n                default: false,\r\n            },\r\n            /**\r\n             * Default filter key value\r\n             */\r\n            defaultFilterKey: {\r\n                type: String,\r\n                required: false,\r\n                default: \"\",\r\n            },\r\n\r\n            /**\r\n             * Define if Filter search field is to work in a case Sensitive way. Default: true\r\n             */\r\n            filterCaseSensitive: {\r\n                type: Boolean,\r\n                required: false,\r\n                default: true,\r\n            },\r\n\r\n            /**\r\n             * Enable/disable column picker to show/hide table columns, optional, default false\r\n             */\r\n            showColumnPicker: {\r\n                type: Boolean,\r\n                required: false,\r\n                default: false,\r\n            },\r\n\r\n            /**\r\n             * Enable/disable pagination for the table, optional, default false\r\n             */\r\n            paginated: {\r\n                type: Boolean,\r\n                required: false,\r\n                default: false,\r\n            },\r\n\r\n            /**\r\n             * If pagination is enabled defining the page size, optional, default 10\r\n             */\r\n            pageSize: {\r\n                type: Number,\r\n                required: false,\r\n                default: 10,\r\n            },\r\n\r\n            /**\r\n             * If loading of table is to be done through ajax, then this object must be set\r\n             */\r\n            ajax: {\r\n                type: Object,\r\n                required: false,\r\n                default: function () {\r\n                    return {\r\n                        enabled: false,\r\n                        url: \"\",\r\n                        method: \"GET\",\r\n                        delegate: false,\r\n                        axiosConfig: {}\r\n                    }\r\n                }\r\n            },\r\n\r\n            extraComputed: {\r\n                type: Object,\r\n                required: false,\r\n                default: function () {\r\n                    return {};\r\n                }\r\n            }\r\n\r\n        },\r\n        data: function () {\r\n            return {\r\n                filteredSize: 0,\r\n                filterKey: \"\",\r\n                sortKeys: [],\r\n                sortOrders: {},\r\n                sortChanged: 1,\r\n                columnMenuOpen: false,\r\n                displayCols: [],\r\n                filteredValues: [],\r\n                page: 1,\r\n                echo: 0,\r\n                loading: false,\r\n            };\r\n        },\r\n        mounted: function () {\r\n\r\n            let self = this;\r\n\r\n            this.loading = true;\r\n\r\n            this.filterKey = this.defaultFilterKey;\r\n\r\n            this.setSorting();\r\n\r\n            this.setColumns();\r\n\r\n            if (this.ajax.enabled) {\r\n                if (!this.ajax.delegate) {\r\n                    this.loading = true;\r\n                    this.fetchData(function (data) {\r\n                        self.values = data.data;\r\n                        self.processFilter();\r\n                    });\r\n                } else {\r\n                    this.processFilter();\r\n                }\r\n            } else {\r\n                this.processFilter();\r\n            }\r\n\r\n        },\r\n        created: function () {\r\n            this.$on('cellDataModifiedEvent', this.fireCellDataModifiedEvent);\r\n        },\r\n        beforeDestroy: function () {\r\n            this.$off('cellDataModifiedEvent', this.fireCellDataModifiedEvent);\r\n        },\r\n        watch: {\r\n            values: function () {\r\n                this.processFilter();\r\n            },\r\n            columns: function () {\r\n                let self = this;\r\n                this.displayCols = [];\r\n                this.columns.forEach(function (column) {\r\n                    let obj = self.buildColumnObject(column);\r\n                    self.displayCols.push(obj);\r\n                });\r\n            },\r\n            showFilter: function () {\r\n                // this.filterKey = \"\";\r\n            },\r\n            showColumnPicker: function () {\r\n                this.columnMenuOpen = false;\r\n\r\n                this.displayCols.forEach(function (column) {\r\n                    column.visible = true;\r\n                });\r\n            },\r\n            filterKey: function () {\r\n                // filter was updated, so resetting to page 1\r\n                this.page = 1;\r\n                this.processFilter();\r\n            },\r\n            sortKeys: function () {\r\n                this.processFilter();\r\n            },\r\n            sortChanged: function () {\r\n                this.processFilter();\r\n            },\r\n            page: function () {\r\n                this.processFilter();\r\n            },\r\n            paginated: function () {\r\n                this.processFilter();\r\n            },\r\n            loading: function () {\r\n            },\r\n        },\r\n        computed: {\r\n            filteredValuesSorted: function () {\r\n                return this.sortFilteredValues()\r\n            },\r\n\r\n            displayColsVisible: function () {\r\n                let displayColsVisible = [];\r\n                for (let a in this.displayCols) {\r\n                    if (this.displayCols[a].visible)\r\n                        displayColsVisible.push(this.displayCols[a]);\r\n                }\r\n                return displayColsVisible;\r\n            },\r\n\r\n            validPageNumbers: function () {\r\n                // 5 page max\r\n                let result = [];\r\n                let start = 1;\r\n                if (this.page > 3)\r\n                    start = this.page - 2;\r\n                for (let i = 0; start <= this.maxPage && i < 5; start++) {\r\n                    result.push(start);\r\n                    i++;\r\n                }\r\n                return result;\r\n            },\r\n            maxPage: function () {\r\n                return Math.ceil(this.filteredSize / this.pageSize);\r\n            },\r\n            showPaginationEtc: function () {\r\n                let temp = 1;\r\n                if (this.page > 3)\r\n                    temp = this.page - 2;\r\n                return ((temp + 4) < this.maxPage);\r\n            },\r\n            hasDefaultSorting: function () {\r\n                return this.defaultSortKeys.length > 0;\r\n            },\r\n\r\n        },\r\n        methods: {\r\n            footerRendered: function(column) {\r\n\r\n                let value = null;\r\n\r\n                if (column.footerComputed) {\r\n                    value = this.extraComputed[column.footerComputed](column, this.filteredValues, this.values);\r\n                }\r\n\r\n                if (typeof value !=='undefined') {\r\n                    if (typeof column.footerRenderFunction === 'function') {\r\n                        return column.footerRenderFunction(value, column, this.filteredValues, this.values);\r\n                    } else {\r\n                        return value;\r\n                    }\r\n                }\r\n\r\n            },\r\n            sortValue: function (column, entry) {\r\n                let result = '';\r\n                if (column.computed) {\r\n                    result = this.getExtraComputed(column, entry);\r\n                } else {\r\n                    result = entry[column.name];\r\n                }\r\n                // console.log('sortValue', column.name, entry, result);\r\n                return result;\r\n            },\r\n            getExtraComputed(column, entry) {\r\n                return this.extraComputed[column.computed](column, entry);\r\n            },\r\n            fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {\r\n                this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);\r\n            },\r\n            sortFilteredValues: function () {\r\n                return lodashorderby(this.filteredValues, this.sortKeys, this.sortOrders);\r\n            },\r\n            processFilter: function () {\r\n                let self = this;\r\n                let result = [];\r\n\r\n                this.loading = true;\r\n\r\n                if (this.ajax.enabled && this.ajax.delegate) {\r\n                    this.fetchData(function (data) {\r\n                        self.filteredSize = data.filtered;\r\n                        self.filteredValues = data.data;\r\n                        self.loading = false;\r\n                    });\r\n                } else {\r\n\r\n                    let column = [];\r\n                    let computedColumnName;\r\n                    let computedColumnValue;\r\n\r\n                    for (let i in this.values) {\r\n                        for (let j in self.displayColsVisible) {\r\n                            column = self.displayColsVisible[j];\r\n                            this.values[i][ column.name ] = this.sortValue(column, this.values[i]);;\r\n                        }\r\n                    }\r\n\r\n                    result = this.values;\r\n\r\n                    let result = this.values.filter(entry => {\r\n\r\n                        let i = 0;\r\n                        let haystack = \"\";\r\n                        let column = [];\r\n                        let q = self.filterKey + \"\";\r\n                        if (!self.filterCaseSensitive) {\r\n                            q = q.toLowerCase();\r\n                        }\r\n\r\n                        for (let i in self.displayColsVisible) {\r\n                            column = self.displayColsVisible[i];\r\n                            haystack = self.sortValue(column, entry) || \"\";\r\n                            // console.log(i, column, entry, haystack);\r\n                            if (!self.filterCaseSensitive && typeof haystack === 'string') {\r\n                                haystack = haystack.toLowerCase();\r\n                            }\r\n\r\n                            if (lodashincludes(haystack, q)) {\r\n                                return true;\r\n                            }\r\n                        }\r\n                        return false;\r\n                    })\r\n\r\n                    this.filteredSize = result.length;\r\n                    if (this.paginated) {\r\n                        let startIndex = (this.page - 1) * this.pageSize;\r\n                        let tIndex = 0;\r\n                        let tempResult = [];\r\n                        while (tIndex < this.pageSize) {\r\n                            if (typeof result[startIndex + tIndex] !== \"undefined\")\r\n                                tempResult.push(result[startIndex + tIndex]);\r\n                            tIndex++;\r\n                        }\r\n                        this.filteredValues = tempResult;\r\n                    } else {\r\n                        this.filteredValues = result;\r\n                    }\r\n\r\n                    self.loading = false;\r\n                }\r\n\r\n                this.fireFilterModifiedEvent(this.filterKey);\r\n\r\n            },\r\n            fetchData: function (dataCallBackFunction) {\r\n                let self = this;\r\n                let ajaxParameters = {\r\n                    params: {}\r\n                };\r\n                this.echo++;\r\n                if (this.ajax.enabled && this.ajax.delegate) {\r\n                    if (this.ajax.method === \"GET\") {\r\n                        //COPY\r\n                        ajaxParameters = JSON.parse(JSON.stringify(this.ajax.axiosConfig));\r\n                        ajaxParameters.params = {};\r\n                        ajaxParameters.params.sortcol = this.sortKeys;\r\n                        ajaxParameters.params.sortdir = this.sortOrders;\r\n                        ajaxParameters.params.filter = this.filterKey;\r\n                        if (self.paginated) {\r\n                            ajaxParameters.params.page = this.page;\r\n                            ajaxParameters.params.pagesize = this.pageSize;\r\n                        } else {\r\n                            ajaxParameters.params.page = 1;\r\n                            ajaxParameters.params.pagesize = null;\r\n                        }\r\n                        ajaxParameters.params.echo = this.echo;\r\n                    }\r\n                    if (this.ajax.method === \"POST\") {\r\n                        ajaxParameters.sortcol = this.sortKeys;\r\n                        ajaxParameters.sortdir = this.sortOrders;\r\n                        ajaxParameters.filter = this.filterKey;\r\n                        if (self.paginated) {\r\n                            ajaxParameters.page = this.page;\r\n                            ajaxParameters.pagesize = this.pageSize;\r\n                        } else {\r\n                            ajaxParameters.page = 1;\r\n                            ajaxParameters.pagesize = null;\r\n                        }\r\n                        ajaxParameters.echo = this.echo;\r\n                    }\r\n                }\r\n                if (this.ajax.enabled && !this.ajax.delegate) {\r\n                    if (this.ajax.method === \"GET\") {\r\n                        //COPY\r\n                        ajaxParameters = JSON.parse(JSON.stringify(this.ajax.axiosConfig));\r\n                        ajaxParameters.params = {};\r\n                    }\r\n                    if (this.ajax.method === \"POST\") {\r\n                        // Do nothing at this point !\r\n                    }\r\n                }\r\n                if (this.ajax.enabled && this.ajax.method === \"GET\") {\r\n                    axios.get(self.ajax.url, ajaxParameters)\r\n                        .then(response => {\r\n                            if (this.ajax.delegate) {\r\n                                if (response.data.echo !== self.echo) {\r\n                                    return;\r\n                                }\r\n                            }\r\n                            dataCallBackFunction(response.data);\r\n                            this.$parent.$emit('ajaxLoadedEvent', response.data);\r\n                        })\r\n                        .catch(e => {\r\n                            this.$parent.$emit('ajaxLoadingError', e);\r\n                        });\r\n                }\r\n                if (this.ajax.enabled && this.ajax.method === \"POST\") {\r\n                    axios.post(self.ajax.url, qs.stringify(ajaxParameters), this.ajax.axiosConfig)\r\n                        .then(response => {\r\n                            if (this.ajax.delegate) {\r\n                                if (response.data.echo !== self.echo) {\r\n                                    return;\r\n                                }\r\n                            }\r\n\r\n                            dataCallBackFunction(response.data);\r\n                            this.$parent.$emit('ajaxLoadedEvent', response.data);\r\n\r\n                        })\r\n                        .catch(e => {\r\n                            this.$parent.$emit('ajaxLoadingError', e);\r\n                        });\r\n                }\r\n            },\r\n            buildColumnObject: function (column) {\r\n                let obj = {};\r\n                obj.title = column.title;\r\n                if (typeof column.name !== \"undefined\")\r\n                    obj.name = column.name;\r\n                else\r\n                    obj.name = column.title;\r\n                if (typeof column.visible !== \"undefined\")\r\n                    obj.visible = column.visible;\r\n                else\r\n                    obj.visible = true;\r\n                if (typeof column.editable !== \"undefined\")\r\n                    obj.editable = column.editable;\r\n                else\r\n                    obj.editable = false;\r\n                if (typeof column.renderFunction !== \"undefined\")\r\n                    obj.renderFunction = column.renderFunction;\r\n                else\r\n                    obj.renderFunction = false;\r\n                if (typeof column.computed !== \"undefined\")\r\n                    obj.computed = column.computed;\r\n                else\r\n                    obj.computed = false;\r\n                if (typeof column.footerComputed !== \"undefined\")\r\n                    obj.footerComputed = column.footerComputed;\r\n                else\r\n                    obj.footerComputed = false;\r\n                if (typeof column.footerRenderFunction !== \"undefined\")\r\n                    obj.footerRenderFunction = column.footerRenderFunction;\r\n                else\r\n                    obj.footerRenderFunction = false;\r\n                if (typeof column.columnClasses !== \"undefined\")\r\n                    obj.columnClasses = column.columnClasses;\r\n                else\r\n                    obj.columnClasses = \"\";\r\n                if (typeof column.cellClasses !== \"undefined\")\r\n                    obj.cellClasses = column.cellClasses;\r\n                else\r\n                    obj.cellClasses = \"\";\r\n\r\n                return obj;\r\n            },\r\n            setColumns: function () {\r\n                let self = this;\r\n                this.columns.forEach(function (column) {\r\n                    let obj = self.buildColumnObject(column);\r\n                    self.displayCols.push(obj);\r\n                });\r\n            },\r\n            setSorting: function () {\r\n                if (this.hasDefaultSorting) {\r\n                    this.setDefaultSorting();\r\n                } else {\r\n                    this.sortKeys = [];\r\n                    this.sortOrders = [];\r\n                }\r\n            },\r\n\r\n            /**\r\n             * Example: { \"votes\":\"desc\", \"id\":\"asc\" }\r\n             *\r\n             * Sets\r\n             * this.sortKeys = ['votes', 'id']\r\n             * this.sortOrders = ['desc', 'asc']\r\n             */\r\n            setDefaultSorting: function () {\r\n                this.sortKeys = this.defaultSortKeys;\r\n                this.sortOrders = this.defaultSortOrders;\r\n            },\r\n            resetSortOrders: function () {\r\n                this.sortOrders = [];\r\n            },\r\n            sortBy: function (event, key) {\r\n\r\n                if (this.sortable) {\r\n\r\n                    let pos = 0;\r\n\r\n                    if (!this.multiColumnSortable || (this.multiColumnSortable && !event.shiftKey)) {\r\n                        this.sortKeys = [key];\r\n                        // this.columns.forEach(function (column) {\r\n                        //     if (column.name !== key) {\r\n                        //         self.sortOrders[column.name] = \"\";\r\n                        //     }\r\n                        // });\r\n                    } else {\r\n                        if (lodashfindindex(this.sortKeys, function (o) {\r\n                                return o === key;\r\n                            }) === -1) {\r\n                            this.sortKeys.push(key);\r\n                        }\r\n                        pos = this.sortKeys.indexOf(key);\r\n                    }\r\n\r\n                    if (pos > this.sortKeys.length - 1) {\r\n                        this.sortKeys[pos] = \"asc\"\r\n                    } else if (this.sortOrders[pos] === \"asc\") {\r\n                        this.sortOrders[pos] = \"desc\";\r\n                    } else {\r\n                        this.sortOrders[pos] = \"asc\";\r\n                    }\r\n\r\n                    this.sortChanged = this.sortChanged * -1;\r\n\r\n                    this.fireSortModifiedEvent(this.sortKeys, this.sortOrders);\r\n\r\n                }\r\n            },\r\n            getColumnClasses: function (column) {\r\n                let classes = [column.columnClasses];\r\n                let key = column.name;\r\n                if (this.sortable) {\r\n                    classes.push(\"arrow\");\r\n                    /*if (this.sortKeys === key) {\r\n                        classes.push(\"active\");\r\n                    }*/\r\n                    if (lodashfindindex(this.sortKeys, function (o) {\r\n                            return o === key;\r\n                        }) !== -1) {\r\n                        classes.push(\"active\");\r\n                    }\r\n\r\n                    let pos = this.sortKeys.indexOf(key);\r\n                    if (this.sortOrders[[pos]] === \"asc\") {\r\n                        classes.push(\"asc\");\r\n                    } else if (this.sortOrders[pos] === \"desc\") {\r\n                        classes.push(\"desc\");\r\n                    }\r\n                }\r\n                return classes;\r\n            },\r\n            getCellClasses: function (column, entry) {\r\n                let result = column.cellClasses;\r\n                if (column.editable) {\r\n                    result = result + \" editable\";\r\n                }\r\n                return result;\r\n            },\r\n            toggleColumn: function (column) {\r\n                column.visible = !column.visible;\r\n                this.fireColumnToggledEvent(column);\r\n            },\r\n            closeDropdown: function () {\r\n                this.columnMenuOpen = false;\r\n            },\r\n            fireColumnToggledEvent: function (column) {\r\n                this.$parent.$emit('columnToggledEvent', column, this.displayColsVisible);\r\n            },\r\n            fireFilterModifiedEvent: function (filter, sort) {\r\n                this.$parent.$emit('filterModifiedEvent', filter, sort);\r\n            },\r\n            fireSortModifiedEvent: function (sortKeys, sortOrders) {\r\n                this.$parent.$emit('sortModifiedEvent', sortKeys, sortOrders)\r\n            },\r\n            fireRowClickedEvent: function (entry) {\r\n                this.$parent.$emit('rowClickedEvent', entry);\r\n            },\r\n            fireCellClickedEvent: function (entry, column) {\r\n                this.$parent.$emit('cellClickedEvent', entry, column);\r\n            },\r\n            fireFooterCellClickedEvent: function (column) {\r\n                this.$parent.$emit('footerCellClickedEvent', column);\r\n            }\r\n        },\r\n        events: {}\r\n    }\r\n</script>\r\n"],"sourceRoot":"webpack://"}]);
-	
-	// exports
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function() {
-		var list = [];
-	
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-	
-		// import a list of modules into the list
-		list.i = function(modules, mediaQuery) {
-			if(typeof modules === "string")
-				modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for(var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if(typeof id === "number")
-					alreadyImportedModules[id] = true;
-			}
-			for(i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if(mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if(mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0,
-		styleElementsInsertedAtTop = [];
-	
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-	
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-	
-		// By default, add <style> tags to the bottom of <head>.
-		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-	
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-	
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-	
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-	
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-	
-	function insertStyleElement(options, styleElement) {
-		var head = getHeadElement();
-		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-		if (options.insertAt === "top") {
-			if(!lastStyleElementInsertedAtTop) {
-				head.insertBefore(styleElement, head.firstChild);
-			} else if(lastStyleElementInsertedAtTop.nextSibling) {
-				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-			} else {
-				head.appendChild(styleElement);
-			}
-			styleElementsInsertedAtTop.push(styleElement);
-		} else if (options.insertAt === "bottom") {
-			head.appendChild(styleElement);
-		} else {
-			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-		}
-	}
-	
-	function removeStyleElement(styleElement) {
-		styleElement.parentNode.removeChild(styleElement);
-		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-		if(idx >= 0) {
-			styleElementsInsertedAtTop.splice(idx, 1);
-		}
-	}
-	
-	function createStyleElement(options) {
-		var styleElement = document.createElement("style");
-		styleElement.type = "text/css";
-		insertStyleElement(options, styleElement);
-		return styleElement;
-	}
-	
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-	
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement(options));
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else {
-			styleElement = createStyleElement(options);
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-			};
-		}
-	
-		update(obj);
-	
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-	
-	var replaceText = (function () {
-		var textStore = [];
-	
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-	
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-	
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-	
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-		var sourceMap = obj.sourceMap;
-	
-		if (media) {
-			styleElement.setAttribute("media", media);
-		}
-	
-		if (sourceMap) {
-			// https://developer.chrome.com/devtools/docs/javascript-debugging
-			// this makes source maps inside style tags work properly in Chrome
-			css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */';
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-	
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
-	var _stringify = __webpack_require__(7);
+	var _stringify = __webpack_require__(3);
 	
 	var _stringify2 = _interopRequireDefault(_stringify);
 	
-	var _axios = __webpack_require__(10);
+	var _axios = __webpack_require__(6);
 	
 	var _axios2 = _interopRequireDefault(_axios);
 	
-	var _qs = __webpack_require__(37);
+	var _qs = __webpack_require__(33);
 	
 	var _qs2 = _interopRequireDefault(_qs);
 	
-	var _lodash = __webpack_require__(42);
+	var _lodash = __webpack_require__(38);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _lodash3 = __webpack_require__(44);
+	var _lodash3 = __webpack_require__(40);
 	
 	var _lodash4 = _interopRequireDefault(_lodash3);
 	
-	var _lodash5 = __webpack_require__(45);
+	var _lodash5 = __webpack_require__(41);
 	
 	var _lodash6 = _interopRequireDefault(_lodash5);
 	
+	var _VueBootstrapCell = __webpack_require__(42);
+	
+	var _VueBootstrapCell2 = _interopRequireDefault(_VueBootstrapCell);
+	
+	var _VueBootstrapFooterCell = __webpack_require__(45);
+	
+	var _VueBootstrapFooterCell2 = _interopRequireDefault(_VueBootstrapFooterCell);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	/* Field Section used for displaying and editing value of cell */
-	var valueFieldSection = {
-	    template: '<div>' + '<span v-if="!column.editable" v-html="rendered"></span>' + '<span v-else-if="!enabled" @click="toggleInput" v-html="rendered"></span>' + '<span v-else>' + '  <input type="text" ref="inputfield"  class="form-control" v-model="entryValue" ' + '   @blur="saveThis" ' + '   @keyup.enter="saveThis" ' + '   @keyup.tab="saveThis" ' + '   @keyup.esc="cancelThis" ' + '   @keyup.down="onKeyDown" ' + '   @keyup.up="onKeyUp" ' + '   @keyup.left="onKeyLeft" ' + '   @keyup.right="onKeyRight"' + '></span></div>',
-	    props: ['column', 'entry'],
-	    data: function data() {
-	        return {
-	            enabled: false,
-	            entryValue: ""
-	        };
-	    },
-	    computed: {
-	        rendered: function rendered() {
-	            var value = this.$parent.sortValue(this.column, this.entry);
-	            if (typeof this.column.renderFunction === 'function') {
-	            	var params = {
-						column:this.column,
-						entry:this.entry
-	            	};
-	                return this.column.renderFunction(value, params);
-	            } else {
-	                return value;
-	            }
-	        }
-	    },
-	    methods: {
-	        saveThis: function saveThis() {
-	            var originalValue = this.entry[this.column.name];
-	            this.entry[this.column.name] = this.entryValue;
-	            this.enabled = !this.enabled;
-	            this.$parent.$emit('cellDataModifiedEvent', originalValue, this.entryValue, this.column.name, this.entry);
-	        },
-	        cancelThis: function cancelThis() {
-	            console.log('cancelThis');
-	            this.entryValue = this.entry[this.column.name];
-	            this.enabled = false;
-	        },
-	        toggleInput: function toggleInput() {
-	            var _this = this;
-	
-	            console.log('toggleInput');
-	            this.enabled = !this.enabled;
-	            if (this.enabled) {
-	                this.entryValue = this.entry[this.column.name];
-	                this.$nextTick(function () {
-	                    return _this.$refs.inputfield.focus();
-	                });
-	            }
-	        },
-	        onKeyDown: function onKeyDown() {
-	            console.log('onKeyDown');
-	            this.saveThis();
-	            //                this.enabled = false;
-	        },
-	        onKeyUp: function onKeyUp() {
-	            console.log('onKeyUp');
-	            this.saveThis();
-	            //            this.enabled = !this.enabled;
-	        },
-	        onKeyLeft: function onKeyLeft() {
-	            console.log('onKeyLeft');
-	            this.saveThis();
-	            //              this.enabled = !this.enabled;
-	        },
-	        onKeyRight: function onKeyRight() {
-	            console.log('onKeyRight');
-	            this.saveThis();
-	            //                this.enabled = !this.enabled;
-	        }
-	
-	    }
-	}; // <template>
-	//     <div id="maindiv" @click="closeDropdown" @keyup.esc="closeDropdown">
-	//         <div class="col-sm-6">
-	//             <div v-if="showFilter" style="padding-top: 10px;padding-bottom: 10px;">
-	//                 <div class="input-group">
-	//                     <input type="text" class="form-control" placeholder="Filter" v-model="filterKey">
-	//                     <div class="input-group-addon">
-	//                         <i class="glyphicon glyphicon-search"></i>
-	//                     </div>
-	//                 </div>
-	//             </div>
-	//         </div>
-	//         <div class="col-sm-6">
-	//             <div v-if="showColumnPicker" style="padding-top: 10px;padding-bottom: 10px;float:right;">
-	//                 <div class="btn-group" :class="{'open' : columnMenuOpen}">
-	//                     <button @click.stop.prevent="columnMenuOpen = !columnMenuOpen" @keyup.esc="columnMenuOpen = false"
-	//                             type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-	//                             aria-haspopup="true">
-	//                         Columns <span class="caret"></span>
-	//                     </button>
-	//                     <ul class="dropdown-menu">
-	//                         <li v-for="column in displayCols">
-	//                             <a href="#" @click.stop.prevent="toggleColumn(column)">
-	//                                 <i v-if="column.visible" class="glyphicon glyphicon-ok"></i> {{column.title}}
-	//                             </a>
-	//                         </li>
-	//                     </ul>
-	//                 </div>
-	//             </div>
-	//         </div>
-	//         <div class="col-sm-12">
-	//             <div id="loadingdiv" :class="{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}">
-	//                 <div class="spinner"></div>
-	//             </div>
-	//             <table class="table table-bordered table-hover table-condensed table-striped vue-table">
-	//                 <thead>
-	//                 <tr>
-	//                     <th v-for="column in displayColsVisible" @click="sortBy($event, column.name)"
-	//                         track-by="column"
-	//                         :class="getColumnClasses(column)">
-	//                         {{ column.title }}
-	//                     </th>
-	//                 </tr>
-	//                 </thead>
-	//                 <tbody>
-	//                 <tr v-for="entry in filteredValuesSorted " track-by="entry" @click="fireRowClickedEvent(entry)">
-	//                     <td v-for="column in displayColsVisible" track-by="column" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
-	//                         <value-field-section :column="column" :entry="entry"></value-field-section>
-	//                     </td>
-	//                 </tr>
-	//                 <tr class="footer">
-	//                     <td v-for="column in displayColsVisible" track-by="column" v-show="column.visible" :class="getCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
-	//                         <span v-html="footerRendered(column)"></span>
-	//                     </td>
-	//                 </tr>
-	//                 </tbody>
-	//             </table>
-	//         </div>
-	//         <div v-if="paginated" class="col-sm-12">
-	//             <div class="btn-toolbar" role="toolbar" aria-label="pagination bar">
-	//                 <div class="btn-group" role="group" aria-label="first page">
-	//                     <button type="button" class="btn btn-default" @click="page=1">&laquo;</button>
-	//                 </div>
-	//                 <div class="btn-group" role="group" aria-label="pages">
-	//                     <button v-for="index in validPageNumbers"
-	//                             type="button" class="btn btn-default"
-	//                             :class="{ active: page===index }"
-	//                             @click="page=index">
-	//                         {{index}}
-	//                     </button>
-	//                 </div>
-	//                 <div class="btn-group" v-if="showPaginationEtc">...</div>
-	//                 <div class="btn-group" role="group" aria-label="last page">
-	//                     <button type="button" class="btn btn-default" @click="page=maxPage">&raquo;</button>
-	//                 </div>
-	//             </div>
-	//         </div>
-	//     </div>
-	// </template>
-	// <style>
-	//     .vue-table {
-	//
-	//     }
-	//
-	//     /*#maindiv {
-	//         content: " ";
-	//         box-sizing: border-box;
-	//         display:
-	//         table; width: 100%;
-	//     }
-	// */
-	//     .vue-table-loading .spinner {
-	//         border: 16px solid #f3f3f3; /* Light grey */
-	//         border-top: 16px solid #3498db; /* Blue */
-	//         border-radius: 50%;
-	//         width: 120px;
-	//         height: 120px;
-	//         animation: spin 2s linear infinite;
-	//         position: absolute;
-	//         left: 50%;
-	//         top: 50%;
-	//         margin: -60px 0 0 -60px;
-	//     }
-	//
-	//     @keyframes spin {
-	//         0% {
-	//             transform: rotate(0deg);
-	//         }
-	//         100% {
-	//             transform: rotate(360deg);
-	//         }
-	//     }
-	//
-	//     .vue-table-loading {
-	//         position: absolute;
-	//         z-index: 99;
-	//         background-color: #ddd;
-	//         opacity: 0.5;
-	//         width: 100%;
-	//         height: 100%;
-	//     }
-	//
-	//     .vue-table-loading-hidden {
-	//         display: none;
-	//     }
-	//
-	//     table.vue-table thead > tr > th {
-	//         cursor: pointer;
-	//         padding-right: 30px !important;
-	//     }
-	//
-	//     /*.vue-table th.active {
-	//         color: red;
-	//     }*/
-	//
-	//     .vue-table .arrow {
-	//         opacity: 1;
-	//         position: relative;
-	//     }
-	//
-	//     .vue-table .arrow:after {
-	//         position: absolute;
-	//         bottom: 8px;
-	//         right: 8px;
-	//         display: block;
-	//         font-family: 'Glyphicons Halflings';
-	//         content: "\e150";
-	//         /*
-	//         display: inline-block;
-	//         vertical-align: middle;
-	//         width: 0;
-	//         height: 0;
-	//         margin-left: 5px;
-	//         opacity: 0.66;*/
-	//     }
-	//
-	//     .vue-table .arrow.asc:after {
-	//         content: "\e155";
-	//         /*
-	//         border-left: 4px solid transparent;
-	//         border-right: 4px solid transparent;
-	//         border-bottom: 4px solid #000;
-	//         */
-	//     }
-	//
-	//     .vue-table .arrow.desc:after {
-	//         content: "\e156";
-	//     }
-	//
-	//     .vue-table td.editable {
-	//         cursor: pointer;
-	//     }
-	//
-	//     .vue-table div.editable {
-	//         width: 100%;
-	//     }
-	//
-	//     /*
-	//     .vue-table .selected-cell {
-	//         background-color: #F7C072;
-	//     }
-	//
-	//     .vue-table .selected-row {
-	//         background-color: #FAE1BE !important;
-	//     }
-	//     */
-	// </style>
-	// <script>
 	
 	exports.default = {
 	    name: "VueBootstrapTable",
 	    components: {
-	        'value-field-section': valueFieldSection
+	        'vue-bootstrap-cell': _VueBootstrapCell2.default,
+	        'vue-bootstrap-footer-cell': _VueBootstrapFooterCell2.default
 	    },
 	    props: {
 	
@@ -850,7 +281,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        },
 	
-	        extraComputed: {
+	        extendedMethods: {
 	            type: Object,
 	            required: false,
 	            default: function _default() {
@@ -861,11 +292,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    data: function data() {
 	        return {
-	            filteredSize: 0,
 	            filterKey: "",
 	            sortKeys: [],
-	            sortOrders: {},
-	            sortChanged: 1,
+	            sortOrders: [],
 	            columnMenuOpen: false,
 	            displayCols: [],
 	            filteredValues: [],
@@ -875,53 +304,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	    },
 	    mounted: function mounted() {
-	
-	        var self = this;
+	        console.log('table.mounted');
 	
 	        this.loading = true;
-	
+	        this.setComputedValues();
+	        this.setSorting();
+	        this.setColumns();
 	        this.filterKey = this.defaultFilterKey;
 	
-	        this.setSorting();
-	
-	        this.setColumns();
-	
-	        if (this.ajax.enabled) {
-	            if (!this.ajax.delegate) {
-	                this.loading = true;
-	                this.fetchData(function (data) {
-	                    self.values = data.data;
-	                    self.processFilter();
-	                });
-	            } else {
-	                this.processFilter();
-	            }
-	        } else {
-	            this.processFilter();
-	        }
+	        this.loading = false;
 	    },
 	    created: function created() {
+	        console.log('table.created');
+	
 	        this.$on('cellDataModifiedEvent', this.fireCellDataModifiedEvent);
 	    },
 	    beforeDestroy: function beforeDestroy() {
 	        this.$off('cellDataModifiedEvent', this.fireCellDataModifiedEvent);
 	    },
 	    watch: {
+	        filteredValues: function filteredValues() {
+	            console.log('watch: filteredValues');
+	        },
 	        values: function values() {
+	            console.log('watch: values');
 	            this.processFilter();
 	        },
 	        columns: function columns() {
-	            var self = this;
-	            this.displayCols = [];
-	            this.columns.forEach(function (column) {
-	                var obj = self.buildColumnObject(column);
-	                self.displayCols.push(obj);
-	            });
+	            console.log('watch: columns');
+	            this.setColumns();
 	        },
 	        showFilter: function showFilter() {
 	            // this.filterKey = "";
 	        },
 	        showColumnPicker: function showColumnPicker() {
+	            console.log('watch: showColumnPicker');
+	
 	            this.columnMenuOpen = false;
 	
 	            this.displayCols.forEach(function (column) {
@@ -929,25 +347,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        },
 	        filterKey: function filterKey() {
+	            console.log('watch: filterKey');
 	            // filter was updated, so resetting to page 1
 	            this.page = 1;
 	            this.processFilter();
 	        },
 	        sortKeys: function sortKeys() {
+	            console.log('watch: sortKeys');
 	            this.processFilter();
 	        },
-	        sortChanged: function sortChanged() {
+	        sortOrders: function sortOrders() {
+	            console.log('watch: sortOrders');
 	            this.processFilter();
 	        },
 	        page: function page() {
+	            console.log('watch: page');
 	            this.processFilter();
 	        },
 	        paginated: function paginated() {
+	            console.log('watch: paginated');
 	            this.processFilter();
 	        },
-	        loading: function loading() {}
+	        loading: function loading() {
+	            console.log('watch: loading');
+	        },
+	        extendedMethods: function extendedMethods() {
+	            console.log('watch: extendedMethods');
+	        }
 	    },
 	    computed: {
+	
 	        filteredValuesSorted: function filteredValuesSorted() {
 	            return this.sortFilteredValues();
 	        },
@@ -979,120 +408,165 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (this.page > 3) temp = this.page - 2;
 	            return temp + 4 < this.maxPage;
 	        },
+	        filteredSize: function filteredSize() {
+	            return this.values.length;
+	        },
 	        hasDefaultSorting: function hasDefaultSorting() {
 	            return this.defaultSortKeys.length > 0;
 	        }
 	
 	    },
 	    methods: {
-	        footerRendered: function footerRendered(column) {
+	        getExtendedMethod: function getExtendedMethod(value) {
 	
-	            var value = null;
+	            var result = false;
 	
-	            if (column.footerComputed) {
-	                value = this.extraComputed[column.footerComputed](column, this.filteredValues, this.values);
+	            if (typeof value === 'undefined') {
+	                result = false;
+	            } else if (typeof value === 'function') {
+	                result = value;
+	            } else if (typeof this.extendedMethods[value] === 'function') {
+	                result = this.extendedMethods[value];
+	            } else if (typeof value === 'string') {
+	                result = Function([], value);
 	            }
 	
-	            if (typeof value !== 'undefined') {
-	                if (typeof column.footerRenderFunction === 'function') {
-	                    return column.footerRenderFunction(value, column, this.filteredValues, this.values);
-	                } else {
-	                    return value;
+	            return result;
+	        },
+	        changedEntry: function changedEntry(entry) {
+	            console.log('table.changedEntry', entry);
+	
+	            var obj = this.values;
+	            var key = this.getKeyFromEntryId(this.values, entry);
+	            var val = entry;
+	            this.$set(obj, key, val);
+	
+	            this.setComputedValues();
+	            this.processFilter();
+	        },
+	        getKeyFromEntryId: function getKeyFromEntryId(values, entry) {
+	            for (var i in values) {
+	                if (values[i].id === entry.id) {
+	                    return i;
 	                }
 	            }
 	        },
-	        sortValue: function sortValue(column, entry) {
-	            var result = '';
-	            if (column.computed) {
-	                result = this.getExtraComputed(column.computed, {'entry':entry});
-	            } else {
-	                result = entry[column.name];
-	            }
-	            return result;
-	        },
-	        getExtraComputed: function getExtraComputed(name, params) {
-	            return this.extraComputed[name](params);
-	        },
-	
 	        fireCellDataModifiedEvent: function fireCellDataModifiedEvent(originalValue, newValue, columnTitle, entry) {
 	            this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
 	        },
 	        sortFilteredValues: function sortFilteredValues() {
 	            return (0, _lodash2.default)(this.filteredValues, this.sortKeys, this.sortOrders);
 	        },
+	
+	        /**
+	         * Set all computed column values
+	         *
+	         *
+	         */
+	        setComputedValues: function setComputedValues() {
+	
+	            var fn = {};
+	
+	            for (var i in this.columns) {
+	
+	                var column = this.columns[i];
+	
+	                if (fn = this.getExtendedMethod(column.computed)) {
+	
+	                    for (var j in this.values) {
+	
+	                        var obj = this.values;
+	                        var prop = j;
+	                        var value = this.values[j];
+	
+	                        var params = {
+	                            column: this.columns[i],
+	                            entry: value
+	                        };
+	
+	                        var name = this.columns[i].name;
+	
+	                        value[name] = fn(params);
+	
+	                        this.$set(obj, prop, value);
+	                    }
+	                }
+	            }
+	        },
 	        processFilter: function processFilter() {
 	            var self = this;
-	            var result = [];
 	
-	            this.loading = true;
+	            if (this.loading) {
+	                return;
+	            }
 	
 	            if (this.ajax.enabled && this.ajax.delegate) {
 	                this.fetchData(function (data) {
-	                    self.filteredSize = data.filtered;
-	                    self.filteredValues = data.data;
+	                    self.values = data.values;
+	                    self.filteredValues = data.filteredValues;
 	                    self.loading = false;
 	                });
 	            } else {
 	
-	                var column = [];
-	                var computedColumnName = void 0;
-	                var computedColumnValue = void 0;
+	                var q = self.filterKey + "";
 	
-	                for (var i in this.values) {
-	                    for (var j in self.displayColsVisible) {
-	                        column = self.displayColsVisible[j];
-	                        this.values[i][column.name] = this.sortValue(column, this.values[i]);;
-	                    }
+	                if (q) {
+	
+	                    console.log('Filtering on ', q);
+	                    this.filteredValues = this.values.filter(function (entry) {
+	
+	                        var i = 0;
+	                        var haystack = "";
+	                        var column = [];
+	
+	                        if (!self.filterCaseSensitive) {
+	                            q = q.toLowerCase();
+	                        }
+	
+	                        for (var _i in self.displayColsVisible) {
+	
+	                            column = self.displayColsVisible[_i];
+	
+	                            haystack = entry[column.name] || "";
+	
+	                            if (!self.filterCaseSensitive && typeof haystack === 'string') {
+	                                haystack = haystack.toLowerCase();
+	                            }
+	
+	                            // console.log('lodashincludes', haystack, q);
+	                            if ((0, _lodash4.default)(haystack, q)) {
+	                                return true;
+	                            }
+	                        }
+	                        return false;
+	                    });
+	                } else {
+	
+	                    console.log('No filtering');
+	                    this.filteredValues = this.values;
 	                }
 	
-	                _result = this.values;
-	
-	                var _result = this.values.filter(function (entry) {
-	
-	                    var i = 0;
-	                    var haystack = "";
-	                    var column = [];
-	                    var q = self.filterKey + "";
-	                    if (!self.filterCaseSensitive) {
-	                        q = q.toLowerCase();
-	                    }
-	
-	                    for (var _i in self.displayColsVisible) {
-	                        column = self.displayColsVisible[_i];
-	                        haystack = self.sortValue(column, entry) || "";
-	                        // console.log(i, column, entry, haystack);
-	                        if (!self.filterCaseSensitive && typeof haystack === 'string') {
-	                            haystack = haystack.toLowerCase();
-	                        }
-	
-	                        if ((0, _lodash4.default)(haystack, q)) {
-	                            return true;
-	                        }
-	                    }
-	                    return false;
-	                });
-	
-	                this.filteredSize = _result.length;
+	                // Pagination
 	                if (this.paginated) {
 	                    var startIndex = (this.page - 1) * this.pageSize;
-	                    var tIndex = 0;
-	                    var tempResult = [];
-	                    while (tIndex < this.pageSize) {
-	                        if (typeof _result[startIndex + tIndex] !== "undefined") tempResult.push(_result[startIndex + tIndex]);
-	                        tIndex++;
+	                    var index = 0;
+	                    var result = [];
+	                    while (index < this.pageSize) {
+	                        if (typeof this.filteredValues[startIndex + index] !== "undefined") {
+	                            result.push(this.filteredValues[startIndex + index]);
+	                        }
+	                        index++;
 	                    }
-	                    this.filteredValues = tempResult;
-	                } else {
-	                    this.filteredValues = _result;
+	                    this.filteredValues = result;
 	                }
 	
-	                self.loading = false;
+	                this.loading = false;
 	            }
 	
 	            this.fireFilterModifiedEvent(this.filterKey);
 	        },
 	        fetchData: function fetchData(dataCallBackFunction) {
-	            var _this2 = this;
+	            var _this = this;
 	
 	            var self = this;
 	            var ajaxParameters = {
@@ -1142,49 +616,60 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            if (this.ajax.enabled && this.ajax.method === "GET") {
 	                _axios2.default.get(self.ajax.url, ajaxParameters).then(function (response) {
-	                    if (_this2.ajax.delegate) {
+	                    if (_this.ajax.delegate) {
 	                        if (response.data.echo !== self.echo) {
 	                            return;
 	                        }
 	                    }
 	                    dataCallBackFunction(response.data);
-	                    _this2.$parent.$emit('ajaxLoadedEvent', response.data);
+	                    _this.$parent.$emit('ajaxLoadedEvent', response.data);
 	                }).catch(function (e) {
-	                    _this2.$parent.$emit('ajaxLoadingError', e);
+	                    _this.$parent.$emit('ajaxLoadingError', e);
 	                });
 	            }
 	            if (this.ajax.enabled && this.ajax.method === "POST") {
 	                _axios2.default.post(self.ajax.url, _qs2.default.stringify(ajaxParameters), this.ajax.axiosConfig).then(function (response) {
-	                    if (_this2.ajax.delegate) {
+	                    if (_this.ajax.delegate) {
 	                        if (response.data.echo !== self.echo) {
 	                            return;
 	                        }
 	                    }
 	
 	                    dataCallBackFunction(response.data);
-	                    _this2.$parent.$emit('ajaxLoadedEvent', response.data);
+	                    _this.$parent.$emit('ajaxLoadedEvent', response.data);
 	                }).catch(function (e) {
-	                    _this2.$parent.$emit('ajaxLoadingError', e);
+	                    _this.$parent.$emit('ajaxLoadingError', e);
 	                });
 	            }
 	        },
 	        buildColumnObject: function buildColumnObject(column) {
 	            var obj = {};
+	
 	            obj.title = column.title;
+	
 	            if (typeof column.name !== "undefined") obj.name = column.name;else obj.name = column.title;
+	
 	            if (typeof column.visible !== "undefined") obj.visible = column.visible;else obj.visible = true;
+	
 	            if (typeof column.editable !== "undefined") obj.editable = column.editable;else obj.editable = false;
-	            if (typeof column.renderFunction !== "undefined") obj.renderFunction = column.renderFunction;else obj.renderFunction = false;
+	
+	            if (typeof column.render !== "undefined") obj.render = column.render;else obj.render = false;
+	
 	            if (typeof column.computed !== "undefined") obj.computed = column.computed;else obj.computed = false;
-	            if (typeof column.footerComputed !== "undefined") obj.footerComputed = column.footerComputed;else obj.footerComputed = false;
-	            if (typeof column.footerRenderFunction !== "undefined") obj.footerRenderFunction = column.footerRenderFunction;else obj.footerRenderFunction = false;
+	
+	            if (typeof column.footer !== "undefined") obj.footer = column.footer;else obj.footer = false;
+	
+	            if (typeof column.footerRender !== "undefined") obj.footerRender = column.footerRender;else obj.footerRender = false;
+	
 	            if (typeof column.columnClasses !== "undefined") obj.columnClasses = column.columnClasses;else obj.columnClasses = "";
+	
 	            if (typeof column.cellClasses !== "undefined") obj.cellClasses = column.cellClasses;else obj.cellClasses = "";
 	
 	            return obj;
 	        },
 	        setColumns: function setColumns() {
 	            var self = this;
+	            this.displayCols = [];
 	            this.columns.forEach(function (column) {
 	                var obj = self.buildColumnObject(column);
 	                self.displayCols.push(obj);
@@ -1242,8 +727,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                } else {
 	                    this.sortOrders[pos] = "asc";
 	                }
-	
-	                this.sortChanged = this.sortChanged * -1;
 	
 	                this.fireSortModifiedEvent(this.sortKeys, this.sortOrders);
 	            }
@@ -1306,22 +789,101 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    events: {}
 	    // </script>
+	    //
+	    //
 	
 	    /* generated by vue-loader */
 	
-	};
+	}; // <template>
+	//     <div id="maindiv" @click="closeDropdown" @keyup.esc="closeDropdown">
+	//         <div class="col-sm-6">
+	//             <div v-if="showFilter" style="padding-top: 10px;padding-bottom: 10px;">
+	//                 <div class="input-group">
+	//                     <input type="text" class="form-control" placeholder="Filter" v-model="filterKey">
+	//                     <div class="input-group-addon">
+	//                         <i class="glyphicon glyphicon-search"></i>
+	//                     </div>
+	//                 </div>
+	//             </div>
+	//         </div>
+	//         <div class="col-sm-6">
+	//             <div v-if="showColumnPicker" style="padding-top: 10px;padding-bottom: 10px;float:right;">
+	//                 <div class="btn-group" :class="{'open' : columnMenuOpen}">
+	//                     <button @click.stop.prevent="columnMenuOpen = !columnMenuOpen" @keyup.esc="columnMenuOpen = false"
+	//                             type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+	//                             aria-haspopup="true">
+	//                         Columns <span class="caret"></span>
+	//                     </button>
+	//                     <ul class="dropdown-menu">
+	//                         <li v-for="(column, index) in displayCols">
+	//                             <a href="#" @click.stop.prevent="toggleColumn(column)">
+	//                                 <i v-if="column.visible" class="glyphicon glyphicon-ok"></i> {{column.title}}
+	//                             </a>
+	//                         </li>
+	//                     </ul>
+	//                 </div>
+	//             </div>
+	//         </div>
+	//         <div class="col-sm-12">
+	//             <div id="loadingdiv" :class="{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}">
+	//                 <div class="spinner"></div>
+	//             </div>
+	//             <table class="table table-bordered table-hover table-condensed table-striped vue-table">
+	//                 <thead>
+	//                 <tr>
+	//                     <th v-for="(column, index) in displayColsVisible" @click="sortBy($event, column.name)" :class="getColumnClasses(column)">
+	//                         {{ column.title }}
+	//                     </th>
+	//                 </tr>
+	//                 </thead>
+	//                 <tbody>
+	//                 <tr v-for="(entry, index) in filteredValuesSorted" x-track-by="id" @click="fireRowClickedEvent(entry)">
+	//                     <td v-for="column in displayColsVisible" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
+	//                         <vue-bootstrap-cell :column="column" :entry="entry" @changed-entry="changedEntry"></vue-bootstrap-cell>
+	//                     </td>
+	//                 </tr>
+	//                 <tr class="footer">
+	//                     <td v-for="(column, index) in displayColsVisible" v-show="column.visible" :class="getCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
+	//                         <vue-bootstrap-footer-cell :column="column" :values="filteredValuesSorted"></vue-bootstrap-footer-cell>
+	//                     </td>
+	//                 </tr>
+	//                 </tbody>
+	//             </table>
+	//         </div>
+	//         <div v-if="paginated" class="col-sm-12">
+	//             <div class="btn-toolbar" role="toolbar" aria-label="pagination bar">
+	//                 <div class="btn-group" role="group" aria-label="first page">
+	//                     <button type="button" class="btn btn-default" @click="page=1">&laquo;</button>
+	//                 </div>
+	//                 <div class="btn-group" role="group" aria-label="pages">
+	//                     <button v-for="(pageNumber, index) in validPageNumbers"
+	//                             type="button" class="btn btn-default"
+	//                             :class="{ active: page===pageNumber }"
+	//                             @click="page=pageNumber">
+	//                         {{index}}
+	//                     </button>
+	//                 </div>
+	//                 <div class="btn-group" v-if="showPaginationEtc">...</div>
+	//                 <div class="btn-group" role="group" aria-label="last page">
+	//                     <button type="button" class="btn btn-default" @click="page=maxPage">&raquo;</button>
+	//                 </div>
+	//             </div>
+	//         </div>
+	//     </div>
+	// </template>
+	// <script>
 
 /***/ }),
-/* 7 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(8), __esModule: true };
+	module.exports = { "default": __webpack_require__(4), __esModule: true };
 
 /***/ }),
-/* 8 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var core = __webpack_require__(9);
+	var core = __webpack_require__(5);
 	var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
 	module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
 	  return $JSON.stringify.apply($JSON, arguments);
@@ -1329,7 +891,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 9 */
+/* 5 */
 /***/ (function(module, exports) {
 
 	var core = module.exports = { version: '2.5.3' };
@@ -1337,21 +899,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 10 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(11);
+	module.exports = __webpack_require__(7);
 
 /***/ }),
-/* 11 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(12);
-	var bind = __webpack_require__(13);
-	var Axios = __webpack_require__(15);
-	var defaults = __webpack_require__(16);
+	var utils = __webpack_require__(8);
+	var bind = __webpack_require__(9);
+	var Axios = __webpack_require__(11);
+	var defaults = __webpack_require__(12);
 	
 	/**
 	 * Create an instance of Axios
@@ -1384,15 +946,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	// Expose Cancel & CancelToken
-	axios.Cancel = __webpack_require__(34);
-	axios.CancelToken = __webpack_require__(35);
-	axios.isCancel = __webpack_require__(31);
+	axios.Cancel = __webpack_require__(30);
+	axios.CancelToken = __webpack_require__(31);
+	axios.isCancel = __webpack_require__(27);
 	
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(36);
+	axios.spread = __webpack_require__(32);
 	
 	module.exports = axios;
 	
@@ -1401,13 +963,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 12 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var bind = __webpack_require__(13);
-	var isBuffer = __webpack_require__(14);
+	var bind = __webpack_require__(9);
+	var isBuffer = __webpack_require__(10);
 	
 	/*global toString:true*/
 	
@@ -1710,7 +1272,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 13 */
+/* 9 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1727,7 +1289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 14 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	/*!
@@ -1754,17 +1316,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 15 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defaults = __webpack_require__(16);
-	var utils = __webpack_require__(12);
-	var InterceptorManager = __webpack_require__(28);
-	var dispatchRequest = __webpack_require__(29);
-	var isAbsoluteURL = __webpack_require__(32);
-	var combineURLs = __webpack_require__(33);
+	var defaults = __webpack_require__(12);
+	var utils = __webpack_require__(8);
+	var InterceptorManager = __webpack_require__(24);
+	var dispatchRequest = __webpack_require__(25);
+	var isAbsoluteURL = __webpack_require__(28);
+	var combineURLs = __webpack_require__(29);
 	
 	/**
 	 * Create a new instance of Axios
@@ -1846,13 +1408,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 16 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(12);
-	var normalizeHeaderName = __webpack_require__(18);
+	var utils = __webpack_require__(8);
+	var normalizeHeaderName = __webpack_require__(14);
 	
 	var DEFAULT_CONTENT_TYPE = {
 	  'Content-Type': 'application/x-www-form-urlencoded'
@@ -1868,10 +1430,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(19);
+	    adapter = __webpack_require__(15);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(19);
+	    adapter = __webpack_require__(15);
 	  }
 	  return adapter;
 	}
@@ -1942,10 +1504,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	module.exports = defaults;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
-/* 17 */
+/* 13 */
 /***/ (function(module, exports) {
 
 	// shim for using process in browser
@@ -2135,12 +1697,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 18 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(12);
+	var utils = __webpack_require__(8);
 	
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -2153,18 +1715,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 19 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(12);
-	var settle = __webpack_require__(20);
-	var buildURL = __webpack_require__(23);
-	var parseHeaders = __webpack_require__(24);
-	var isURLSameOrigin = __webpack_require__(25);
-	var createError = __webpack_require__(21);
-	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(26);
+	var utils = __webpack_require__(8);
+	var settle = __webpack_require__(16);
+	var buildURL = __webpack_require__(19);
+	var parseHeaders = __webpack_require__(20);
+	var isURLSameOrigin = __webpack_require__(21);
+	var createError = __webpack_require__(17);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(22);
 	
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -2261,7 +1823,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(27);
+	      var cookies = __webpack_require__(23);
 	
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -2337,15 +1899,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
-/* 20 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var createError = __webpack_require__(21);
+	var createError = __webpack_require__(17);
 	
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -2372,12 +1934,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 21 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var enhanceError = __webpack_require__(22);
+	var enhanceError = __webpack_require__(18);
 	
 	/**
 	 * Create an Error with the specified message, config, error code, request and response.
@@ -2396,7 +1958,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 22 */
+/* 18 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2423,12 +1985,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 23 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(12);
+	var utils = __webpack_require__(8);
 	
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -2497,12 +2059,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 24 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(12);
+	var utils = __webpack_require__(8);
 	
 	/**
 	 * Parse headers into an object
@@ -2540,12 +2102,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 25 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(12);
+	var utils = __webpack_require__(8);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -2614,7 +2176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 26 */
+/* 22 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2656,12 +2218,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 27 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(12);
+	var utils = __webpack_require__(8);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -2715,12 +2277,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 28 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(12);
+	var utils = __webpack_require__(8);
 	
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -2773,15 +2335,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 29 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(12);
-	var transformData = __webpack_require__(30);
-	var isCancel = __webpack_require__(31);
-	var defaults = __webpack_require__(16);
+	var utils = __webpack_require__(8);
+	var transformData = __webpack_require__(26);
+	var isCancel = __webpack_require__(27);
+	var defaults = __webpack_require__(12);
 	
 	/**
 	 * Throws a `Cancel` if cancellation has been requested.
@@ -2858,12 +2420,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 30 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(12);
+	var utils = __webpack_require__(8);
 	
 	/**
 	 * Transform the data for a request or a response
@@ -2884,7 +2446,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 31 */
+/* 27 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2895,7 +2457,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 32 */
+/* 28 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2915,7 +2477,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 33 */
+/* 29 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2935,7 +2497,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 34 */
+/* 30 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2960,12 +2522,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 35 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Cancel = __webpack_require__(34);
+	var Cancel = __webpack_require__(30);
 	
 	/**
 	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -3023,7 +2585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 36 */
+/* 32 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3056,14 +2618,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 37 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var stringify = __webpack_require__(38);
-	var parse = __webpack_require__(41);
-	var formats = __webpack_require__(40);
+	var stringify = __webpack_require__(34);
+	var parse = __webpack_require__(37);
+	var formats = __webpack_require__(36);
 	
 	module.exports = {
 	    formats: formats,
@@ -3073,13 +2635,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 38 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(39);
-	var formats = __webpack_require__(40);
+	var utils = __webpack_require__(35);
+	var formats = __webpack_require__(36);
 	
 	var arrayPrefixGenerators = {
 	    brackets: function brackets(prefix) { // eslint-disable-line func-name-matching
@@ -3289,7 +2851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 39 */
+/* 35 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3497,7 +3059,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 40 */
+/* 36 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3521,12 +3083,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 41 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(39);
+	var utils = __webpack_require__(35);
 	
 	var has = Object.prototype.hasOwnProperty;
 	
@@ -3701,7 +3263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 42 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -6191,10 +5753,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	module.exports = orderBy;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(43)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(39)(module)))
 
 /***/ }),
-/* 43 */
+/* 39 */
 /***/ (function(module, exports) {
 
 	module.exports = function(module) {
@@ -6210,7 +5772,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 44 */
+/* 40 */
 /***/ (function(module, exports) {
 
 	/**
@@ -6961,7 +6523,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 45 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -9359,13 +8921,323 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	module.exports = findIndex;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(43)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(39)(module)))
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	var __vue_styles__ = {}
+	__vue_script__ = __webpack_require__(43)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
+	  console.warn("[vue-loader] src\\VueBootstrapCell.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(44)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
+	if (__vue_template__) {
+	__vue_options__.template = __vue_template__
+	}
+	if (!__vue_options__.computed) __vue_options__.computed = {}
+	Object.keys(__vue_styles__).forEach(function (key) {
+	var module = __vue_styles__[key]
+	__vue_options__.computed[key] = function () { return module }
+	})
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), false)
+	  if (!hotAPI.compatible) return
+	  var id = "_v-0c1dd278/VueBootstrapCell.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	// <template>
+	//     <span v-if="!column.editable" v-html="rendered"></span>
+	//     <span v-else-if="!enabled" @click="toggleInput" v-html="rendered"></span>
+	//     <span v-else>
+	//           <input type="text" ref="inputfield" class="form-control" v-model="entryValue"
+	//                  @keyup.enter="onKeyEnter"
+	//                  @keyup.tab="onKeyTab"
+	//                  @keyup.esc="onKeyEsc"
+	//                  @keyup.down="onKeyDown"
+	//                  @keyup.up="onKeyUp"
+	//                  @keyup.left="onKeyLeft"
+	//                  @keyup.right="onKeyRight"
+	//                  @keyup.107="onKeyPlus"
+	//                  @keyup.109="onKeyMinus"
+	//                  @keyup="onAnyKey"
+	//                  @blur="onBlur"
+	//           ></span>
+	// </template>
+	//
+	// <script>
+	
+	exports.default = {
+	    name: "VueBootstrapCell",
+	
+	    props: ['column', 'entry'],
+	    data: function data() {
+	        return {
+	            enabled: false,
+	            entryValue: ""
+	        };
+	    },
+	
+	    computed: {
+	        rendered: function rendered() {
+	
+	            var result = "";
+	
+	            var fn = null;
+	
+	            var params = {
+	                column: this.column,
+	                entry: this.entry
+	            };
+	
+	            if (fn = this.$parent.getExtendedMethod(this.column.computed)) {
+	                result = fn(params);
+	
+	                // Hack: Set computed value to entry
+	                this.entry[this.column.name] = result;
+	            }
+	
+	            if (fn = this.$parent.getExtendedMethod(this.column.render)) {
+	                return fn(result, params);
+	            }
+	
+	            return this.entry[this.column.name];
+	        }
+	    },
+	
+	    methods: {
+	
+	        saveThis: function saveThis() {
+	            console.log('cell.saveThis', this.column, this.entry, this.entryValue);
+	            var originalValue = this.entry[this.column.name];
+	
+	            // In stead of
+	            // this.entry[this.column.name] = this.entryValue;
+	            //
+	            // use
+	            //
+	            // Vue.set(example1.items, indexOfItem, newValue)
+	            //
+	            this.$set(this.entry, this.column.name, this.entryValue);
+	
+	            this.$emit('input', this.entryValue);
+	            this.$emit('changed-entry', this.entry);
+	            this.$root.$emit('cellDataModifiedEvent', originalValue, this.entryValue, this.column.name, this.entry);
+	        },
+	        cancelThis: function cancelThis() {
+	            console.log('cancelThis');
+	            this.entryValue = this.entry[this.column.name];
+	            this.enabled = false;
+	        },
+	        toggleInput: function toggleInput() {
+	            var _this = this;
+	
+	            console.log('toggleInput');
+	            this.enabled = !this.enabled;
+	            if (this.enabled) {
+	                this.entryValue = this.entry[this.column.name];
+	                this.$nextTick(function () {
+	                    return _this.$refs.inputfield.focus();
+	                });
+	            }
+	        },
+	        onBlur: function onBlur(event) {
+	            // console.log('onBlur', event);
+	            // if (this.enabled) {
+	            //     this.saveThis();
+	            // } else {
+	            //     this.cancelThis();
+	            // }
+	        },
+	        onKeyEnter: function onKeyEnter(event) {
+	            console.log('onKeyEnter', event);
+	            this.saveThis();
+	            this.enabled = false;
+	            // @todo Move down
+	        },
+	        onKeyTab: function onKeyTab(event) {
+	            console.log('onKeyTab', event);
+	            this.saveThis();
+	            this.enabled = false;
+	            // @todo Move right
+	        },
+	        onKeyEsc: function onKeyEsc(event) {
+	            console.log('onKeyEsc', event);
+	            this.cancelThis();
+	            this.enabled = false;
+	        },
+	        onKeyDown: function onKeyDown(event) {
+	            console.log('onKeyDown', event);
+	            this.saveThis();
+	            this.enabled = false;
+	            // @todo Move down
+	        },
+	        onKeyUp: function onKeyUp(event) {
+	            console.log('onKeyUp', event);
+	            this.saveThis();
+	            this.enabled = false;
+	            // @todo Move up
+	        },
+	        onKeyLeft: function onKeyLeft(event) {
+	            console.log('onKeyLeft', event);
+	            this.saveThis();
+	            this.enabled = false;
+	            // @todo Move left
+	        },
+	        onKeyRight: function onKeyRight(event) {
+	            console.log('onKeyRight', event);
+	            this.saveThis();
+	            this.enabled = false;
+	            // @todo Move right
+	        },
+	        onKeyPlus: function onKeyPlus(event) {
+	            console.log('onKeyPlus', event);
+	            this.entryValue = parseInt(this.entryValue) + 1;
+	            // this.saveThis(); // @todo First fix DOM when sorting
+	        },
+	        onKeyMinus: function onKeyMinus(event) {
+	            console.log('onKeyMinus', event);
+	            this.entryValue = parseInt(this.entryValue) - 1;
+	            // this.saveThis();// @todo First fix DOM when sorting
+	        },
+	        onAnyKey: function onAnyKey(event) {
+	            console.log('onAnyKey', event);
+	        }
+	
+	    }
+	
+	    // </script>
+	    /* generated by vue-loader */
+	
+	};
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports) {
+
+	module.exports = "\n<span v-if=\"!column.editable\" v-html=\"rendered\"></span>\n<span v-else-if=\"!enabled\" @click=\"toggleInput\" v-html=\"rendered\"></span>\n<span v-else>\n      <input type=\"text\" ref=\"inputfield\" class=\"form-control\" v-model=\"entryValue\"\n             @keyup.enter=\"onKeyEnter\"\n             @keyup.tab=\"onKeyTab\"\n             @keyup.esc=\"onKeyEsc\"\n             @keyup.down=\"onKeyDown\"\n             @keyup.up=\"onKeyUp\"\n             @keyup.left=\"onKeyLeft\"\n             @keyup.right=\"onKeyRight\"\n             @keyup.107=\"onKeyPlus\"\n             @keyup.109=\"onKeyMinus\"\n             @keyup=\"onAnyKey\"\n             @blur=\"onBlur\"\n      ></span>\n";
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __vue_script__, __vue_template__
+	var __vue_styles__ = {}
+	__vue_script__ = __webpack_require__(46)
+	if (Object.keys(__vue_script__).some(function (key) { return key !== "default" && key !== "__esModule" })) {
+	  console.warn("[vue-loader] src\\VueBootstrapFooterCell.vue: named exports in *.vue files are ignored.")}
+	__vue_template__ = __webpack_require__(47)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	var __vue_options__ = typeof module.exports === "function" ? (module.exports.options || (module.exports.options = {})) : module.exports
+	if (__vue_template__) {
+	__vue_options__.template = __vue_template__
+	}
+	if (!__vue_options__.computed) __vue_options__.computed = {}
+	Object.keys(__vue_styles__).forEach(function (key) {
+	var module = __vue_styles__[key]
+	__vue_options__.computed[key] = function () { return module }
+	})
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), false)
+	  if (!hotAPI.compatible) return
+	  var id = "_v-8235ea9a/VueBootstrapFooterCell.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
 
 /***/ }),
 /* 46 */
 /***/ (function(module, exports) {
 
-	module.exports = "\n<div id=\"maindiv\" @click=\"closeDropdown\" @keyup.esc=\"closeDropdown\">\n    <div class=\"col-sm-6\">\n        <div v-if=\"showFilter\" style=\"padding-top: 10px;padding-bottom: 10px;\">\n            <div class=\"input-group\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Filter\" v-model=\"filterKey\">\n                <div class=\"input-group-addon\">\n                    <i class=\"glyphicon glyphicon-search\"></i>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-6\">\n        <div v-if=\"showColumnPicker\" style=\"padding-top: 10px;padding-bottom: 10px;float:right;\">\n            <div class=\"btn-group\" :class=\"{'open' : columnMenuOpen}\">\n                <button @click.stop.prevent=\"columnMenuOpen = !columnMenuOpen\" @keyup.esc=\"columnMenuOpen = false\"\n                        type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"\n                        aria-haspopup=\"true\">\n                    Columns <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\">\n                    <li v-for=\"column in displayCols\">\n                        <a href=\"#\" @click.stop.prevent=\"toggleColumn(column)\">\n                            <i v-if=\"column.visible\" class=\"glyphicon glyphicon-ok\"></i> {{column.title}}\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-12\">\n        <div id=\"loadingdiv\" :class=\"{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}\">\n            <div class=\"spinner\"></div>\n        </div>\n        <table class=\"table table-bordered table-hover table-condensed table-striped vue-table\">\n            <thead>\n            <tr>\n                <th v-for=\"column in displayColsVisible\" @click=\"sortBy($event, column.name)\"\n                    track-by=\"column\"\n                    :class=\"getColumnClasses(column)\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr v-for=\"entry in filteredValuesSorted \" track-by=\"entry\" @click=\"fireRowClickedEvent(entry)\">\n                <td v-for=\"column in displayColsVisible\" track-by=\"column\" v-show=\"column.visible\" :class=\"getCellClasses(column, entry)\" @click=\"fireCellClickedEvent(column, entry)\">\n                    <value-field-section :column=\"column\" :entry=\"entry\"></value-field-section>\n                </td>\n            </tr>\n            <tr class=\"footer\">\n                <td v-for=\"column in displayColsVisible\" track-by=\"column\" v-show=\"column.visible\" :class=\"getCellClasses(column)\" @click=\"fireFooterCellClickedEvent(column)\">\n                    <span v-html=\"footerRendered(column)\"></span>\n                </td>\n            </tr>\n            </tbody>\n        </table>\n    </div>\n    <div v-if=\"paginated\" class=\"col-sm-12\">\n        <div class=\"btn-toolbar\" role=\"toolbar\" aria-label=\"pagination bar\">\n            <div class=\"btn-group\" role=\"group\" aria-label=\"first page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=1\">&laquo;</button>\n            </div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"pages\">\n                <button v-for=\"index in validPageNumbers\"\n                        type=\"button\" class=\"btn btn-default\"\n                        :class=\"{ active: page===index }\"\n                        @click=\"page=index\">\n                    {{index}}\n                </button>\n            </div>\n            <div class=\"btn-group\" v-if=\"showPaginationEtc\">...</div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"last page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=maxPage\">&raquo;</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	// <template>
+	//     <div v-html="rendered"></div>
+	// </template>
+	//
+	// <script>
+	
+	exports.default = {
+	    name: "VueBootstrapFooterCell",
+	
+	    props: ['column', 'values'],
+	    data: function data() {
+	        return {
+	            enabled: false,
+	            entryValue: ""
+	        };
+	    },
+	
+	    computed: {
+	        rendered: function rendered() {
+	
+	            console.log('footer.rendered()', this.column.name);
+	
+	            var result = "";
+	
+	            var fn = {};
+	
+	            var params = {
+	                'column': this.column,
+	                'values': this.values
+	            };
+	
+	            if (fn = this.$parent.getExtendedMethod(this.column.footer)) {
+	                result = fn(params);
+	            }
+	
+	            if (fn = this.$parent.getExtendedMethod(this.column.render)) {
+	                return fn(result, params);
+	            }
+	
+	            return result;
+	        }
+	    },
+	    methods: {}
+	
+	    // </script>
+	    /* generated by vue-loader */
+	
+	};
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports) {
+
+	module.exports = "\n<div v-html=\"rendered\"></div>\n";
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports) {
+
+	module.exports = "\n<div id=\"maindiv\" @click=\"closeDropdown\" @keyup.esc=\"closeDropdown\">\n    <div class=\"col-sm-6\">\n        <div v-if=\"showFilter\" style=\"padding-top: 10px;padding-bottom: 10px;\">\n            <div class=\"input-group\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Filter\" v-model=\"filterKey\">\n                <div class=\"input-group-addon\">\n                    <i class=\"glyphicon glyphicon-search\"></i>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-6\">\n        <div v-if=\"showColumnPicker\" style=\"padding-top: 10px;padding-bottom: 10px;float:right;\">\n            <div class=\"btn-group\" :class=\"{'open' : columnMenuOpen}\">\n                <button @click.stop.prevent=\"columnMenuOpen = !columnMenuOpen\" @keyup.esc=\"columnMenuOpen = false\"\n                        type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"\n                        aria-haspopup=\"true\">\n                    Columns <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\">\n                    <li v-for=\"(column, index) in displayCols\">\n                        <a href=\"#\" @click.stop.prevent=\"toggleColumn(column)\">\n                            <i v-if=\"column.visible\" class=\"glyphicon glyphicon-ok\"></i> {{column.title}}\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-12\">\n        <div id=\"loadingdiv\" :class=\"{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}\">\n            <div class=\"spinner\"></div>\n        </div>\n        <table class=\"table table-bordered table-hover table-condensed table-striped vue-table\">\n            <thead>\n            <tr>\n                <th v-for=\"(column, index) in displayColsVisible\" @click=\"sortBy($event, column.name)\" :class=\"getColumnClasses(column)\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr v-for=\"(entry, index) in filteredValuesSorted\" x-track-by=\"id\" @click=\"fireRowClickedEvent(entry)\">\n                <td v-for=\"column in displayColsVisible\" v-show=\"column.visible\" :class=\"getCellClasses(column, entry)\" @click=\"fireCellClickedEvent(column, entry)\">\n                    <vue-bootstrap-cell :column=\"column\" :entry=\"entry\" @changed-entry=\"changedEntry\"></vue-bootstrap-cell>\n                </td>\n            </tr>\n            <tr class=\"footer\">\n                <td v-for=\"(column, index) in displayColsVisible\" v-show=\"column.visible\" :class=\"getCellClasses(column)\" @click=\"fireFooterCellClickedEvent(column)\">\n                    <vue-bootstrap-footer-cell :column=\"column\" :values=\"filteredValuesSorted\"></vue-bootstrap-footer-cell>\n                </td>\n            </tr>\n            </tbody>\n        </table>\n    </div>\n    <div v-if=\"paginated\" class=\"col-sm-12\">\n        <div class=\"btn-toolbar\" role=\"toolbar\" aria-label=\"pagination bar\">\n            <div class=\"btn-group\" role=\"group\" aria-label=\"first page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=1\">&laquo;</button>\n            </div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"pages\">\n                <button v-for=\"(pageNumber, index) in validPageNumbers\"\n                        type=\"button\" class=\"btn btn-default\"\n                        :class=\"{ active: page===pageNumber }\"\n                        @click=\"page=pageNumber\">\n                    {{index}}\n                </button>\n            </div>\n            <div class=\"btn-group\" v-if=\"showPaginationEtc\">...</div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"last page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=maxPage\">&raquo;</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ })
 /******/ ])

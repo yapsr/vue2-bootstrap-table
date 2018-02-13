@@ -1,14 +1,14 @@
 import VueBootstrapTable from './VueBootstrapTable.vue';
 
-var myRenderJSONFunction = function () {
+var myJSONFunction = function () {
     return JSON.stringify(arguments);
 };
 
-var myCalculationFunction = function ({column, entry}) {
+var myCalculation = function ({column, entry}) {
     return Number(entry.id) * Number(entry.votes);
 };
 
-var myCalculationSumFunction = function ({column, values}) {
+var sumOfColumn = function ({column, values}) {
     let result = 0;
     for (let i in values) {
         result = result + (values[i][ column.name ]*1);
@@ -16,7 +16,7 @@ var myCalculationSumFunction = function ({column, values}) {
     return result;
 };
 
-var myRenderMoneyFunction = function (value, {column, entry}) {
+var money = function (value, {column, entry}) {
     return '&euro;'+String(value);
 };
 
@@ -39,10 +39,11 @@ new Vue({
         defaultFilterKey: "",
         defaultSortKeys: ['votes', 'id'],
         defaultSortOrders: ['desc', 'asc'],
-        extraComputed: [
-        //     'calculation': myCalculationFunction,
-        //     'calculationSum': myCalculationSumFunction
-        ],
+        extendedMethods: {
+            'calculation': myCalculation,
+            'sum': sumOfColumn,
+            'renderMoney': money
+        },
         ajax: {
             enabled: false,
             url:
@@ -78,28 +79,28 @@ new Vue({
                 name: "votes",
                 visible: true,
                 editable: true,
-                footerComputed: myCalculationSumFunction,
+                footer: 'sum',
             },
             {
                 name: "json",
                 title: "JSON",
                 visible: false,
-                renderFunction: myRenderJSONFunction
+                render: myJSONFunction
             },
             {
                 name: "computed",
                 title: "Computed",
                 visible: true,
-                computed: myCalculationFunction,
-                footerComputed: myCalculationSumFunction,
+                computed: myCalculation,
+                footer: sumOfColumn,
             },
             {
                 name: "computed_and_rendered",
                 title: "Computed and rendered",
                 visible: true,
-                computed: myCalculationFunction,
-                footerComputed: myCalculationSumFunction,
-                renderFunction: myRenderMoneyFunction,
+                computed: myCalculation,
+                footer: sumOfColumn,
+                render: 'return "&euro;"+(arguments[0]);',
             }
         ],
         values:

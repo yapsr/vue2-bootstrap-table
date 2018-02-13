@@ -25,23 +25,26 @@
 
                 let result = "";
 
+                let fn = {};
+
                 let params = {
                     'column': this.column,
                     'values': this.values,
                 };
 
-                if (typeof this.column.footerComputed === 'function') {
-                    result = this.column.footerComputed(params);
+                if (fn = this.$parent.getExtendedMethod( this.column.footer )) {
+                    result = fn(params);
                 }
 
-                if (typeof this.column.renderFunction === 'function') {
-                    return this.column.renderFunction(result, params);
+                if (fn = this.$parent.getExtendedMethod( this.column.render )) {
+                    return fn(result, params);
                 }
 
                 return result;
             }
         },
-        methods: {}
+        methods: {
+        }
     }
 
 

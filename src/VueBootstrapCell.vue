@@ -10,7 +10,10 @@
                  @keyup.up="onKeyUp"
                  @keyup.left="onKeyLeft"
                  @keyup.right="onKeyRight"
-                 @x-blur="onBlur"
+                 @keyup.107="onKeyPlus"
+                 @keyup.109="onKeyMinus"
+                 @keyup="onAnyKey"
+                 @blur="onBlur"
           ></span>
 </template>
 
@@ -35,26 +38,27 @@
 
                 let result = "";
 
+                let fn = null;
+
                 let params = {
                     column: this.column,
                     entry: this.entry
-                }
+                };
 
-                if (typeof this.column.computed === 'function') {
-                    result = this.column.computed(params);
+                if (fn = this.$parent.getExtendedMethod(this.column.computed)) {
+                    result = fn(params);
 
                     // Hack: Set computed value to entry
-                    this.entry[ this.column.name ] = result;
+                    this.entry[this.column.name] = result;
 
-                } else {
-                    result = this.entry[this.column.name];
                 }
 
-                if (typeof this.column.renderFunction === 'function') {
-                    return this.column.renderFunction(result, params);
-                } else {
-                    return result;
+                if (fn = this.$parent.getExtendedMethod(this.column.render)) {
+                    return fn(result, params);
                 }
+
+                return this.entry[this.column.name];
+
             }
         }
         ,
@@ -64,23 +68,24 @@
                 console.log('cell.saveThis', this.column, this.entry, this.entryValue);
                 let originalValue = this.entry[this.column.name];
 
-                this.entry[this.column.name] = this.entryValue;
-
+                // In stead of
+                // this.entry[this.column.name] = this.entryValue;
+                //
+                // use
+                //
                 // Vue.set(example1.items, indexOfItem, newValue)
-                // Vue.set(this.entry, this.column.name, this.entryValue);
+                //
+                this.$set(this.entry, this.column.name, this.entryValue);
 
-                this.enabled = false;
                 this.$emit('input', this.entryValue);
                 this.$emit('changed-entry', this.entry);
                 this.$root.$emit('cellDataModifiedEvent', originalValue, this.entryValue, this.column.name, this.entry);
-            }
-            ,
+            },
             cancelThis: function () {
                 console.log('cancelThis');
                 this.entryValue = this.entry[this.column.name];
                 this.enabled = false;
-            }
-            ,
+            },
             toggleInput: function () {
                 console.log('toggleInput');
                 this.enabled = !this.enabled;
@@ -88,58 +93,69 @@
                     this.entryValue = this.entry[this.column.name];
                     this.$nextTick(() => this.$refs.inputfield.focus())
                 }
-            }
-            ,
+            },
             onBlur: function (event) {
-                console.log('onBlur', event);
-                if (this.enabled) {
-                    this.saveThis();
-                } else {
-                    this.cancelThis();
-                }
-            }
-            ,
+                // console.log('onBlur', event);
+                // if (this.enabled) {
+                //     this.saveThis();
+                // } else {
+                //     this.cancelThis();
+                // }
+            },
             onKeyEnter: function (event) {
                 console.log('onKeyEnter', event);
                 this.saveThis();
+                this.enabled = false;
                 // @todo Move down
-            }
-            ,
+            },
             onKeyTab: function (event) {
                 console.log('onKeyTab', event);
                 this.saveThis();
+                this.enabled = false;
                 // @todo Move right
-            }
-            ,
+            },
             onKeyEsc: function (event) {
                 console.log('onKeyEsc', event);
                 this.cancelThis();
-            }
-            ,
+                this.enabled = false;
+            },
             onKeyDown: function (event) {
                 console.log('onKeyDown', event);
                 this.saveThis();
+                this.enabled = false;
                 // @todo Move down
-            }
-            ,
+            },
             onKeyUp: function (event) {
                 console.log('onKeyUp', event);
                 this.saveThis();
+                this.enabled = false;
                 // @todo Move up
-            }
-            ,
+            },
             onKeyLeft: function (event) {
                 console.log('onKeyLeft', event);
                 this.saveThis();
+                this.enabled = false;
                 // @todo Move left
-            }
-            ,
+            },
             onKeyRight: function (event) {
                 console.log('onKeyRight', event);
                 this.saveThis();
+                this.enabled = false;
                 // @todo Move right
+            },
+            onKeyPlus: function (event) {
+                console.log('onKeyPlus', event);
+                this.entryValue = parseInt(this.entryValue)+1;
+                // this.saveThis(); // @todo First fix DOM when sorting
+            },
+            onKeyMinus: function (event) {
+                console.log('onKeyMinus', event);
+                this.entryValue = parseInt(this.entryValue)-1;
+                // this.saveThis();// @todo First fix DOM when sorting
+            },
+            onAnyKey: function(event) {
+                console.log('onAnyKey', event);
             }
-            ,
 
         }
     }

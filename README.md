@@ -240,16 +240,16 @@ columns: [
     {
         title: "Test",
         visible: true,
-        render: myTestRenderFunction
+        render: myTestRender
     }
 ],
 ```
 
-There must be a javascript function called `myTestRenderFunction`  :
+There must be a javascript function called `myTestRender`  :
 
 ```javascript
 <script>
-    var myTestRenderFunction = function (colname, entry) {
+    var myTestRender = function (colname, entry) {
         return '<div class="btn-group" role="group" >'+
             '  <button type="button" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>'+
             '  <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'+

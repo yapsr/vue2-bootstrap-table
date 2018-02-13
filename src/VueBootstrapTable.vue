@@ -228,11 +228,11 @@
                 }
             },
 
-            extraComputed: {
-                type: Array,
+            extendedMethods: {
+                type: Object,
                 required: false,
                 default: function () {
-                    return [];
+                    return {};
                 }
             }
 
@@ -318,8 +318,8 @@
             loading: function () {
                 console.log('watch: loading');
             },
-            extraComputed: function() {
-                console.log('watch: extraComputed');
+            extendedMethods: function() {
+                console.log('watch: extendedMethods');
             }
         },
         computed: {
@@ -367,6 +367,22 @@
 
         },
         methods: {
+            getExtendedMethod: function(value) {
+
+                var result = false;
+
+                if (typeof value === 'undefined'){
+                    result = false;
+                } else if (typeof value === 'function') {
+                    result = value;
+                } else if (typeof this.extendedMethods[value] === 'function') {
+                    result = this.extendedMethods[value];
+                } else if (typeof value === 'string') {
+                    result = Function([], value);
+                }
+
+                return result;
+            },
             changedEntry: function(entry) {
                 console.log('table.changedEntry', entry);
 
@@ -392,28 +408,39 @@
             sortFilteredValues: function () {
                 return lodashorderby(this.filteredValues, this.sortKeys, this.sortOrders);
             },
+
+
+            /**
+             * Set all computed column values
+             *
+             *
+             */
             setComputedValues: function() {
-                // set all computed column values
-                for(var i in this.columns) {
-                    if (typeof this.columns[i].computed === 'function') {
-                        for (var j in this.values) {
-                            var obj = this.values;
-                            var prop = j;
-                            var entry = this.values[j];
-                            var name = this.columns[i].name;
 
-                            var params = {
+                let fn = {};
+
+                for(let i in this.columns) {
+
+                    let column = this.columns[i];
+
+                    if (fn = this.getExtendedMethod( column.computed )) {
+
+                        for (let j in this.values) {
+
+                            let obj = this.values;
+                            let prop = j;
+                            let value = this.values[j];
+
+                            let params = {
                                 column: this.columns[i],
-                                entry: entry
+                                entry: value
                             };
-                            // var value = this.getExtraComputed( this.columns[i].computed, params);
-                            var value = this.columns[i].computed(params);
 
-                            entry[ name ] = value;
+                            let name = this.columns[i].name;
 
-                            this.$set(obj, prop, entry);
-                            //console.log('$set', obj[j], name, value);
-                            //this.$set(obj[j], name, value);
+                            value[ name ] = fn(params);
+
+                            this.$set(obj, prop, value);
                         }
                     }
                 }
@@ -594,25 +621,25 @@
                 else
                     obj.editable = false;
 
-                if (typeof column.renderFunction !== "undefined")
-                    obj.renderFunction = column.renderFunction;
+                if (typeof column.render !== "undefined")
+                    obj.render = column.render;
                 else
-                    obj.renderFunction = false;
+                    obj.render = false;
 
                 if (typeof column.computed !== "undefined")
                     obj.computed = column.computed;
                 else
                     obj.computed = false;
 
-                if (typeof column.footerComputed !== "undefined")
-                    obj.footerComputed = column.footerComputed;
+                if (typeof column.footer !== "undefined")
+                    obj.footer = column.footer;
                 else
-                    obj.footerComputed = false;
+                    obj.footer = false;
 
-                if (typeof column.footerRenderFunction !== "undefined")
-                    obj.footerRenderFunction = column.footerRenderFunction;
+                if (typeof column.footerRender !== "undefined")
+                    obj.footerRender = column.footerRender;
                 else
-                    obj.footerRenderFunction = false;
+                    obj.footerRender = false;
 
                 if (typeof column.columnClasses !== "undefined")
                     obj.columnClasses = column.columnClasses;
