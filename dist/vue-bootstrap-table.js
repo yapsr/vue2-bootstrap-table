@@ -9000,7 +9000,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    computed: {
 	        rendered: function rendered() {
 	
-	            var result = "";
+	            var result = this.entry[this.column.name];
 	
 	            var fn = null;
 	
@@ -9014,11 +9014,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                result = fn(params);
 	
 	                // Hack: Set computed value to entry
-	                this.entry[this.column.name] = result;
+	                this.entry[this.column.name] = String(result);
 	            }
 	
 	            if (fn = this.$parent.getExtendedMethod(this.column.render)) {
-	                return fn(result, params);
+	                return String(fn(result, params));
 	            }
 	
 	            return this.entry[this.column.name];
