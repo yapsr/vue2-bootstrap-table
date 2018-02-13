@@ -1,6 +1,6 @@
 {
   "name": "yapsr-vue2-bootstrap-table2",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "A sortable and searchable vue table, as a Vue component, using bootstrap styling.",
   "keywords": [
     "table",

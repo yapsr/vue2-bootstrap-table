@@ -5,7 +5,7 @@ var myJSONFunction = function () {
 };
 
 var myCalculationFunction = function ({column, entry}) {
-    return Number(entry.id) * Number(entry.votes);
+    return Number(entry.id) * Number(entry.amount);
 };
 
 var mySumFunction = function ({column, values}) {
@@ -17,9 +17,11 @@ var mySumFunction = function ({column, values}) {
 };
 
 var myMoneyFunction = function (value, {column, entry}) {
-    return '&euro;'+String(value);
+    if (value>0 || value<0) {
+        return '&euro;'+value;
+    }
+    return "";
 };
-
 
 
 Vue.config.debug = true;
@@ -37,7 +39,7 @@ new Vue({
         paginated: true,
         multiColumnSortable: true,
         defaultFilterKey: "",
-        defaultSortKeys: ['votes', 'id'],
+        defaultSortKeys: ['amount', 'id'],
         defaultSortOrders: ['desc', 'asc'],
         extendedMethods: {
             'calculation': myCalculationFunction,
@@ -75,8 +77,15 @@ new Vue({
                 editable: true,
             },
             {
-                title: "Votes",
-                name: "votes",
+                title: "Price",
+                name: "price",
+                visible: true,
+                editable: true,
+                render: myMoneyFunction,
+            },
+            {
+                title: "Amount",
+                name: "amount",
                 visible: true,
                 editable: true,
                 footer: 'sum',
@@ -109,57 +118,68 @@ new Vue({
                 {
                     "id": 1,
                     "title": "mary",
-                    "votes": 12
+                    "price": 0.00,
+                    "amount": 12
                 },
                 {
                     "id": 2,
                     "title": "jack",
-                    "votes": 12
+                    "price": 1.00,
+                    "amount": 12
                 },
                 {
                     "id": 3,
                     "title": "joe",
-                    "votes": 87
+                    "price": 1.50,
+                    "amount": 87
                 },
                 {
                     "id": 4,
                     "title": "ana",
-                    "votes": 21
+                    "price": 2.220,
+                    "amount": 21
                 },
                 {
                     "id": 5,
                     "title": "rita",
-                    "votes": 87
+                    "price": 4.20,
+                    "amount": 87
                 },
                 {
                     "id": 6,
                     "title": "mario",
-                    "votes": 12
+                    "price": 1000.01,
+                    "amount": 12
                 },
                 {
                     "id": 7,
                     "title": "luigi",
-                    "votes": 87
+                    "price": 2000,
+                    "amount": 87
                 },
                 {
                     "id": 8,
                     "title": "mickey",
-                    "votes": 12
+                    "price": 500.55,
+                    "amount": 12
                 },
                 {
                     "id": 9,
                     "title": "donald",
-                    "votes": 12
+                    "price": 80,
+                    "amount": 12
                 },
                 {
                     "id": 10,
                     "title": "juliet",
-                    "votes": 0
+                    "price": 99.95,
+                    "amount": 0
                 },
                 {
                     "id": 11,
                     "title": "paul",
-                    "votes": 5
+                    "price": 9.95,
+                    "amount": 5
                 }
 
             ]
