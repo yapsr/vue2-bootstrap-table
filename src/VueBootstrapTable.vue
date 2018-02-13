@@ -369,14 +369,14 @@
         methods: {
             getExtendedMethod: function(value) {
 
-                var result = false;
+                let result = false;
 
                 if (typeof value === 'undefined'){
                     result = false;
-                } else if (typeof value === 'function') {
-                    result = value;
                 } else if (typeof this.extendedMethods[value] === 'function') {
                     result = this.extendedMethods[value];
+                } else if (typeof value === 'function') {
+                    result = value;
                 } else if (typeof value === 'string') {
                     result = Function([], value);
                 }

@@ -423,10 +423,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            if (typeof value === 'undefined') {
 	                result = false;
-	            } else if (typeof value === 'function') {
-	                result = value;
 	            } else if (typeof this.extendedMethods[value] === 'function') {
 	                result = this.extendedMethods[value];
+	            } else if (typeof value === 'function') {
+	                result = value;
 	            } else if (typeof value === 'string') {
 	                result = Function([], value);
 	            }
@@ -9010,6 +9010,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            };
 	
 	            if (fn = this.$parent.getExtendedMethod(this.column.computed)) {
+	
 	                result = fn(params);
 	
 	                // Hack: Set computed value to entry

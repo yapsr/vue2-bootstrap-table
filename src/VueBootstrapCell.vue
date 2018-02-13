@@ -46,6 +46,7 @@
                 };
 
                 if (fn = this.$parent.getExtendedMethod(this.column.computed)) {
+
                     result = fn(params);
 
                     // Hack: Set computed value to entry

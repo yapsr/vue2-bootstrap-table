@@ -4,11 +4,11 @@ var myJSONFunction = function () {
     return JSON.stringify(arguments);
 };
 
-var myCalculation = function ({column, entry}) {
+var myCalculationFunction = function ({column, entry}) {
     return Number(entry.id) * Number(entry.votes);
 };
 
-var sumOfColumn = function ({column, values}) {
+var mySumFunction = function ({column, values}) {
     let result = 0;
     for (let i in values) {
         result = result + (values[i][ column.name ]*1);
@@ -16,7 +16,7 @@ var sumOfColumn = function ({column, values}) {
     return result;
 };
 
-var money = function (value, {column, entry}) {
+var myMoneyFunction = function (value, {column, entry}) {
     return '&euro;'+String(value);
 };
 
@@ -40,9 +40,9 @@ new Vue({
         defaultSortKeys: ['votes', 'id'],
         defaultSortOrders: ['desc', 'asc'],
         extendedMethods: {
-            'calculation': myCalculation,
-            'sum': sumOfColumn,
-            'renderMoney': money
+            'calculation': myCalculationFunction,
+            'sum': mySumFunction,
+            'money': myMoneyFunction
         },
         ajax: {
             enabled: false,
@@ -91,15 +91,15 @@ new Vue({
                 name: "computed",
                 title: "Computed",
                 visible: true,
-                computed: myCalculation,
-                footer: sumOfColumn,
+                computed: 'calculation',
+                footer: 'sum',
             },
             {
                 name: "computed_and_rendered",
                 title: "Computed and rendered",
                 visible: true,
-                computed: myCalculation,
-                footer: sumOfColumn,
+                computed: myCalculationFunction,
+                footer: mySumFunction,
                 render: 'return "&euro;"+(arguments[0]);',
             }
         ],
