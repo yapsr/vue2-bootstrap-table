@@ -19,7 +19,7 @@
                         Columns <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li v-for="column in displayCols">
+                        <li v-for="(column, index) in displayCols">
                             <a href="#" @click.stop.prevent="toggleColumn(column)">
                                 <i v-if="column.visible" class="glyphicon glyphicon-ok"></i> {{column.title}}
                             </a>
@@ -35,22 +35,20 @@
             <table class="table table-bordered table-hover table-condensed table-striped vue-table">
                 <thead>
                 <tr>
-                    <th v-for="column in displayColsVisible" @click="sortBy($event, column.name)"
-                        track-by="column"
-                        :class="getColumnClasses(column)">
+                    <th v-for="(column, index) in displayColsVisible" @click="sortBy($event, column.name)" :class="getColumnClasses(column)">
                         {{ column.title }}
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="entry in filteredValuesSorted " track-by="entry" @click="fireRowClickedEvent(entry)">
-                    <td v-for="column in displayColsVisible" track-by="column" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
-                        <value-field-section :column="column" :entry="entry"></value-field-section>
+                <tr v-for="(entry, index) in filteredValuesSorted" x-track-by="id" @click="fireRowClickedEvent(entry)">
+                    <td v-for="column in displayColsVisible" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
+                        <vue-bootstrap-cell :column="column" :entry="entry" @changed-entry="changedEntry"></vue-bootstrap-cell>
                     </td>
                 </tr>
                 <tr class="footer">
-                    <td v-for="column in displayColsVisible" track-by="column" v-show="column.visible" :class="getCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
-                        <span v-html="footerRendered(column)"></span>
+                    <td v-for="(column, index) in displayColsVisible" v-show="column.visible" :class="getCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
+                        <vue-bootstrap-footer-cell :column="column" :values="filteredValuesSorted"></vue-bootstrap-footer-cell>
                     </td>
                 </tr>
                 </tbody>
@@ -62,10 +60,10 @@
                     <button type="button" class="btn btn-default" @click="page=1">&laquo;</button>
                 </div>
                 <div class="btn-group" role="group" aria-label="pages">
-                    <button v-for="index in validPageNumbers"
+                    <button v-for="(pageNumber, index) in validPageNumbers"
                             type="button" class="btn btn-default"
-                            :class="{ active: page===index }"
-                            @click="page=index">
+                            :class="{ active: page===pageNumber }"
+                            @click="page=pageNumber">
                         {{index}}
                     </button>
                 </div>
@@ -77,114 +75,6 @@
         </div>
     </div>
 </template>
-<style>
-    .vue-table {
-
-    }
-
-    /*#maindiv {
-        content: " ";
-        box-sizing: border-box;
-        display:
-        table; width: 100%;
-    }
-*/
-    .vue-table-loading .spinner {
-        border: 16px solid #f3f3f3; /* Light grey */
-        border-top: 16px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin: -60px 0 0 -60px;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    .vue-table-loading {
-        position: absolute;
-        z-index: 99;
-        background-color: #ddd;
-        opacity: 0.5;
-        width: 100%;
-        height: 100%;
-    }
-
-    .vue-table-loading-hidden {
-        display: none;
-    }
-
-    table.vue-table thead > tr > th {
-        cursor: pointer;
-        padding-right: 30px !important;
-    }
-
-    /*.vue-table th.active {
-        color: red;
-    }*/
-
-    .vue-table .arrow {
-        opacity: 1;
-        position: relative;
-    }
-
-    .vue-table .arrow:after {
-        position: absolute;
-        bottom: 8px;
-        right: 8px;
-        display: block;
-        font-family: 'Glyphicons Halflings';
-        content: "\e150";
-        /*
-        display: inline-block;
-        vertical-align: middle;
-        width: 0;
-        height: 0;
-        margin-left: 5px;
-        opacity: 0.66;*/
-    }
-
-    .vue-table .arrow.asc:after {
-        content: "\e155";
-        /*
-        border-left: 4px solid transparent;
-        border-right: 4px solid transparent;
-        border-bottom: 4px solid #000;
-        */
-    }
-
-    .vue-table .arrow.desc:after {
-        content: "\e156";
-    }
-
-    .vue-table td.editable {
-        cursor: pointer;
-    }
-
-    .vue-table div.editable {
-        width: 100%;
-    }
-
-    /*
-    .vue-table .selected-cell {
-        background-color: #F7C072;
-    }
-
-    .vue-table .selected-row {
-        background-color: #FAE1BE !important;
-    }
-    */
-</style>
 <script>
 
     import axios from 'axios';
@@ -192,89 +82,16 @@
     import lodashorderby from 'lodash.orderby';
     import lodashincludes from 'lodash.includes';
     import lodashfindindex from 'lodash.findindex';
+    import vueBootstrapCell from './VueBootstrapCell.vue';
+    import vueBootstrapFooterCell from './VueBootstrapFooterCell.vue';
 
 
-    /* Field Section used for displaying and editing value of cell */
-    let valueFieldSection = {
-        template: '<div>' +
-        '<span v-if="!column.editable" v-html="rendered"></span>' +
-        '<span v-else-if="!enabled" @click="toggleInput" v-html="rendered"></span>' +
-        '<span v-else>' +
-        '  <input type="text" ref="inputfield"  class="form-control" v-model="datavalue" ' +
-        '   @blur="saveThis" ' +
-        '   @keyup.enter="saveThis" ' +
-        '   @keyup.tab="saveThis" ' +
-        '   @keyup.esc="cancelThis" ' +
-        '   @keyup.down="onKeyDown" ' +
-        '   @keyup.up="onKeyUp" ' +
-        '   @keyup.left="onKeyLeft" ' +
-        '   @keyup.right="onKeyRight"' +
-        '></span></div>',
-        props: ['column', 'entry'],
-        data: function () {
-            return {
-                enabled: false,
-                datavalue: "",
-            }
-        },
-        computed: {
-            rendered: function () {
-                let value = this.$parent.sortValue(this.column, this.entry);
-                if (typeof this.column.renderFunction==='function') {
-                    return this.column.renderFunction(value, this.column, this.entry);
-                } else {
-                    return value;
-                }
-            }
-        },
-        methods: {
-            saveThis: function () {
-                let originalValue = this.entry[this.column.name];
-                this.entry[this.column.name] = this.datavalue;
-                this.enabled = !this.enabled;
-                this.$parent.$emit('cellDataModifiedEvent', originalValue, this.datavalue, this.column.name, this.entry);
-            },
-            cancelThis: function () {
-                console.log('cancelThis');
-                this.datavalue = this.entry[this.column.name];
-                this.enabled = false;
-            },
-            toggleInput: function () {
-                console.log('toggleInput');
-                this.enabled = !this.enabled;
-                if (this.enabled) {
-                    this.datavalue = this.entry[this.column.name];
-                    this.$nextTick(() => this.$refs.inputfield.focus())
-                }
-            },
-            onKeyDown: function () {
-                console.log('onKeyDown');
-                this.saveThis();
-//                this.enabled = false;
-            },
-            onKeyUp: function () {
-                console.log('onKeyUp');
-                this.saveThis();
-                //            this.enabled = !this.enabled;
-            },
-            onKeyLeft: function () {
-                console.log('onKeyLeft');
-                this.saveThis();
-                //              this.enabled = !this.enabled;
-            },
-            onKeyRight: function () {
-                console.log('onKeyRight');
-                this.saveThis();
-//                this.enabled = !this.enabled;
-            },
-
-        }
-    };
 
     export default {
         name: "VueBootstrapTable",
         components: {
-            'value-field-section': valueFieldSection,
+            'vue-bootstrap-cell': vueBootstrapCell,
+            'vue-bootstrap-footer-cell': vueBootstrapFooterCell,
         },
         props: {
 
@@ -412,21 +229,19 @@
             },
 
             extraComputed: {
-                type: Object,
+                type: Array,
                 required: false,
                 default: function () {
-                    return {};
+                    return [];
                 }
             }
 
         },
         data: function () {
             return {
-                filteredSize: 0,
                 filterKey: "",
                 sortKeys: [],
-                sortOrders: {},
-                sortChanged: 1,
+                sortOrders: [],
                 columnMenuOpen: false,
                 displayCols: [],
                 filteredValues: [],
@@ -436,54 +251,42 @@
             };
         },
         mounted: function () {
-
-            let self = this;
+            console.log('table.mounted');
 
             this.loading = true;
-
+            this.setComputedValues();
+            this.setSorting();
+            this.setColumns();
             this.filterKey = this.defaultFilterKey;
 
-            this.setSorting();
-
-            this.setColumns();
-
-            if (this.ajax.enabled) {
-                if (!this.ajax.delegate) {
-                    this.loading = true;
-                    this.fetchData(function (data) {
-                        self.values = data.data;
-                        self.processFilter();
-                    });
-                } else {
-                    this.processFilter();
-                }
-            } else {
-                this.processFilter();
-            }
-
+            this.loading = false;
         },
         created: function () {
+            console.log('table.created');
+
             this.$on('cellDataModifiedEvent', this.fireCellDataModifiedEvent);
         },
         beforeDestroy: function () {
             this.$off('cellDataModifiedEvent', this.fireCellDataModifiedEvent);
         },
         watch: {
+            filteredValues: function() {
+                console.log('watch: filteredValues');
+            },
             values: function () {
+                console.log('watch: values');
                 this.processFilter();
             },
             columns: function () {
-                let self = this;
-                this.displayCols = [];
-                this.columns.forEach(function (column) {
-                    let obj = self.buildColumnObject(column);
-                    self.displayCols.push(obj);
-                });
+                console.log('watch: columns');
+                this.setColumns();
             },
             showFilter: function () {
                 // this.filterKey = "";
             },
             showColumnPicker: function () {
+                console.log('watch: showColumnPicker');
+
                 this.columnMenuOpen = false;
 
                 this.displayCols.forEach(function (column) {
@@ -491,26 +294,36 @@
                 });
             },
             filterKey: function () {
+                console.log('watch: filterKey');
                 // filter was updated, so resetting to page 1
                 this.page = 1;
                 this.processFilter();
             },
             sortKeys: function () {
+                console.log('watch: sortKeys');
                 this.processFilter();
             },
-            sortChanged: function () {
+            sortOrders: function () {
+                console.log('watch: sortOrders');
                 this.processFilter();
             },
             page: function () {
+                console.log('watch: page');
                 this.processFilter();
             },
             paginated: function () {
+                console.log('watch: paginated');
                 this.processFilter();
             },
             loading: function () {
+                console.log('watch: loading');
             },
+            extraComputed: function() {
+                console.log('watch: extraComputed');
+            }
         },
         computed: {
+
             filteredValuesSorted: function () {
                 return this.sortFilteredValues()
             },
@@ -545,41 +358,33 @@
                     temp = this.page - 2;
                 return ((temp + 4) < this.maxPage);
             },
+            filteredSize: function() {
+                return this.values.length;
+            },
             hasDefaultSorting: function () {
                 return this.defaultSortKeys.length > 0;
             },
 
         },
         methods: {
-            footerRendered: function(column) {
+            changedEntry: function(entry) {
+                console.log('table.changedEntry', entry);
 
-                let value = null;
+                let obj = this.values;
+                let key = this.getKeyFromEntryId(this.values, entry);
+                let val = entry;
+                this.$set(obj, key, val);
 
-                if (column.footerComputed) {
-                    value = this.extraComputed[column.footerComputed](column, this.filteredValues, this.values);
-                }
+                this.setComputedValues();
+                this.processFilter();
 
-                if (typeof value !=='undefined') {
-                    if (typeof column.footerRenderFunction === 'function') {
-                        return column.footerRenderFunction(value, column, this.filteredValues, this.values);
-                    } else {
-                        return value;
+            },
+            getKeyFromEntryId: function(values, entry) {
+                for(let i in values) {
+                    if (values[i].id === entry.id) {
+                        return i;
                     }
                 }
-
-            },
-            sortValue: function (column, entry) {
-                let result = '';
-                if (column.computed) {
-                    result = this.getExtraComputed(column, entry);
-                } else {
-                    result = entry[column.name];
-                }
-                // console.log('sortValue', column.name, entry, result);
-                return result;
-            },
-            getExtraComputed(column, entry) {
-                return this.extraComputed[column.computed](column, entry);
             },
             fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
                 this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
@@ -587,74 +392,103 @@
             sortFilteredValues: function () {
                 return lodashorderby(this.filteredValues, this.sortKeys, this.sortOrders);
             },
+            setComputedValues: function() {
+                // set all computed column values
+                for(var i in this.columns) {
+                    if (typeof this.columns[i].computed === 'function') {
+                        for (var j in this.values) {
+                            var obj = this.values;
+                            var prop = j;
+                            var entry = this.values[j];
+                            var name = this.columns[i].name;
+
+                            var params = {
+                                column: this.columns[i],
+                                entry: entry
+                            };
+                            // var value = this.getExtraComputed( this.columns[i].computed, params);
+                            var value = this.columns[i].computed(params);
+
+                            entry[ name ] = value;
+
+                            this.$set(obj, prop, entry);
+                            //console.log('$set', obj[j], name, value);
+                            //this.$set(obj[j], name, value);
+                        }
+                    }
+                }
+
+
+            },
             processFilter: function () {
                 let self = this;
-                let result = [];
 
-                this.loading = true;
+                if (this.loading) {
+                    return;
+                }
 
                 if (this.ajax.enabled && this.ajax.delegate) {
                     this.fetchData(function (data) {
-                        self.filteredSize = data.filtered;
-                        self.filteredValues = data.data;
+                        self.values = data.values;
+                        self.filteredValues = data.filteredValues;
                         self.loading = false;
                     });
                 } else {
 
-                    let column = [];
-                    let computedColumnName;
-                    let computedColumnValue;
+                    let q = self.filterKey + "";
 
-                    for (let i in this.values) {
-                        for (let j in self.displayColsVisible) {
-                            column = self.displayColsVisible[j];
-                            this.values[i][ column.name ] = this.sortValue(column, this.values[i]);;
-                        }
+                    if (q) {
+
+                        console.log('Filtering on ', q);
+                        this.filteredValues = this.values.filter(entry => {
+
+                            let i = 0;
+                            let haystack = "";
+                            let column = [];
+
+                            if (!self.filterCaseSensitive) {
+                                q = q.toLowerCase();
+                            }
+
+                            for (let i in self.displayColsVisible) {
+
+                                column = self.displayColsVisible[i];
+
+                                haystack = entry[column.name] || "";
+
+                                if (!self.filterCaseSensitive && typeof haystack === 'string') {
+                                    haystack = haystack.toLowerCase();
+                                }
+
+                                // console.log('lodashincludes', haystack, q);
+                                if (lodashincludes(haystack, q)) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        });
+                    } else {
+
+                        console.log('No filtering');
+                        this.filteredValues = this.values;
                     }
 
-                    result = this.values;
 
-                    let result = this.values.filter(entry => {
-
-                        let i = 0;
-                        let haystack = "";
-                        let column = [];
-                        let q = self.filterKey + "";
-                        if (!self.filterCaseSensitive) {
-                            q = q.toLowerCase();
-                        }
-
-                        for (let i in self.displayColsVisible) {
-                            column = self.displayColsVisible[i];
-                            haystack = self.sortValue(column, entry) || "";
-                            // console.log(i, column, entry, haystack);
-                            if (!self.filterCaseSensitive && typeof haystack === 'string') {
-                                haystack = haystack.toLowerCase();
-                            }
-
-                            if (lodashincludes(haystack, q)) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    })
-
-                    this.filteredSize = result.length;
+                    // Pagination
                     if (this.paginated) {
                         let startIndex = (this.page - 1) * this.pageSize;
-                        let tIndex = 0;
-                        let tempResult = [];
-                        while (tIndex < this.pageSize) {
-                            if (typeof result[startIndex + tIndex] !== "undefined")
-                                tempResult.push(result[startIndex + tIndex]);
-                            tIndex++;
+                        let index = 0;
+                        let result = [];
+                        while (index < this.pageSize) {
+                            if (typeof this.filteredValues[startIndex + index] !== "undefined") {
+                                result.push(this.filteredValues[startIndex + index]);
+                            }
+                            index++;
                         }
-                        this.filteredValues = tempResult;
-                    } else {
                         this.filteredValues = result;
                     }
 
-                    self.loading = false;
+                    this.loading = false;
                 }
 
                 this.fireFilterModifiedEvent(this.filterKey);
@@ -742,39 +576,49 @@
             },
             buildColumnObject: function (column) {
                 let obj = {};
+
                 obj.title = column.title;
+
                 if (typeof column.name !== "undefined")
                     obj.name = column.name;
                 else
                     obj.name = column.title;
+
                 if (typeof column.visible !== "undefined")
                     obj.visible = column.visible;
                 else
                     obj.visible = true;
+
                 if (typeof column.editable !== "undefined")
                     obj.editable = column.editable;
                 else
                     obj.editable = false;
+
                 if (typeof column.renderFunction !== "undefined")
                     obj.renderFunction = column.renderFunction;
                 else
                     obj.renderFunction = false;
+
                 if (typeof column.computed !== "undefined")
                     obj.computed = column.computed;
                 else
                     obj.computed = false;
+
                 if (typeof column.footerComputed !== "undefined")
                     obj.footerComputed = column.footerComputed;
                 else
                     obj.footerComputed = false;
+
                 if (typeof column.footerRenderFunction !== "undefined")
                     obj.footerRenderFunction = column.footerRenderFunction;
                 else
                     obj.footerRenderFunction = false;
+
                 if (typeof column.columnClasses !== "undefined")
                     obj.columnClasses = column.columnClasses;
                 else
                     obj.columnClasses = "";
+
                 if (typeof column.cellClasses !== "undefined")
                     obj.cellClasses = column.cellClasses;
                 else
@@ -784,6 +628,7 @@
             },
             setColumns: function () {
                 let self = this;
+                this.displayCols = [];
                 this.columns.forEach(function (column) {
                     let obj = self.buildColumnObject(column);
                     self.displayCols.push(obj);
@@ -841,8 +686,6 @@
                     } else {
                         this.sortOrders[pos] = "asc";
                     }
-
-                    this.sortChanged = this.sortChanged * -1;
 
                     this.fireSortModifiedEvent(this.sortKeys, this.sortOrders);
 
@@ -907,3 +750,5 @@
         events: {}
     }
 </script>
+
+
