@@ -734,11 +734,6 @@
                 else
                     obj.footer = false;
 
-                if (typeof column.footerRender !== "undefined")
-                    obj.footerRender = column.footerRender;
-                else
-                    obj.footerRender = false;
-
                 if (typeof column.columnClasses !== "undefined")
                     obj.columnClasses = column.columnClasses;
                 else

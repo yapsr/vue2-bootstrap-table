@@ -9375,11 +9375,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                'values': this.values
 	            };
 	
-	            if (fn = this.$parent.getExtendedMethod(this.column.footer)) {
+	            if (fn = this.$parent.getExtendedMethod(this.column.footer.compute)) {
 	                result = fn(params);
 	            }
 	
-	            if (fn = this.$parent.getExtendedMethod(this.column.render)) {
+	            if (fn = this.$parent.getExtendedMethod(this.column.footer.render)) {
 	                return fn(result, params);
 	            }
 	

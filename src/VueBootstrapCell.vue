@@ -19,7 +19,6 @@
         <span v-if="message.text">
             <span :class="message.iconClass" :title="message.text"></span>
         </span>
-        <span v-else></span>
 
     </div>
 </template>

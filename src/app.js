@@ -5,12 +5,12 @@ var myJSONFunction = function () {
 };
 
 var myCalculationFunction = function ({column, entry}) {
-    return Math.round(entry.price * entry.amount*100)/100;
+    return Math.round(entry.price * entry.amount * 100) / 100;
 };
 
 //  0              900         1000
 //    ... success ... warning ... danger
-var myValidationFunction = function({column, entry}) {
+var myValidationFunction = function ({column, entry}) {
 
     var result = {};
 
@@ -20,25 +20,25 @@ var myValidationFunction = function({column, entry}) {
 
     var value = entry[column.name];
 
-    if (value<min) {
+    if (value < min) {
         result = {
             'error': 1,
             'message': {
-                'text': 'Lower than '+min,
+                'text': 'Lower than ' + min,
                 'class': 'alert alert-warning',
                 'iconClass': 'glyphicon glyphicon-warning-sign'
             }
         }
-    } else if (value>max) {
+    } else if (value > max) {
         result = {
             'error': 1,
             'message': {
-                'text': 'Higher than '+max,
+                'text': 'Higher than ' + max,
                 'class': 'alert alert-warning',
                 'iconClass': 'glyphicon glyphicon-warning-sign'
             }
         }
-    } else if (value<threshold) {
+    } else if (value < threshold) {
         result = {
             'error': 0,
             'message': {
@@ -51,7 +51,7 @@ var myValidationFunction = function({column, entry}) {
         result = {
             'error': 0,
             'message': {
-                'text': 'Watch out, you are between '+threshold+' and '+max,
+                'text': 'Watch out, you are between ' + threshold + ' and ' + max,
                 'class': 'alert alert-warning',
                 'iconClass': 'glyphicon glyphicon-exclamation-sign'
             }
@@ -66,17 +66,74 @@ var myValidationFunction = function({column, entry}) {
 var mySumFunction = function ({column, values}) {
     let result = 0;
     for (let i in values) {
-        result = result + (values[i][ column.name ]*1);
-    };
+        result = result + (values[i][column.name] * 1);
+    }
+    ;
     return result;
 };
 
 var myMoneyFunction = function (value, {column, entry}) {
-    if (value>0 || value<0) {
-        return '&euro;'+value.toFixed(2).replace('.',',');
+    if (value > 0 || value < 0) {
+        return '&euro;' + value.toFixed(2).replace('.', ',');
     }
     return "";
 };
+
+var myFooterValidationFunction = function ({column, values}) {
+
+
+    var result = {};
+
+    var min = 0;
+    var threshold = 9000;
+    var max = 10000;
+
+    var value = mySumFunction({column:column, values:values});
+
+    console.log('myFooterValidationFunction', arguments, value);
+
+    if (value < min) {
+        result = {
+            'error': 1,
+            'message': {
+                'text': 'Lower than ' + min,
+                'class': 'alert alert-warning',
+                'iconClass': 'glyphicon glyphicon-warning-sign'
+            }
+        }
+    } else if (value > max) {
+        result = {
+            'error': 1,
+            'message': {
+                'text': 'Higher than ' + max,
+                'class': 'alert alert-warning',
+                'iconClass': 'glyphicon glyphicon-warning-sign'
+            }
+        }
+    } else if (value < threshold) {
+        result = {
+            'error': 0,
+            'message': {
+                'text': 'Ok',
+                'class': 'alert alert-success',
+                'iconClass': 'glyphicon glyphicon-ok'
+            }
+        }
+    } else {
+        result = {
+            'error': 0,
+            'message': {
+                'text': 'Watch out, you are between ' + threshold + ' and ' + max,
+                'class': 'alert alert-warning',
+                'iconClass': 'glyphicon glyphicon-exclamation-sign'
+            }
+        }
+    }
+
+    // console.log('myFooterValidationFunction', arguments, result);
+
+    return result;
+}
 
 
 Vue.config.debug = true;
@@ -103,9 +160,9 @@ new Vue({
         },
         messages: [
             {
-                'text':'Welcome',
-                'class':'alert alert-success',
-                'render':function() {
+                'text': 'Welcome',
+                'class': 'alert alert-success',
+                'render': function () {
                     return 'Welcome!';
                 }
             }
@@ -153,8 +210,10 @@ new Vue({
                 name: "amount",
                 visible: true,
                 editable: true,
-                footer: 'sum',
-                type: 'integer'
+                type: 'integer',
+                footer: {
+                    computed: 'sum'
+                }
             },
             {
                 name: "json",
@@ -168,17 +227,23 @@ new Vue({
                 visible: true,
                 computed: 'calculation',
                 type: 'decimal',
-                footer: 'sum',
+                footer: {
+                    computed: 'sum',
+                }
             },
             {
                 name: "computed_and_rendered_and_validated",
                 title: "Computed, validated and rendered",
                 visible: true,
                 computed: myCalculationFunction,
-                footer: mySumFunction,
                 validate: myValidationFunction,
                 render: 'return "&euro;"+(arguments[0]).toFixed(2);',
                 type: 'decimal',
+                footer: {
+                    computed: 'sum',
+                    render: 'money',
+                    validate: myFooterValidationFunction
+                }
             }
         ],
         values:
@@ -212,7 +277,7 @@ new Vue({
                     "id": 6,
                     "title": "mario",
                     "price": 1000.01,
-                    "amount": 12
+                    "amount": 2
                 },
                 {
                     "id": 3,
@@ -224,7 +289,7 @@ new Vue({
                     "id": 7,
                     "title": "luigi",
                     "price": 2000,
-                    "amount": 87
+                    "amount": 1
                 },
                 {
                     "id": 1,
@@ -253,10 +318,9 @@ new Vue({
 
             ]
     },
-    mounted: function() {
+    mounted: function () {
     },
     created: function () {
-
 
 
         this.$on('cellDataModifiedEvent',
