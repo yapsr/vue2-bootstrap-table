@@ -5,8 +5,63 @@ var myJSONFunction = function () {
 };
 
 var myCalculationFunction = function ({column, entry}) {
-    return Number(entry.id) * Number(entry.amount);
+    return Math.round(entry.price * entry.amount*100)/100;
 };
+
+//  0              900         1000
+//    ... success ... warning ... danger
+var myValidationFunction = function({column, entry}) {
+
+    var result = {};
+
+    var min = 0;
+    var threshold = 900;
+    var max = 1000;
+
+    var value = entry[column.name];
+
+    if (value<min) {
+        result = {
+            'error': 1,
+            'message': {
+                'text': 'Lower than '+min,
+                'class': 'alert alert-warning',
+                'iconClass': 'glyphicon glyphicon-warning-sign'
+            }
+        }
+    } else if (value>max) {
+        result = {
+            'error': 1,
+            'message': {
+                'text': 'Higher than '+max,
+                'class': 'alert alert-warning',
+                'iconClass': 'glyphicon glyphicon-warning-sign'
+            }
+        }
+    } else if (value<threshold) {
+        result = {
+            'error': 0,
+            'message': {
+                'text': 'Ok',
+                'class': 'alert alert-success',
+                'iconClass': 'glyphicon glyphicon-ok'
+            }
+        }
+    } else {
+        result = {
+            'error': 0,
+            'message': {
+                'text': 'Watch out, you are between '+threshold+' and '+max,
+                'class': 'alert alert-warning',
+                'iconClass': 'glyphicon glyphicon-exclamation-sign'
+            }
+        }
+    }
+
+    // console.log('myValidationFunction', arguments, result);
+
+    return result;
+}
 
 var mySumFunction = function ({column, values}) {
     let result = 0;
@@ -18,7 +73,7 @@ var mySumFunction = function ({column, values}) {
 
 var myMoneyFunction = function (value, {column, entry}) {
     if (value>0 || value<0) {
-        return '&euro;'+value;
+        return '&euro;'+value.toFixed(2).replace('.',',');
     }
     return "";
 };
@@ -46,6 +101,15 @@ new Vue({
             'sum': mySumFunction,
             'money': myMoneyFunction
         },
+        messages: [
+            {
+                'text':'Welcome',
+                'class':'alert alert-success',
+                'render':function() {
+                    return 'Welcome!';
+                }
+            }
+        ],
         ajax: {
             enabled: false,
             url:
@@ -82,6 +146,7 @@ new Vue({
                 visible: true,
                 editable: true,
                 render: myMoneyFunction,
+                type: 'money'
             },
             {
                 title: "Amount",
@@ -89,6 +154,7 @@ new Vue({
                 visible: true,
                 editable: true,
                 footer: 'sum',
+                type: 'integer'
             },
             {
                 name: "json",
@@ -101,43 +167,40 @@ new Vue({
                 title: "Computed",
                 visible: true,
                 computed: 'calculation',
+                type: 'decimal',
                 footer: 'sum',
             },
             {
-                name: "computed_and_rendered",
-                title: "Computed and rendered",
+                name: "computed_and_rendered_and_validated",
+                title: "Computed, validated and rendered",
                 visible: true,
                 computed: myCalculationFunction,
                 footer: mySumFunction,
-                render: 'return "&euro;"+(arguments[0]);',
+                validate: myValidationFunction,
+                render: 'return "&euro;"+(arguments[0]).toFixed(2);',
+                type: 'decimal',
             }
         ],
         values:
             [
 
                 {
-                    "id": 1,
-                    "title": "mary",
-                    "price": 0.00,
-                    "amount": 12
-                },
-                {
-                    "id": 2,
+                    // "id": 2,
                     "title": "jack",
                     "price": 1.00,
                     "amount": 12
-                },
-                {
-                    "id": 3,
-                    "title": "joe",
-                    "price": 1.50,
-                    "amount": 87
                 },
                 {
                     "id": 4,
                     "title": "ana",
                     "price": 2.220,
                     "amount": 21
+                },
+                {
+                    "id": 8,
+                    "title": "mickey",
+                    "price": 500.55,
+                    "amount": 12
                 },
                 {
                     "id": 5,
@@ -152,16 +215,28 @@ new Vue({
                     "amount": 12
                 },
                 {
+                    "id": 3,
+                    "title": "joe",
+                    "price": 1.50,
+                    "amount": 87
+                },
+                {
                     "id": 7,
                     "title": "luigi",
                     "price": 2000,
                     "amount": 87
                 },
                 {
-                    "id": 8,
-                    "title": "mickey",
-                    "price": 500.55,
+                    "id": 1,
+                    "title": "mary",
+                    "price": 0.00,
                     "amount": 12
+                },
+                {
+                    "id": 11,
+                    "title": "paul",
+                    "price": 9.95,
+                    "amount": 5
                 },
                 {
                     "id": 9,
@@ -175,12 +250,6 @@ new Vue({
                     "price": 99.95,
                     "amount": 0
                 },
-                {
-                    "id": 11,
-                    "title": "paul",
-                    "price": 9.95,
-                    "amount": 5
-                }
 
             ]
     },

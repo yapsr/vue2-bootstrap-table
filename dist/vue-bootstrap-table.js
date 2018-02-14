@@ -437,23 +437,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	            console.log('table.changedEntry', entry);
 	
 	            var obj = this.values;
-	            var key = this.getKeyFromEntryId(this.values, entry);
+	            var key = this.getKeyByValue(this.values, 'id', entry.id);
+	            if (!key) {
+	                console.warn('table.changedEntry: Adding new entry, because id was not found in values.');
+	            }
 	            var val = entry;
 	            this.$set(obj, key, val);
 	
 	            this.setComputedValues();
 	            this.processFilter();
 	        },
-	        getKeyFromEntryId: function getKeyFromEntryId(values, entry) {
-	            for (var i in values) {
-	                if (values[i].id === entry.id) {
+	        getKeyByValue: function getKeyByValue(arr, key, value) {
+	            for (var i = 0, l = arr.length; i < l; i++) {
+	                if (arr[i][key] === value) {
+	                    console.log('getKeyByValue', arr, key, value, i);
 	                    return i;
 	                }
 	            }
 	        },
+	
 	        fireCellDataModifiedEvent: function fireCellDataModifiedEvent(originalValue, newValue, columnTitle, entry) {
 	            this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
 	        },
+	
 	        sortFilteredValues: function sortFilteredValues() {
 	            return (0, _lodash2.default)(this.filteredValues, this.sortKeys, this.sortOrders);
 	        },
@@ -493,6 +499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 	        },
+	
 	        processFilter: function processFilter() {
 	            var self = this;
 	
@@ -565,6 +572,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            this.fireFilterModifiedEvent(this.filterKey);
 	        },
+	
 	        fetchData: function fetchData(dataCallBackFunction) {
 	            var _this = this;
 	
@@ -642,6 +650,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                });
 	            }
 	        },
+	
 	        buildColumnObject: function buildColumnObject(column) {
 	            var obj = {};
 	
@@ -667,6 +676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            return obj;
 	        },
+	
 	        setColumns: function setColumns() {
 	            var self = this;
 	            this.displayCols = [];
@@ -675,6 +685,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                self.displayCols.push(obj);
 	            });
 	        },
+	
 	        setSorting: function setSorting() {
 	            if (this.hasDefaultSorting) {
 	                this.setDefaultSorting();
@@ -695,9 +706,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.sortKeys = this.defaultSortKeys;
 	            this.sortOrders = this.defaultSortOrders;
 	        },
+	
 	        resetSortOrders: function resetSortOrders() {
 	            this.sortOrders = [];
 	        },
+	
 	        sortBy: function sortBy(event, key) {
 	
 	            if (this.sortable) {
@@ -731,6 +744,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.fireSortModifiedEvent(this.sortKeys, this.sortOrders);
 	            }
 	        },
+	
 	        getColumnClasses: function getColumnClasses(column) {
 	            var classes = [column.columnClasses];
 	            var key = column.name;
@@ -754,6 +768,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return classes;
 	        },
+	
 	        getCellClasses: function getCellClasses(column, entry) {
 	            var result = column.cellClasses;
 	            if (column.editable) {
@@ -761,28 +776,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return result;
 	        },
+	
 	        toggleColumn: function toggleColumn(column) {
 	            column.visible = !column.visible;
 	            this.fireColumnToggledEvent(column);
 	        },
+	
 	        closeDropdown: function closeDropdown() {
 	            this.columnMenuOpen = false;
 	        },
+	
 	        fireColumnToggledEvent: function fireColumnToggledEvent(column) {
 	            this.$parent.$emit('columnToggledEvent', column, this.displayColsVisible);
 	        },
+	
 	        fireFilterModifiedEvent: function fireFilterModifiedEvent(filter, sort) {
 	            this.$parent.$emit('filterModifiedEvent', filter, sort);
 	        },
+	
 	        fireSortModifiedEvent: function fireSortModifiedEvent(sortKeys, sortOrders) {
 	            this.$parent.$emit('sortModifiedEvent', sortKeys, sortOrders);
 	        },
+	
 	        fireRowClickedEvent: function fireRowClickedEvent(entry) {
 	            this.$parent.$emit('rowClickedEvent', entry);
 	        },
+	
 	        fireCellClickedEvent: function fireCellClickedEvent(entry, column) {
 	            this.$parent.$emit('cellClickedEvent', entry, column);
 	        },
+	
 	        fireFooterCellClickedEvent: function fireFooterCellClickedEvent(column) {
 	            this.$parent.$emit('footerCellClickedEvent', column);
 	        }
