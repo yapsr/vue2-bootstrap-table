@@ -1,5 +1,9 @@
 <template>
     <div id="maindiv" @click="closeDropdown" @keyup.esc="closeDropdown">
+
+        <div class="col-sm-12">
+            <div v-for="message in messages" :class="message.class" v-html="message.render()"></div>
+        </div>
         <div class="col-sm-6">
             <div v-if="showFilter" style="padding-top: 10px;padding-bottom: 10px;">
                 <div class="input-group">
@@ -41,9 +45,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(entry, index) in filteredValuesSorted" x-track-by="id" @click="fireRowClickedEvent(entry)">
-                    <td v-for="column in displayColsVisible" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
-                        <vue-bootstrap-cell :column="column" :entry="entry" @changed-entry="changedEntry"></vue-bootstrap-cell>
+                <tr v-for="(entry, row) in filteredValuesSorted" track-by="entry.id" @click="fireRowClickedEvent(entry)">
+                    <td v-for="(column, col) in displayColsVisible" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
+                        <vue-bootstrap-cell
+                                :column="column"
+                                :entry="entry"
+                                :ref="getCellReference(col, row)"
+                                @changed-entry="onChangedEntry"
+                                @down="onDown(col, row, ...arguments)"
+                                @up="onUp(col, row, ...arguments)"
+                                @right="onRight(col, row, ...arguments)"
+                                @left="onLeft(col, row, ...arguments)"
+                        ></vue-bootstrap-cell>
                     </td>
                 </tr>
                 <tr class="footer">
@@ -84,7 +97,6 @@
     import lodashfindindex from 'lodash.findindex';
     import vueBootstrapCell from './VueBootstrapCell.vue';
     import vueBootstrapFooterCell from './VueBootstrapFooterCell.vue';
-
 
 
     export default {
@@ -234,6 +246,14 @@
                 default: function () {
                     return {};
                 }
+            },
+
+            messages: {
+                type: Array,
+                required: false,
+                default: function () {
+                    return [];
+                }
             }
 
         },
@@ -247,7 +267,7 @@
                 filteredValues: [],
                 page: 1,
                 echo: 0,
-                loading: false,
+                loading: false
             };
         },
         mounted: function () {
@@ -257,6 +277,7 @@
             this.setComputedValues();
             this.setSorting();
             this.setColumns();
+            this.setValueTypes();
             this.filterKey = this.defaultFilterKey;
 
             this.loading = false;
@@ -270,7 +291,7 @@
             this.$off('cellDataModifiedEvent', this.fireCellDataModifiedEvent);
         },
         watch: {
-            filteredValues: function() {
+            filteredValues: function () {
                 console.log('watch: filteredValues');
             },
             values: function () {
@@ -318,7 +339,7 @@
             loading: function () {
                 console.log('watch: loading');
             },
-            extendedMethods: function() {
+            extendedMethods: function () {
                 console.log('watch: extendedMethods');
             }
         },
@@ -358,7 +379,7 @@
                     temp = this.page - 2;
                 return ((temp + 4) < this.maxPage);
             },
-            filteredSize: function() {
+            filteredSize: function () {
                 return this.values.length;
             },
             hasDefaultSorting: function () {
@@ -367,11 +388,11 @@
 
         },
         methods: {
-            getExtendedMethod: function(value) {
+            getExtendedMethod: function (value) {
 
                 let result = false;
 
-                if (typeof value === 'undefined'){
+                if (typeof value === 'undefined') {
                     result = false;
                 } else if (typeof this.extendedMethods[value] === 'function') {
                     result = this.extendedMethods[value];
@@ -383,11 +404,40 @@
 
                 return result;
             },
-            changedEntry: function(entry) {
+            getCellReference(col, row) {
+                let result = col+':'+row;
+                return result;
+            },
+            toggleInputReference(ref, index) {
+                if (typeof index === 'undefined') {
+                    index = 0;
+                }
+                this.$refs[ref][index].toggleInput();
+            },
+            onDown: function(col, row, ...arg) {
+                let ref = this.getCellReference(col, row+1);
+                this.toggleInputReference(ref);
+            },
+            onUp: function(col, row, ...arg) {
+                let ref = this.getCellReference(col, row-1);
+                this.toggleInputReference(ref);
+            },
+            onLeft: function(col, row, ...arg) {
+                let ref = this.getCellReference(col-1, row);
+                this.toggleInputReference(ref);
+            },
+            onRight: function(col, row, ...arg) {
+                let ref = this.getCellReference(col+1, row);
+                this.toggleInputReference(ref);
+            },
+            onChangedEntry: function (entry) {
                 console.log('table.changedEntry', entry);
 
                 let obj = this.values;
-                let key = this.getKeyFromEntryId(this.values, entry);
+                let key = this.getKeyByValue(this.values, 'id', entry.id);
+                if (!key) {
+                    console.warn('table.changedEntry: Adding new entry, because id was not found in values.')
+                }
                 let val = entry;
                 this.$set(obj, key, val);
 
@@ -395,35 +445,70 @@
                 this.processFilter();
 
             },
-            getKeyFromEntryId: function(values, entry) {
-                for(let i in values) {
-                    if (values[i].id === entry.id) {
+            getKeyByValue: function (arr, key, value) {
+                for (let i=0, l = arr.length; i < l; i++) {
+                    if (arr[i][key] === value) {
+                        // console.log('getKeyByValue', arr, key, value, i);
                         return i;
                     }
                 }
-            },
+            }
+            ,
             fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
                 this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
-            },
+            }
+            ,
             sortFilteredValues: function () {
                 return lodashorderby(this.filteredValues, this.sortKeys, this.sortOrders);
             },
+            castToType(value, type) {
 
+                let result = null;
+
+                if (type === 'decimal') {
+                    result =  parseFloat(String(value).replace(',','.'));
+                } else if (type === 'money') {
+                    result = parseFloat(parseFloat(String(value).replace(',','.')).toFixed(2));
+                } else if (type === 'integer') {
+                    result = parseInt(value);
+                } else {
+                    // Treat as string
+                    result = value;
+                }
+                console.log('castToType', value, type, result);
+                return result;
+
+            }
+            ,
+            setValueTypes: function() {
+                for (let i in this.columns) {
+                    let column = this.columns[i];
+
+                    if (column.type) {
+
+                        for (let j in this.values) {
+                            let entry = this.values[j];
+
+                            this.castToType( entry[ column.name ], column.type);
+
+                        }
+                    }
+                }
+            },
 
             /**
-             * Set all computed column values
-             *
+             * Set all extended computed column values dynamically
              *
              */
-            setComputedValues: function() {
+            setComputedValues: function () {
 
                 let fn = {};
 
-                for(let i in this.columns) {
+                for (let i in this.columns) {
 
                     let column = this.columns[i];
 
-                    if (fn = this.getExtendedMethod( column.computed )) {
+                    if (fn = this.getExtendedMethod(column.computed)) {
 
                         for (let j in this.values) {
 
@@ -438,7 +523,7 @@
 
                             let name = this.columns[i].name;
 
-                            value[ name ] = fn(params);
+                            value[name] = fn(params);
 
                             this.$set(obj, prop, value);
                         }
@@ -446,7 +531,8 @@
                 }
 
 
-            },
+            }
+            ,
             processFilter: function () {
                 let self = this;
 
@@ -495,7 +581,6 @@
                             return false;
                         });
                     } else {
-
                         console.log('No filtering');
                         this.filteredValues = this.values;
                     }
@@ -503,6 +588,7 @@
 
                     // Pagination
                     if (this.paginated) {
+                        console.log('Paginating...')
                         let startIndex = (this.page - 1) * this.pageSize;
                         let index = 0;
                         let result = [];
@@ -520,7 +606,8 @@
 
                 this.fireFilterModifiedEvent(this.filterKey);
 
-            },
+            }
+            ,
             fetchData: function (dataCallBackFunction) {
                 let self = this;
                 let ajaxParameters = {
@@ -600,7 +687,8 @@
                             this.$parent.$emit('ajaxLoadingError', e);
                         });
                 }
-            },
+            }
+            ,
             buildColumnObject: function (column) {
                 let obj = {};
 
@@ -631,6 +719,16 @@
                 else
                     obj.computed = false;
 
+                if (typeof column.validate !== "undefined")
+                    obj.validate = column.validate;
+                else
+                    obj.validate = false;
+
+                if (typeof column.type !== "undefined")
+                    obj.type = column.type;
+                else
+                    obj.type = 'string';
+
                 if (typeof column.footer !== "undefined")
                     obj.footer = column.footer;
                 else
@@ -652,7 +750,8 @@
                     obj.cellClasses = "";
 
                 return obj;
-            },
+            }
+            ,
             setColumns: function () {
                 let self = this;
                 this.displayCols = [];
@@ -660,7 +759,8 @@
                     let obj = self.buildColumnObject(column);
                     self.displayCols.push(obj);
                 });
-            },
+            }
+            ,
             setSorting: function () {
                 if (this.hasDefaultSorting) {
                     this.setDefaultSorting();
@@ -668,7 +768,8 @@
                     this.sortKeys = [];
                     this.sortOrders = [];
                 }
-            },
+            }
+            ,
 
             /**
              * Example: { "votes":"desc", "id":"asc" }
@@ -680,10 +781,12 @@
             setDefaultSorting: function () {
                 this.sortKeys = this.defaultSortKeys;
                 this.sortOrders = this.defaultSortOrders;
-            },
+            }
+            ,
             resetSortOrders: function () {
                 this.sortOrders = [];
-            },
+            }
+            ,
             sortBy: function (event, key) {
 
                 if (this.sortable) {
@@ -717,7 +820,8 @@
                     this.fireSortModifiedEvent(this.sortKeys, this.sortOrders);
 
                 }
-            },
+            }
+            ,
             getColumnClasses: function (column) {
                 let classes = [column.columnClasses];
                 let key = column.name;
@@ -740,36 +844,45 @@
                     }
                 }
                 return classes;
-            },
+            }
+            ,
             getCellClasses: function (column, entry) {
                 let result = column.cellClasses;
                 if (column.editable) {
                     result = result + " editable";
                 }
                 return result;
-            },
+            }
+            ,
             toggleColumn: function (column) {
                 column.visible = !column.visible;
                 this.fireColumnToggledEvent(column);
-            },
+            }
+            ,
             closeDropdown: function () {
                 this.columnMenuOpen = false;
-            },
+            }
+            ,
             fireColumnToggledEvent: function (column) {
                 this.$parent.$emit('columnToggledEvent', column, this.displayColsVisible);
-            },
+            }
+            ,
             fireFilterModifiedEvent: function (filter, sort) {
                 this.$parent.$emit('filterModifiedEvent', filter, sort);
-            },
+            }
+            ,
             fireSortModifiedEvent: function (sortKeys, sortOrders) {
                 this.$parent.$emit('sortModifiedEvent', sortKeys, sortOrders)
-            },
+            }
+            ,
             fireRowClickedEvent: function (entry) {
                 this.$parent.$emit('rowClickedEvent', entry);
-            },
+            }
+            ,
             fireCellClickedEvent: function (entry, column) {
                 this.$parent.$emit('cellClickedEvent', entry, column);
-            },
+            }
+            ,
             fireFooterCellClickedEvent: function (column) {
                 this.$parent.$emit('footerCellClickedEvent', column);
             }

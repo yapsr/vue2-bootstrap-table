@@ -287,6 +287,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	            default: function _default() {
 	                return {};
 	            }
+	        },
+	
+	        messages: {
+	            type: Array,
+	            required: false,
+	            default: function _default() {
+	                return [];
+	            }
 	        }
 	
 	    },
@@ -310,6 +318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.setComputedValues();
 	        this.setSorting();
 	        this.setColumns();
+	        this.setValueTypes();
 	        this.filterKey = this.defaultFilterKey;
 	
 	        this.loading = false;
@@ -433,34 +442,98 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            return result;
 	        },
-	        changedEntry: function changedEntry(entry) {
+	        getCellReference: function getCellReference(col, row) {
+	            var result = col + ':' + row;
+	            return result;
+	        },
+	        toggleInputReference: function toggleInputReference(ref, index) {
+	            if (typeof index === 'undefined') {
+	                index = 0;
+	            }
+	            this.$refs[ref][index].toggleInput();
+	        },
+	
+	        onDown: function onDown(col, row) {
+	            var ref = this.getCellReference(col, row + 1);
+	            this.toggleInputReference(ref);
+	        },
+	        onUp: function onUp(col, row) {
+	            var ref = this.getCellReference(col, row - 1);
+	            this.toggleInputReference(ref);
+	        },
+	        onLeft: function onLeft(col, row) {
+	            var ref = this.getCellReference(col - 1, row);
+	            this.toggleInputReference(ref);
+	        },
+	        onRight: function onRight(col, row) {
+	            var ref = this.getCellReference(col + 1, row);
+	            this.toggleInputReference(ref);
+	        },
+	        onChangedEntry: function onChangedEntry(entry) {
 	            console.log('table.changedEntry', entry);
 	
 	            var obj = this.values;
-	            var key = this.getKeyFromEntryId(this.values, entry);
+	            var key = this.getKeyByValue(this.values, 'id', entry.id);
+	            if (!key) {
+	                console.warn('table.changedEntry: Adding new entry, because id was not found in values.');
+	            }
 	            var val = entry;
 	            this.$set(obj, key, val);
 	
 	            this.setComputedValues();
 	            this.processFilter();
 	        },
-	        getKeyFromEntryId: function getKeyFromEntryId(values, entry) {
-	            for (var i in values) {
-	                if (values[i].id === entry.id) {
+	        getKeyByValue: function getKeyByValue(arr, key, value) {
+	            for (var i = 0, l = arr.length; i < l; i++) {
+	                if (arr[i][key] === value) {
+	                    // console.log('getKeyByValue', arr, key, value, i);
 	                    return i;
 	                }
 	            }
 	        },
+	
 	        fireCellDataModifiedEvent: function fireCellDataModifiedEvent(originalValue, newValue, columnTitle, entry) {
 	            this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
 	        },
+	
 	        sortFilteredValues: function sortFilteredValues() {
 	            return (0, _lodash2.default)(this.filteredValues, this.sortKeys, this.sortOrders);
 	        },
+	        castToType: function castToType(value, type) {
+	
+	            var result = null;
+	
+	            if (type === 'decimal') {
+	                result = parseFloat(String(value).replace(',', '.'));
+	            } else if (type === 'money') {
+	                result = parseFloat(parseFloat(String(value).replace(',', '.')).toFixed(2));
+	            } else if (type === 'integer') {
+	                result = parseInt(value);
+	            } else {
+	                // Treat as string
+	                result = value;
+	            }
+	            console.log('castToType', value, type, result);
+	            return result;
+	        },
+	
+	        setValueTypes: function setValueTypes() {
+	            for (var i in this.columns) {
+	                var column = this.columns[i];
+	
+	                if (column.type) {
+	
+	                    for (var j in this.values) {
+	                        var entry = this.values[j];
+	
+	                        this.castToType(entry[column.name], column.type);
+	                    }
+	                }
+	            }
+	        },
 	
 	        /**
-	         * Set all computed column values
-	         *
+	         * Set all extended computed column values dynamically
 	         *
 	         */
 	        setComputedValues: function setComputedValues() {
@@ -493,6 +566,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 	        },
+	
 	        processFilter: function processFilter() {
 	            var self = this;
 	
@@ -541,13 +615,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        return false;
 	                    });
 	                } else {
-	
 	                    console.log('No filtering');
 	                    this.filteredValues = this.values;
 	                }
 	
 	                // Pagination
 	                if (this.paginated) {
+	                    console.log('Paginating...');
 	                    var startIndex = (this.page - 1) * this.pageSize;
 	                    var index = 0;
 	                    var result = [];
@@ -565,6 +639,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            this.fireFilterModifiedEvent(this.filterKey);
 	        },
+	
 	        fetchData: function fetchData(dataCallBackFunction) {
 	            var _this = this;
 	
@@ -642,6 +717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                });
 	            }
 	        },
+	
 	        buildColumnObject: function buildColumnObject(column) {
 	            var obj = {};
 	
@@ -657,6 +733,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            if (typeof column.computed !== "undefined") obj.computed = column.computed;else obj.computed = false;
 	
+	            if (typeof column.validate !== "undefined") obj.validate = column.validate;else obj.validate = false;
+	
+	            if (typeof column.type !== "undefined") obj.type = column.type;else obj.type = 'string';
+	
 	            if (typeof column.footer !== "undefined") obj.footer = column.footer;else obj.footer = false;
 	
 	            if (typeof column.footerRender !== "undefined") obj.footerRender = column.footerRender;else obj.footerRender = false;
@@ -667,6 +747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            return obj;
 	        },
+	
 	        setColumns: function setColumns() {
 	            var self = this;
 	            this.displayCols = [];
@@ -675,6 +756,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                self.displayCols.push(obj);
 	            });
 	        },
+	
 	        setSorting: function setSorting() {
 	            if (this.hasDefaultSorting) {
 	                this.setDefaultSorting();
@@ -695,9 +777,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.sortKeys = this.defaultSortKeys;
 	            this.sortOrders = this.defaultSortOrders;
 	        },
+	
 	        resetSortOrders: function resetSortOrders() {
 	            this.sortOrders = [];
 	        },
+	
 	        sortBy: function sortBy(event, key) {
 	
 	            if (this.sortable) {
@@ -731,6 +815,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.fireSortModifiedEvent(this.sortKeys, this.sortOrders);
 	            }
 	        },
+	
 	        getColumnClasses: function getColumnClasses(column) {
 	            var classes = [column.columnClasses];
 	            var key = column.name;
@@ -754,6 +839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return classes;
 	        },
+	
 	        getCellClasses: function getCellClasses(column, entry) {
 	            var result = column.cellClasses;
 	            if (column.editable) {
@@ -761,28 +847,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return result;
 	        },
+	
 	        toggleColumn: function toggleColumn(column) {
 	            column.visible = !column.visible;
 	            this.fireColumnToggledEvent(column);
 	        },
+	
 	        closeDropdown: function closeDropdown() {
 	            this.columnMenuOpen = false;
 	        },
+	
 	        fireColumnToggledEvent: function fireColumnToggledEvent(column) {
 	            this.$parent.$emit('columnToggledEvent', column, this.displayColsVisible);
 	        },
+	
 	        fireFilterModifiedEvent: function fireFilterModifiedEvent(filter, sort) {
 	            this.$parent.$emit('filterModifiedEvent', filter, sort);
 	        },
+	
 	        fireSortModifiedEvent: function fireSortModifiedEvent(sortKeys, sortOrders) {
 	            this.$parent.$emit('sortModifiedEvent', sortKeys, sortOrders);
 	        },
+	
 	        fireRowClickedEvent: function fireRowClickedEvent(entry) {
 	            this.$parent.$emit('rowClickedEvent', entry);
 	        },
+	
 	        fireCellClickedEvent: function fireCellClickedEvent(entry, column) {
 	            this.$parent.$emit('cellClickedEvent', entry, column);
 	        },
+	
 	        fireFooterCellClickedEvent: function fireFooterCellClickedEvent(column) {
 	            this.$parent.$emit('footerCellClickedEvent', column);
 	        }
@@ -796,6 +890,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	}; // <template>
 	//     <div id="maindiv" @click="closeDropdown" @keyup.esc="closeDropdown">
+	//
+	//         <div class="col-sm-12">
+	//             <div v-for="message in messages" :class="message.class" v-html="message.render()"></div>
+	//         </div>
 	//         <div class="col-sm-6">
 	//             <div v-if="showFilter" style="padding-top: 10px;padding-bottom: 10px;">
 	//                 <div class="input-group">
@@ -837,9 +935,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	//                 </tr>
 	//                 </thead>
 	//                 <tbody>
-	//                 <tr v-for="(entry, index) in filteredValuesSorted" x-track-by="id" @click="fireRowClickedEvent(entry)">
-	//                     <td v-for="column in displayColsVisible" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
-	//                         <vue-bootstrap-cell :column="column" :entry="entry" @changed-entry="changedEntry"></vue-bootstrap-cell>
+	//                 <tr v-for="(entry, row) in filteredValuesSorted" track-by="entry.id" @click="fireRowClickedEvent(entry)">
+	//                     <td v-for="(column, col) in displayColsVisible" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
+	//                         <vue-bootstrap-cell
+	//                                 :column="column"
+	//                                 :entry="entry"
+	//                                 :ref="getCellReference(col, row)"
+	//                                 @changed-entry="onChangedEntry"
+	//                                 @down="onDown(col, row, ...arguments)"
+	//                                 @up="onUp(col, row, ...arguments)"
+	//                                 @right="onRight(col, row, ...arguments)"
+	//                                 @left="onLeft(col, row, ...arguments)"
+	//                         ></vue-bootstrap-cell>
 	//                     </td>
 	//                 </tr>
 	//                 <tr class="footer">
@@ -8966,22 +9073,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 	// <template>
-	//     <span v-if="!column.editable" v-html="rendered"></span>
-	//     <span v-else-if="!enabled" @click="toggleInput" v-html="rendered"></span>
-	//     <span v-else>
-	//           <input type="text" ref="inputfield" class="form-control" v-model="entryValue"
-	//                  @keyup.enter="onKeyEnter"
-	//                  @keyup.tab="onKeyTab"
-	//                  @keyup.esc="onKeyEsc"
-	//                  @keyup.down="onKeyDown"
-	//                  @keyup.up="onKeyUp"
-	//                  @keyup.left="onKeyLeft"
-	//                  @keyup.right="onKeyRight"
-	//                  @keyup.107="onKeyPlus"
-	//                  @keyup.109="onKeyMinus"
-	//                  @keyup="onAnyKey"
-	//                  @blur="onBlur"
-	//           ></span>
+	//     <div>
+	//         <span v-if="!column.editable" v-html="rendered"></span>
+	//         <span v-else-if="!enabled" @click="toggleInput" v-html="rendered"></span>
+	//         <span v-else>
+	//               <input type="text" ref="inputfield" class="form-control" v-model="entryValue"
+	//                      @keyup.enter="onKeyEnter"
+	//                      @keyup.tab="onKeyTab"
+	//                      @keyup.esc="onKeyEsc"
+	//                      @keyup.down="onKeyDown"
+	//                      @keyup.up="onKeyUp"
+	//                      @keyup.left="onKeyLeft"
+	//                      @keyup.right="onKeyRight"
+	//                      @keyup.107="onKeyPlus"
+	//                      @keyup.109="onKeyMinus"
+	//                      @keyup="onAnyKey"
+	//                      @blur="onBlur"
+	//               /></span>
+	//         <span v-if="message.text">
+	//             <span :class="message.iconClass" :title="message.text"></span>
+	//         </span>
+	//         <span v-else></span>
+	//
+	//     </div>
 	// </template>
 	//
 	// <script>
@@ -8993,16 +9107,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    data: function data() {
 	        return {
 	            enabled: false,
-	            entryValue: ""
+	            entryValue: "",
+	            message: {}
 	        };
 	    },
-	
+	    watch: {
+	        entryValue: function entryValue() {
+	            console.log('watch: entryValue', this.column);
+	        }
+	    },
 	    computed: {
-	        rendered: function rendered() {
+	        value: function value() {
 	
 	            var result = this.entry[this.column.name];
 	
-	            var fn = null;
+	            var fn = {};
 	
 	            var params = {
 	                column: this.column,
@@ -9014,38 +9133,74 @@ return /******/ (function(modules) { // webpackBootstrap
 	                result = fn(params);
 	
 	                // Hack: Set computed value to entry
-	                this.entry[this.column.name] = String(result);
+	                this.entry[this.column.name] = result;
 	            }
+	
+	            // trigger validation
+	            var valid = this.isValid;
+	
+	            return result;
+	        },
+	        isValid: function isValid() {
+	
+	            var fn = {};
+	
+	            if (fn = this.$parent.getExtendedMethod(this.column.validate)) {
+	
+	                var params = {
+	                    column: this.column,
+	                    entry: this.entry
+	                };
+	
+	                var result = fn(params);
+	
+	                this.message = result.message;
+	
+	                if (result.error === 1) {
+	                    return false;
+	                } else {
+	                    return true;
+	                }
+	            }
+	
+	            this.message = {};
+	
+	            return true;
+	        },
+	        rendered: function rendered() {
+	
+	            var fn = {};
 	
 	            if (fn = this.$parent.getExtendedMethod(this.column.render)) {
-	                return String(fn(result, params));
+	
+	                var params = {
+	                    column: this.column,
+	                    entry: this.entry
+	                };
+	
+	                return String(fn(this.value, params));
 	            }
 	
-	            return this.entry[this.column.name];
+	            return this.value;
 	        }
 	    },
 	
 	    methods: {
 	
-	        saveThis: function saveThis() {
-	            console.log('cell.saveThis', this.column, this.entry, this.entryValue);
+	        save: function save() {
+	            console.log('cell.save', this.column, this.entry, this.entryValue);
 	            var originalValue = this.entry[this.column.name];
 	
-	            // In stead of
-	            // this.entry[this.column.name] = this.entryValue;
-	            //
-	            // use
-	            //
-	            // Vue.set(example1.items, indexOfItem, newValue)
-	            //
+	            this.entryValue = this.$parent.castToType(this.entryValue, this.column.type);
+	
 	            this.$set(this.entry, this.column.name, this.entryValue);
 	
 	            this.$emit('input', this.entryValue);
 	            this.$emit('changed-entry', this.entry);
 	            this.$root.$emit('cellDataModifiedEvent', originalValue, this.entryValue, this.column.name, this.entry);
 	        },
-	        cancelThis: function cancelThis() {
-	            console.log('cancelThis');
+	        cancel: function cancel() {
+	            console.log('cancel');
 	            this.entryValue = this.entry[this.column.name];
 	            this.enabled = false;
 	        },
@@ -9064,64 +9219,74 @@ return /******/ (function(modules) { // webpackBootstrap
 	        onBlur: function onBlur(event) {
 	            // console.log('onBlur', event);
 	            // if (this.enabled) {
-	            //     this.saveThis();
+	            //     this.save();
 	            // } else {
-	            //     this.cancelThis();
+	            //     this.cancel();
 	            // }
 	        },
 	        onKeyEnter: function onKeyEnter(event) {
 	            console.log('onKeyEnter', event);
-	            this.saveThis();
+	            this.save();
 	            this.enabled = false;
-	            // @todo Move down
+	            this.$emit('down', event);
 	        },
 	        onKeyTab: function onKeyTab(event) {
 	            console.log('onKeyTab', event);
-	            this.saveThis();
+	            this.save();
 	            this.enabled = false;
-	            // @todo Move right
+	            this.$emit('right', event);
 	        },
 	        onKeyEsc: function onKeyEsc(event) {
 	            console.log('onKeyEsc', event);
-	            this.cancelThis();
+	            this.cancel();
 	            this.enabled = false;
 	        },
 	        onKeyDown: function onKeyDown(event) {
 	            console.log('onKeyDown', event);
-	            this.saveThis();
+	            this.save();
 	            this.enabled = false;
-	            // @todo Move down
+	            this.$emit('down', event);
 	        },
 	        onKeyUp: function onKeyUp(event) {
 	            console.log('onKeyUp', event);
-	            this.saveThis();
+	            this.save();
 	            this.enabled = false;
-	            // @todo Move up
+	            this.$emit('up', event);
 	        },
 	        onKeyLeft: function onKeyLeft(event) {
 	            console.log('onKeyLeft', event);
-	            this.saveThis();
+	            this.save();
 	            this.enabled = false;
-	            // @todo Move left
+	            this.$emit('left', event);
 	        },
 	        onKeyRight: function onKeyRight(event) {
 	            console.log('onKeyRight', event);
-	            this.saveThis();
+	            this.save();
 	            this.enabled = false;
-	            // @todo Move right
+	            this.$emit('right', event);
 	        },
 	        onKeyPlus: function onKeyPlus(event) {
 	            console.log('onKeyPlus', event);
-	            this.entryValue = parseInt(this.entryValue) + 1;
-	            // this.saveThis(); // @todo First fix DOM when sorting
+	            if (this.column.type === 'integer') {
+	                this.entryValue = parseInt(this.entryValue) + 1;
+	            } else if (this.column.type === 'decimal') {
+	                this.entryValue = this.$parent.castToType(this.entryValue, 'decimal') + 1;
+	            } else if (this.column.type === 'money') {
+	                this.entryValue = this.$parent.castToType(this.entryValue, 'decimal') + 1;
+	            }
 	        },
 	        onKeyMinus: function onKeyMinus(event) {
 	            console.log('onKeyMinus', event);
-	            this.entryValue = parseInt(this.entryValue) - 1;
-	            // this.saveThis();// @todo First fix DOM when sorting
+	            if (this.column.type === 'integer') {
+	                this.entryValue = parseInt(this.entryValue) - 1;
+	            } else if (this.column.type === 'decimal') {
+	                this.entryValue = this.$parent.castToType(this.entryValue, 'decimal') - 1;
+	            } else if (this.column.type === 'money') {
+	                this.entryValue = this.$parent.castToType(this.entryValue, 'decimal') - 1;
+	            }
 	        },
 	        onAnyKey: function onAnyKey(event) {
-	            console.log('onAnyKey', event);
+	            // console.log('onAnyKey', event);
 	        }
 	
 	    }
@@ -9135,7 +9300,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 44 */
 /***/ (function(module, exports) {
 
-	module.exports = "\n<span v-if=\"!column.editable\" v-html=\"rendered\"></span>\n<span v-else-if=\"!enabled\" @click=\"toggleInput\" v-html=\"rendered\"></span>\n<span v-else>\n      <input type=\"text\" ref=\"inputfield\" class=\"form-control\" v-model=\"entryValue\"\n             @keyup.enter=\"onKeyEnter\"\n             @keyup.tab=\"onKeyTab\"\n             @keyup.esc=\"onKeyEsc\"\n             @keyup.down=\"onKeyDown\"\n             @keyup.up=\"onKeyUp\"\n             @keyup.left=\"onKeyLeft\"\n             @keyup.right=\"onKeyRight\"\n             @keyup.107=\"onKeyPlus\"\n             @keyup.109=\"onKeyMinus\"\n             @keyup=\"onAnyKey\"\n             @blur=\"onBlur\"\n      ></span>\n";
+	module.exports = "\n<div>\n    <span v-if=\"!column.editable\" v-html=\"rendered\"></span>\n    <span v-else-if=\"!enabled\" @click=\"toggleInput\" v-html=\"rendered\"></span>\n    <span v-else>\n          <input type=\"text\" ref=\"inputfield\" class=\"form-control\" v-model=\"entryValue\"\n                 @keyup.enter=\"onKeyEnter\"\n                 @keyup.tab=\"onKeyTab\"\n                 @keyup.esc=\"onKeyEsc\"\n                 @keyup.down=\"onKeyDown\"\n                 @keyup.up=\"onKeyUp\"\n                 @keyup.left=\"onKeyLeft\"\n                 @keyup.right=\"onKeyRight\"\n                 @keyup.107=\"onKeyPlus\"\n                 @keyup.109=\"onKeyMinus\"\n                 @keyup=\"onAnyKey\"\n                 @blur=\"onBlur\"\n          /></span>\n    <span v-if=\"message.text\">\n        <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n    </span>\n    <span v-else></span>\n\n</div>\n";
 
 /***/ }),
 /* 45 */
@@ -9238,7 +9403,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 48 */
 /***/ (function(module, exports) {
 
-	module.exports = "\n<div id=\"maindiv\" @click=\"closeDropdown\" @keyup.esc=\"closeDropdown\">\n    <div class=\"col-sm-6\">\n        <div v-if=\"showFilter\" style=\"padding-top: 10px;padding-bottom: 10px;\">\n            <div class=\"input-group\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Filter\" v-model=\"filterKey\">\n                <div class=\"input-group-addon\">\n                    <i class=\"glyphicon glyphicon-search\"></i>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-6\">\n        <div v-if=\"showColumnPicker\" style=\"padding-top: 10px;padding-bottom: 10px;float:right;\">\n            <div class=\"btn-group\" :class=\"{'open' : columnMenuOpen}\">\n                <button @click.stop.prevent=\"columnMenuOpen = !columnMenuOpen\" @keyup.esc=\"columnMenuOpen = false\"\n                        type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"\n                        aria-haspopup=\"true\">\n                    Columns <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\">\n                    <li v-for=\"(column, index) in displayCols\">\n                        <a href=\"#\" @click.stop.prevent=\"toggleColumn(column)\">\n                            <i v-if=\"column.visible\" class=\"glyphicon glyphicon-ok\"></i> {{column.title}}\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-12\">\n        <div id=\"loadingdiv\" :class=\"{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}\">\n            <div class=\"spinner\"></div>\n        </div>\n        <table class=\"table table-bordered table-hover table-condensed table-striped vue-table\">\n            <thead>\n            <tr>\n                <th v-for=\"(column, index) in displayColsVisible\" @click=\"sortBy($event, column.name)\" :class=\"getColumnClasses(column)\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr v-for=\"(entry, index) in filteredValuesSorted\" x-track-by=\"id\" @click=\"fireRowClickedEvent(entry)\">\n                <td v-for=\"column in displayColsVisible\" v-show=\"column.visible\" :class=\"getCellClasses(column, entry)\" @click=\"fireCellClickedEvent(column, entry)\">\n                    <vue-bootstrap-cell :column=\"column\" :entry=\"entry\" @changed-entry=\"changedEntry\"></vue-bootstrap-cell>\n                </td>\n            </tr>\n            <tr class=\"footer\">\n                <td v-for=\"(column, index) in displayColsVisible\" v-show=\"column.visible\" :class=\"getCellClasses(column)\" @click=\"fireFooterCellClickedEvent(column)\">\n                    <vue-bootstrap-footer-cell :column=\"column\" :values=\"filteredValuesSorted\"></vue-bootstrap-footer-cell>\n                </td>\n            </tr>\n            </tbody>\n        </table>\n    </div>\n    <div v-if=\"paginated\" class=\"col-sm-12\">\n        <div class=\"btn-toolbar\" role=\"toolbar\" aria-label=\"pagination bar\">\n            <div class=\"btn-group\" role=\"group\" aria-label=\"first page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=1\">&laquo;</button>\n            </div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"pages\">\n                <button v-for=\"(pageNumber, index) in validPageNumbers\"\n                        type=\"button\" class=\"btn btn-default\"\n                        :class=\"{ active: page===pageNumber }\"\n                        @click=\"page=pageNumber\">\n                    {{index}}\n                </button>\n            </div>\n            <div class=\"btn-group\" v-if=\"showPaginationEtc\">...</div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"last page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=maxPage\">&raquo;</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div id=\"maindiv\" @click=\"closeDropdown\" @keyup.esc=\"closeDropdown\">\n\n    <div class=\"col-sm-12\">\n        <div v-for=\"message in messages\" :class=\"message.class\" v-html=\"message.render()\"></div>\n    </div>\n    <div class=\"col-sm-6\">\n        <div v-if=\"showFilter\" style=\"padding-top: 10px;padding-bottom: 10px;\">\n            <div class=\"input-group\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Filter\" v-model=\"filterKey\">\n                <div class=\"input-group-addon\">\n                    <i class=\"glyphicon glyphicon-search\"></i>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-6\">\n        <div v-if=\"showColumnPicker\" style=\"padding-top: 10px;padding-bottom: 10px;float:right;\">\n            <div class=\"btn-group\" :class=\"{'open' : columnMenuOpen}\">\n                <button @click.stop.prevent=\"columnMenuOpen = !columnMenuOpen\" @keyup.esc=\"columnMenuOpen = false\"\n                        type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"\n                        aria-haspopup=\"true\">\n                    Columns <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\">\n                    <li v-for=\"(column, index) in displayCols\">\n                        <a href=\"#\" @click.stop.prevent=\"toggleColumn(column)\">\n                            <i v-if=\"column.visible\" class=\"glyphicon glyphicon-ok\"></i> {{column.title}}\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-12\">\n        <div id=\"loadingdiv\" :class=\"{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}\">\n            <div class=\"spinner\"></div>\n        </div>\n        <table class=\"table table-bordered table-hover table-condensed table-striped vue-table\">\n            <thead>\n            <tr>\n                <th v-for=\"(column, index) in displayColsVisible\" @click=\"sortBy($event, column.name)\" :class=\"getColumnClasses(column)\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr v-for=\"(entry, row) in filteredValuesSorted\" track-by=\"entry.id\" @click=\"fireRowClickedEvent(entry)\">\n                <td v-for=\"(column, col) in displayColsVisible\" v-show=\"column.visible\" :class=\"getCellClasses(column, entry)\" @click=\"fireCellClickedEvent(column, entry)\">\n                    <vue-bootstrap-cell\n                            :column=\"column\"\n                            :entry=\"entry\"\n                            :ref=\"getCellReference(col, row)\"\n                            @changed-entry=\"onChangedEntry\"\n                            @down=\"onDown(col, row, ...arguments)\"\n                            @up=\"onUp(col, row, ...arguments)\"\n                            @right=\"onRight(col, row, ...arguments)\"\n                            @left=\"onLeft(col, row, ...arguments)\"\n                    ></vue-bootstrap-cell>\n                </td>\n            </tr>\n            <tr class=\"footer\">\n                <td v-for=\"(column, index) in displayColsVisible\" v-show=\"column.visible\" :class=\"getCellClasses(column)\" @click=\"fireFooterCellClickedEvent(column)\">\n                    <vue-bootstrap-footer-cell :column=\"column\" :values=\"filteredValuesSorted\"></vue-bootstrap-footer-cell>\n                </td>\n            </tr>\n            </tbody>\n        </table>\n    </div>\n    <div v-if=\"paginated\" class=\"col-sm-12\">\n        <div class=\"btn-toolbar\" role=\"toolbar\" aria-label=\"pagination bar\">\n            <div class=\"btn-group\" role=\"group\" aria-label=\"first page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=1\">&laquo;</button>\n            </div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"pages\">\n                <button v-for=\"(pageNumber, index) in validPageNumbers\"\n                        type=\"button\" class=\"btn btn-default\"\n                        :class=\"{ active: page===pageNumber }\"\n                        @click=\"page=pageNumber\">\n                    {{index}}\n                </button>\n            </div>\n            <div class=\"btn-group\" v-if=\"showPaginationEtc\">...</div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"last page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=maxPage\">&raquo;</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ })
 /******/ ])
