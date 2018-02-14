@@ -739,8 +739,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            if (typeof column.footer !== "undefined") obj.footer = column.footer;else obj.footer = false;
 	
-	            if (typeof column.footerRender !== "undefined") obj.footerRender = column.footerRender;else obj.footerRender = false;
-	
 	            if (typeof column.columnClasses !== "undefined") obj.columnClasses = column.columnClasses;else obj.columnClasses = "";
 	
 	            if (typeof column.cellClasses !== "undefined") obj.cellClasses = column.cellClasses;else obj.cellClasses = "";
@@ -9093,7 +9091,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	//         <span v-if="message.text">
 	//             <span :class="message.iconClass" :title="message.text"></span>
 	//         </span>
-	//         <span v-else></span>
 	//
 	//     </div>
 	// </template>
@@ -9300,7 +9297,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 44 */
 /***/ (function(module, exports) {
 
-	module.exports = "\n<div>\n    <span v-if=\"!column.editable\" v-html=\"rendered\"></span>\n    <span v-else-if=\"!enabled\" @click=\"toggleInput\" v-html=\"rendered\"></span>\n    <span v-else>\n          <input type=\"text\" ref=\"inputfield\" class=\"form-control\" v-model=\"entryValue\"\n                 @keyup.enter=\"onKeyEnter\"\n                 @keyup.tab=\"onKeyTab\"\n                 @keyup.esc=\"onKeyEsc\"\n                 @keyup.down=\"onKeyDown\"\n                 @keyup.up=\"onKeyUp\"\n                 @keyup.left=\"onKeyLeft\"\n                 @keyup.right=\"onKeyRight\"\n                 @keyup.107=\"onKeyPlus\"\n                 @keyup.109=\"onKeyMinus\"\n                 @keyup=\"onAnyKey\"\n                 @blur=\"onBlur\"\n          /></span>\n    <span v-if=\"message.text\">\n        <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n    </span>\n    <span v-else></span>\n\n</div>\n";
+	module.exports = "\n<div>\n    <span v-if=\"!column.editable\" v-html=\"rendered\"></span>\n    <span v-else-if=\"!enabled\" @click=\"toggleInput\" v-html=\"rendered\"></span>\n    <span v-else>\n          <input type=\"text\" ref=\"inputfield\" class=\"form-control\" v-model=\"entryValue\"\n                 @keyup.enter=\"onKeyEnter\"\n                 @keyup.tab=\"onKeyTab\"\n                 @keyup.esc=\"onKeyEsc\"\n                 @keyup.down=\"onKeyDown\"\n                 @keyup.up=\"onKeyUp\"\n                 @keyup.left=\"onKeyLeft\"\n                 @keyup.right=\"onKeyRight\"\n                 @keyup.107=\"onKeyPlus\"\n                 @keyup.109=\"onKeyMinus\"\n                 @keyup=\"onAnyKey\"\n                 @blur=\"onBlur\"\n          /></span>\n    <span v-if=\"message.text\">\n        <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n    </span>\n\n</div>\n";
 
 /***/ }),
 /* 45 */
@@ -9345,7 +9342,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 	// <template>
-	//     <div v-html="rendered"></div>
+	//     <div>
+	//         <span v-html="rendered"></span>
+	//
+	//         <span v-if="message.text">
+	//             <span :class="message.iconClass" :title="message.text"></span>
+	//         </span>
+	//     </div>
+	//
 	// </template>
 	//
 	// <script>
@@ -9357,15 +9361,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    data: function data() {
 	        return {
 	            enabled: false,
-	            entryValue: ""
+	            entryValue: "",
+	            message: {}
 	        };
 	    },
 	
 	    computed: {
-	        rendered: function rendered() {
-	
-	            console.log('footer.rendered()', this.column.name);
-	
+	        value: function value() {
 	            var result = "";
 	
 	            var fn = {};
@@ -9375,15 +9377,59 @@ return /******/ (function(modules) { // webpackBootstrap
 	                'values': this.values
 	            };
 	
-	            if (fn = this.$parent.getExtendedMethod(this.column.footer.compute)) {
+	            if (fn = this.$parent.getExtendedMethod(this.column.footer.computed)) {
 	                result = fn(params);
 	            }
+	
+	            // trigger validation
+	            var valid = this.isValid;
+	
+	            return result;
+	        },
+	        rendered: function rendered() {
+	
+	            console.log('footer.rendered()', this.column.name);
+	
+	            var result = this.value;
+	
+	            var fn = {};
+	
+	            var params = {
+	                'column': this.column,
+	                'values': this.values
+	            };
 	
 	            if (fn = this.$parent.getExtendedMethod(this.column.footer.render)) {
 	                return fn(result, params);
 	            }
 	
 	            return result;
+	        },
+	        isValid: function isValid() {
+	
+	            var fn = {};
+	
+	            if (fn = this.$parent.getExtendedMethod(this.column.footer.validate)) {
+	
+	                var params = {
+	                    column: this.column,
+	                    values: this.values
+	                };
+	
+	                var result = fn(params);
+	
+	                this.message = result.message;
+	
+	                if (result.error === 1) {
+	                    return false;
+	                } else {
+	                    return true;
+	                }
+	            }
+	
+	            this.message = {};
+	
+	            return true;
 	        }
 	    },
 	    methods: {}
@@ -9397,7 +9443,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 47 */
 /***/ (function(module, exports) {
 
-	module.exports = "\n<div v-html=\"rendered\"></div>\n";
+	module.exports = "\n<div>\n    <span v-html=\"rendered\"></span>\n\n    <span v-if=\"message.text\">\n        <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n    </span>\n</div>\n\n";
 
 /***/ }),
 /* 48 */
