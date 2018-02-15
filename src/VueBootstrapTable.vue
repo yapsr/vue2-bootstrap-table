@@ -906,8 +906,8 @@
             fireRowClickedEvent: function (entry) {
                 this.$emit('row-clicked', this.table, entry);
             },
-            fireCellClickedEvent: function (entry, column) {
-                this.$emit('cell-clicked', this.table, entry, column);
+            fireCellClickedEvent: function (column, entry) {
+                this.$emit('cell-clicked', this.table, column, entry);
             },
             fireFooterCellClickedEvent: function (column) {
                 this.$emit('footer-cell-clicked', this.table, column);

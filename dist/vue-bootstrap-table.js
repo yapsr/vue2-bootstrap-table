@@ -896,8 +896,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        fireRowClickedEvent: function fireRowClickedEvent(entry) {
 	            this.$emit('row-clicked', this.table, entry);
 	        },
-	        fireCellClickedEvent: function fireCellClickedEvent(entry, column) {
-	            this.$emit('cell-clicked', this.table, entry, column);
+	        fireCellClickedEvent: function fireCellClickedEvent(column, entry) {
+	            this.$emit('cell-clicked', this.table, column, entry);
 	        },
 	        fireFooterCellClickedEvent: function fireFooterCellClickedEvent(column) {
 	            this.$emit('footer-cell-clicked', this.table, column);
@@ -9106,26 +9106,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	// <template>
 	//     <div>
-	//         <div v-if="message.text" class="message">
-	//             <span :class="message.iconClass" :title="message.text"></span>
-	//         </div>
 	//         <div :class="getClasses">
-	//             <div v-if="!column.editable" v-html="rendered"></div>
-	//             <div v-else-if="!enabled" @click="toggle" v-html="rendered" class="editable"></div>
-	//             <div v-else>
-	//               <input type="text" ref="input" class="form-control editable" v-model="input"
-	//                      @keyup.enter="onKeyEnter"
-	//                      @keyup.tab="onKeyTab"
-	//                      @keyup.esc="onKeyEsc"
-	//                      @keyup.down="onKeyDown"
-	//                      @keyup.up="onKeyUp"
-	//                      @keyup.left="onKeyLeft"
-	//                      @keyup.right="onKeyRight"
-	//                      @keyup.107="onKeyPlus"
-	//                      @keyup.109="onKeyMinus"
-	//                      @keyup="onAnyKey"
-	//                      @blur="onBlur"
-	//               /></div>
+	//             <div v-if="message.text" class="message">
+	//                 <span :class="message.iconClass" :title="message.text"></span>
+	//                 <!--<span class="text">{{ message.text}}</span>-->
+	//             </div>
+	//
+	//             <div v-if="!column.editable" v-html="rendered" class="value"></div>
+	//             <div v-else-if="!enabled" @click="toggle" v-html="rendered" class="toggible"></div>
+	//             <div v-else class="editing">
+	//                 <input type="text" ref="input" class="form-control" v-model="input"
+	//                        @keyup.enter="onKeyEnter"
+	//                        @keyup.tab="onKeyTab"
+	//                        @keyup.esc="onKeyEsc"
+	//                        @keyup.down="onKeyDown"
+	//                        @keyup.up="onKeyUp"
+	//                        @keyup.left="onKeyLeft"
+	//                        @keyup.right="onKeyRight"
+	//                        @keyup.107="onKeyPlus"
+	//                        @keyup.109="onKeyMinus"
+	//                        @keyup="onAnyKey"
+	//                        @blur="onBlur"
+	//                 /></div>
 	//         </div>
 	//     </div>
 	// </template>
@@ -9153,14 +9155,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    computed: {
 	        getClasses: function getClasses() {
-	            var result = 'input';
-	            if (this.column.enabled) {
-	                result = result + ' enabled';
-	            }
-	            if (this.column.editable) {
-	                result = result + ' editable';
-	            }
-	            return result;
+	            // let result = 'input';
+	            // if (this.column.enabled) {
+	            //     result = result + ' enabled';
+	            // }
+	            // if (this.column.editable) {
+	            //     result = result + ' editable';
+	            // }
+	            // return result;
 	        },
 	        value: function value() {
 	
@@ -10695,7 +10697,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 110 */
 /***/ (function(module, exports) {
 
-	module.exports = "\n<div>\n    <div v-if=\"message.text\" class=\"message\">\n        <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n    </div>\n    <div :class=\"getClasses\">\n        <div v-if=\"!column.editable\" v-html=\"rendered\"></div>\n        <div v-else-if=\"!enabled\" @click=\"toggle\" v-html=\"rendered\" class=\"editable\"></div>\n        <div v-else>\n          <input type=\"text\" ref=\"input\" class=\"form-control editable\" v-model=\"input\"\n                 @keyup.enter=\"onKeyEnter\"\n                 @keyup.tab=\"onKeyTab\"\n                 @keyup.esc=\"onKeyEsc\"\n                 @keyup.down=\"onKeyDown\"\n                 @keyup.up=\"onKeyUp\"\n                 @keyup.left=\"onKeyLeft\"\n                 @keyup.right=\"onKeyRight\"\n                 @keyup.107=\"onKeyPlus\"\n                 @keyup.109=\"onKeyMinus\"\n                 @keyup=\"onAnyKey\"\n                 @blur=\"onBlur\"\n          /></div>\n    </div>\n</div>\n";
+	module.exports = "\n<div>\n    <div :class=\"getClasses\">\n        <div v-if=\"message.text\" class=\"message\">\n            <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n            <!--<span class=\"text\">{{ message.text}}</span>-->\n        </div>\n\n        <div v-if=\"!column.editable\" v-html=\"rendered\" class=\"value\"></div>\n        <div v-else-if=\"!enabled\" @click=\"toggle\" v-html=\"rendered\" class=\"toggible\"></div>\n        <div v-else class=\"editing\">\n            <input type=\"text\" ref=\"input\" class=\"form-control\" v-model=\"input\"\n                   @keyup.enter=\"onKeyEnter\"\n                   @keyup.tab=\"onKeyTab\"\n                   @keyup.esc=\"onKeyEsc\"\n                   @keyup.down=\"onKeyDown\"\n                   @keyup.up=\"onKeyUp\"\n                   @keyup.left=\"onKeyLeft\"\n                   @keyup.right=\"onKeyRight\"\n                   @keyup.107=\"onKeyPlus\"\n                   @keyup.109=\"onKeyMinus\"\n                   @keyup=\"onAnyKey\"\n                   @blur=\"onBlur\"\n            /></div>\n    </div>\n</div>\n";
 
 /***/ }),
 /* 111 */

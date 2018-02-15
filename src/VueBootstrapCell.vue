@@ -1,25 +1,27 @@
 <template>
     <div>
-        <div v-if="message.text" class="message">
-            <span :class="message.iconClass" :title="message.text"></span>
-        </div>
         <div :class="getClasses">
-            <div v-if="!column.editable" v-html="rendered"></div>
-            <div v-else-if="!enabled" @click="toggle" v-html="rendered" class="editable"></div>
-            <div v-else>
-              <input type="text" ref="input" class="form-control editable" v-model="input"
-                     @keyup.enter="onKeyEnter"
-                     @keyup.tab="onKeyTab"
-                     @keyup.esc="onKeyEsc"
-                     @keyup.down="onKeyDown"
-                     @keyup.up="onKeyUp"
-                     @keyup.left="onKeyLeft"
-                     @keyup.right="onKeyRight"
-                     @keyup.107="onKeyPlus"
-                     @keyup.109="onKeyMinus"
-                     @keyup="onAnyKey"
-                     @blur="onBlur"
-              /></div>
+            <div v-if="message.text" class="message">
+                <span :class="message.iconClass" :title="message.text"></span>
+                <!--<span class="text">{{ message.text}}</span>-->
+            </div>
+
+            <div v-if="!column.editable" v-html="rendered" class="value"></div>
+            <div v-else-if="!enabled" @click="toggle" v-html="rendered" class="toggible"></div>
+            <div v-else class="editing">
+                <input type="text" ref="input" class="form-control" v-model="input"
+                       @keyup.enter="onKeyEnter"
+                       @keyup.tab="onKeyTab"
+                       @keyup.esc="onKeyEsc"
+                       @keyup.down="onKeyDown"
+                       @keyup.up="onKeyUp"
+                       @keyup.left="onKeyLeft"
+                       @keyup.right="onKeyRight"
+                       @keyup.107="onKeyPlus"
+                       @keyup.109="onKeyMinus"
+                       @keyup="onAnyKey"
+                       @blur="onBlur"
+                /></div>
         </div>
     </div>
 </template>
@@ -46,15 +48,15 @@
             }
         },
         computed: {
-            getClasses: function() {
-                let result = 'input';
-                if (this.column.enabled) {
-                    result = result + ' enabled';
-                }
-                if (this.column.editable) {
-                    result = result + ' editable';
-                }
-                return result;
+            getClasses: function () {
+                // let result = 'input';
+                // if (this.column.enabled) {
+                //     result = result + ' enabled';
+                // }
+                // if (this.column.editable) {
+                //     result = result + ' editable';
+                // }
+                // return result;
             },
             value: function () {
 

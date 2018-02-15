@@ -113,8 +113,10 @@ table.vue-table tr td div.message {
     width: 2em;
 }
 
-table.vue-table tr td div.input {
-
+table.vue-table tr td div.editing,
+table.vue-table tr td div.toggible {
+    width: 80%;
+    min-height: 1.5em;
 }
 
 table.vue-table .editable {
