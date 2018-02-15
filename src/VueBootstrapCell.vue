@@ -1,9 +1,13 @@
 <template>
     <div>
-        <span v-if="!column.editable" v-html="rendered"></span>
-        <span v-else-if="!enabled" @click="toggle" v-html="rendered"></span>
-        <span v-else>
-              <input type="text" ref="input" class="form-control" v-model="input"
+        <div v-if="message.text" class="message">
+            <span :class="message.iconClass" :title="message.text"></span>
+        </div>
+        <div :class="getClasses">
+            <div v-if="!column.editable" v-html="rendered"></div>
+            <div v-else-if="!enabled" @click="toggle" v-html="rendered" class="editable"></div>
+            <div v-else>
+              <input type="text" ref="input" class="form-control editable" v-model="input"
                      @keyup.enter="onKeyEnter"
                      @keyup.tab="onKeyTab"
                      @keyup.esc="onKeyEsc"
@@ -15,11 +19,8 @@
                      @keyup.109="onKeyMinus"
                      @keyup="onAnyKey"
                      @blur="onBlur"
-              /></span>
-        <span v-if="message.text">
-            <span :class="message.iconClass" :title="message.text"></span>
-        </span>
-
+              /></div>
+        </div>
     </div>
 </template>
 
@@ -45,6 +46,16 @@
             }
         },
         computed: {
+            getClasses: function() {
+                let result = 'input';
+                if (this.column.enabled) {
+                    result = result + ' enabled';
+                }
+                if (this.column.editable) {
+                    result = result + ' editable';
+                }
+                return result;
+            },
             value: function () {
 
                 let result = this.entry[this.column.name];

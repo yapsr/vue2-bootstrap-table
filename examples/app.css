@@ -11,12 +11,12 @@
     background-color: #a94442;
 }
 
-.vue-table td.editable {
+table.vue-table td.editable {
     background-color:lightgreen;
 }
 
 
-.vue-table {
+table.vue-table {
 
 }
 
@@ -71,12 +71,12 @@ table.vue-table thead > tr > th {
     color: red;
 }*/
 
-.vue-table .arrow {
+table.vue-table .arrow {
     opacity: 1;
     position: relative;
 }
 
-.vue-table .arrow:after {
+table.vue-table .arrow:after {
     position: absolute;
     bottom: 8px;
     right: 8px;
@@ -92,7 +92,7 @@ table.vue-table thead > tr > th {
     opacity: 0.66;*/
 }
 
-.vue-table .arrow.asc:after {
+table.vue-table .arrow.asc:after {
     content: "\e155";
     /*
     border-left: 4px solid transparent;
@@ -101,17 +101,27 @@ table.vue-table thead > tr > th {
     */
 }
 
-.vue-table .arrow.desc:after {
+table.vue-table .arrow.desc:after {
     content: "\e156";
 }
 
-.vue-table td.editable {
+
+
+table.vue-table tr td div.message {
+    float: left;
+    cursor: pointer;
+    width: 2em;
+}
+
+table.vue-table tr td div.input {
+
+}
+
+table.vue-table .editable {
     cursor: pointer;
 }
 
-.vue-table div.editable {
-    width: 100%;
-}
+
 
 /*
 .vue-table .selected-cell {

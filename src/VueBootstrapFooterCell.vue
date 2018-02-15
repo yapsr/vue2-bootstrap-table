@@ -1,14 +1,11 @@
 <template>
     <div>
-        <span v-html="rendered"></span>
-
-        <span v-if="message.text">
+        <div v-if="message.text" class="message">
             <span :class="message.iconClass" :title="message.text"></span>
-        </span>
+        </div>
+        <div v-html="rendered" class="input"></div>
     </div>
-
 </template>
-
 <script>
 
     export default {

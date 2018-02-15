@@ -63,7 +63,7 @@
                     </td>
                 </tr>
                 <tr class="footer">
-                    <td v-for="(column, index) in displayColsVisible" v-show="column.visible" :class="getCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
+                    <td v-for="(column, index) in displayColsVisible" v-show="column.visible" :class="getFooterCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
                         <vue-bootstrap-footer-cell :column="column" :values="filteredValuesSorted"></vue-bootstrap-footer-cell>
                     </td>
                 </tr>
@@ -878,6 +878,10 @@
                 if (column.editable) {
                     result = result + " editable";
                 }
+                return result;
+            },
+            getFooterCellClasses: function (column) {
+                let result = column.cellClasses;
                 return result;
             },
             toggleColumn: function (column) {
