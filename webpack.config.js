@@ -1,8 +1,8 @@
 var vue = require('vue-loader')
 var webpack = require("webpack")
-var extractTextPlugin = require("extract-text-webpack-plugin")
+var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
-var cssLoader = extractTextPlugin.extract("style-loader", "css-loader")
+var cssLoader = ExtractTextPlugin.extract("style-loader", "css-loader")
 
 module.exports = {
     entry: {

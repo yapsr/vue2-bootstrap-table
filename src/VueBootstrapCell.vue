@@ -1,9 +1,9 @@
 <template>
     <div>
         <span v-if="!column.editable" v-html="rendered"></span>
-        <span v-else-if="!enabled" @click="toggleInput" v-html="rendered"></span>
+        <span v-else-if="!enabled" @click="toggle" v-html="rendered"></span>
         <span v-else>
-              <input type="text" ref="inputfield" class="form-control" v-model="entryValue"
+              <input type="text" ref="input" class="form-control" v-model="input"
                      @keyup.enter="onKeyEnter"
                      @keyup.tab="onKeyTab"
                      @keyup.esc="onKeyEsc"
@@ -32,23 +32,27 @@
         data: function () {
             return {
                 enabled: false,
-                entryValue: "",
+                input: "",
                 message: {}
             }
         },
         watch: {
-            entryValue: function() {
-                console.log('watch: entryValue', this.column);
+            enabled: function () {
+                console.log('watch enabled', this.enabled);
+            },
+            entryValue: function () {
+                // console.log('watch: input', this.input);
             }
         },
         computed: {
-            value: function() {
+            value: function () {
 
                 let result = this.entry[this.column.name];
 
                 let fn = {};
 
                 let params = {
+                    caller: this,
                     column: this.column,
                     entry: this.entry
                 };
@@ -75,6 +79,7 @@
                 if (fn = this.$parent.getExtendedMethod(this.column.validate)) {
 
                     let params = {
+                        caller: this,
                         column: this.column,
                         entry: this.entry
                     };
@@ -101,6 +106,7 @@
                 if (fn = this.$parent.getExtendedMethod(this.column.render)) {
 
                     let params = {
+                        caller: this,
                         column: this.column,
                         entry: this.entry
                     };
@@ -108,7 +114,15 @@
                     return String(fn(this.value, params));
                 }
 
-                return this.value;
+                if (this.value === null) {
+                    return '';
+                } else if (this.value === undefined) {
+                    return '';
+                } else if (typeof this.value === 'object') {
+                    return '[...]';
+                } else {
+                    return String(this.value);
+                }
 
             }
         }
@@ -116,29 +130,37 @@
         methods: {
 
             save: function () {
-                console.log('cell.save', this.column, this.entry, this.entryValue);
+                console.log('cell.save', this.column, this.entry, this.input);
                 let originalValue = this.entry[this.column.name];
+                this.input = this.$parent.castToType(this.input, this.column.type);
+                this.$set(this.entry, this.column.name, this.input);
+                this.$emit('input', this.input);
 
-                this.entryValue = this.$parent.castToType(this.entryValue, this.column.type);
-
-                this.$set(this.entry, this.column.name, this.entryValue);
-
-                this.$emit('input', this.entryValue);
-                this.$emit('changed-entry', this.entry);
-                this.$root.$emit('cellDataModifiedEvent', originalValue, this.entryValue, this.column.name, this.entry);
+                this.$emit('cell-data-modified', this.column, this.entry, this.input);
             },
             cancel: function () {
                 console.log('cancel');
-                this.entryValue = this.entry[this.column.name];
+                this.input = this.entry[this.column.name];
                 this.enabled = false;
             },
-            toggleInput: function () {
-                console.log('toggleInput');
-                this.enabled = !this.enabled;
+            enable: function () {
+                console.log('enable');
+                this.enabled = true;
+                this.input = this.entry[this.column.name];
+                this.$nextTick(() => this.$refs.input.focus())
+            },
+            disable: function () {
+                this.enabled = false;
+                console.log('disable');
+            },
+            toggle: function () {
+                console.log('toggle');
                 if (this.enabled) {
-                    this.entryValue = this.entry[this.column.name];
-                    this.$nextTick(() => this.$refs.inputfield.focus())
+                    this.disable();
+                } else {
+                    this.enable();
                 }
+
             },
             onBlur: function (event) {
                 // console.log('onBlur', event);
@@ -193,21 +215,21 @@
             onKeyPlus: function (event) {
                 console.log('onKeyPlus', event);
                 if (this.column.type === 'integer') {
-                    this.entryValue = parseInt(this.entryValue) + 1;
+                    this.input = parseInt(this.input) + 1;
                 } else if (this.column.type === 'decimal') {
-                    this.entryValue = this.$parent.castToType(this.entryValue, 'decimal') + 1;
+                    this.input = this.$parent.castToType(this.input, 'decimal') + 1;
                 } else if (this.column.type === 'money') {
-                    this.entryValue = this.$parent.castToType(this.entryValue, 'decimal') + 1;
+                    this.input = this.$parent.castToType(this.input, 'decimal') + 1;
                 }
             },
             onKeyMinus: function (event) {
                 console.log('onKeyMinus', event);
                 if (this.column.type === 'integer') {
-                    this.entryValue = parseInt(this.entryValue) - 1;
+                    this.input = parseInt(this.input) - 1;
                 } else if (this.column.type === 'decimal') {
-                    this.entryValue = this.$parent.castToType(this.entryValue, 'decimal') - 1;
+                    this.input = this.$parent.castToType(this.input, 'decimal') - 1;
                 } else if (this.column.type === 'money') {
-                    this.entryValue = this.$parent.castToType(this.entryValue, 'decimal') - 1;
+                    this.input = this.$parent.castToType(this.input, 'decimal') - 1;
                 }
             },
             onAnyKey: function (event) {

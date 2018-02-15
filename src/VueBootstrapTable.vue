@@ -46,12 +46,15 @@
                 </thead>
                 <tbody>
                 <tr v-for="(entry, row) in filteredValuesSorted" track-by="entry.id" @click="fireRowClickedEvent(entry)">
-                    <td v-for="(column, col) in displayColsVisible" v-show="column.visible" :class="getCellClasses(column, entry)" @click="fireCellClickedEvent(column, entry)">
-                        <vue-bootstrap-cell
+                    <td v-for="(column, col) in displayColsVisible"
+                        v-show="column.visible"
+                        :class="getCellClasses(column, entry)"
+                        @click="fireCellClickedEvent(column, entry)"
+                    ><vue-bootstrap-cell
                                 :column="column"
                                 :entry="entry"
                                 :ref="getCellReference(col, row)"
-                                @changed-entry="onChangedEntry"
+                                @cell-data-modified="onCellDataModified"
                                 @down="onDown(col, row, ...arguments)"
                                 @up="onUp(col, row, ...arguments)"
                                 @right="onRight(col, row, ...arguments)"
@@ -254,7 +257,15 @@
                 default: function () {
                     return [];
                 }
-            }
+            },
+
+            table: {
+                type: String,
+                required: false,
+                default: function () {
+                    return '';
+                }
+            },
 
         },
         data: function () {
@@ -267,7 +278,7 @@
                 filteredValues: [],
                 page: 1,
                 echo: 0,
-                loading: false
+                loading: false,
             };
         },
         mounted: function () {
@@ -279,16 +290,12 @@
             this.setColumns();
             this.setValueTypes();
             this.filterKey = this.defaultFilterKey;
-
             this.loading = false;
         },
         created: function () {
             console.log('table.created');
-
-            this.$on('cellDataModifiedEvent', this.fireCellDataModifiedEvent);
         },
         beforeDestroy: function () {
-            this.$off('cellDataModifiedEvent', this.fireCellDataModifiedEvent);
         },
         watch: {
             filteredValues: function () {
@@ -319,6 +326,8 @@
                 // filter was updated, so resetting to page 1
                 this.page = 1;
                 this.processFilter();
+                this.fireFilterKeyModifiedEvent(this.filterKey);
+
             },
             sortKeys: function () {
                 console.log('watch: sortKeys');
@@ -344,7 +353,9 @@
             }
         },
         computed: {
-
+            config: function() {
+                return this.getConfig();
+            },
             filteredValuesSorted: function () {
                 return this.sortFilteredValues()
             },
@@ -388,6 +399,11 @@
 
         },
         methods: {
+            getConfig: function() {
+                return {
+
+                }
+            },
             getExtendedMethod: function (value) {
 
                 let result = false;
@@ -405,59 +421,74 @@
                 return result;
             },
             getCellReference(col, row) {
-                let result = col+':'+row;
-                return result;
+                return col+':'+row;
             },
-            toggleInputReference(ref, index) {
+            enableCell(ref, index) {
                 if (typeof index === 'undefined') {
                     index = 0;
                 }
-                this.$refs[ref][index].toggleInput();
+                this.$refs[ref][index].enable();
             },
             onDown: function(col, row, ...arg) {
                 let ref = this.getCellReference(col, row+1);
-                this.toggleInputReference(ref);
+                this.enableCell(ref);
             },
             onUp: function(col, row, ...arg) {
                 let ref = this.getCellReference(col, row-1);
-                this.toggleInputReference(ref);
+                this.enableCell(ref);
             },
             onLeft: function(col, row, ...arg) {
                 let ref = this.getCellReference(col-1, row);
-                this.toggleInputReference(ref);
+                this.enableCell(ref);
             },
             onRight: function(col, row, ...arg) {
                 let ref = this.getCellReference(col+1, row);
-                this.toggleInputReference(ref);
+                this.enableCell(ref);
             },
-            onChangedEntry: function (entry) {
-                console.log('table.changedEntry', entry);
+            onCellDataModified: function (column, entry, input) {
+                console.log('onCellDataModified', column, entry, input);
+                this.saveInternal(column, entry, input);
+                // this.saveExternal(column, entry, input);
 
+            },
+            saveInternal: function(column, entry, input){
+                console.log('table.saveInternal', arguments);
                 let obj = this.values;
                 let key = this.getKeyByValue(this.values, 'id', entry.id);
-                if (!key) {
-                    console.warn('table.changedEntry: Adding new entry, because id was not found in values.')
+                if (key === false) {
+                    console.warn('table.update: Adding new entry, because id was not found in values.')
                 }
                 let val = entry;
+
                 this.$set(obj, key, val);
+                this.fireCellDataModifiedEvent(column, entry, input);
 
                 this.setComputedValues();
                 this.processFilter();
 
             },
-            getKeyByValue: function (arr, key, value) {
-                for (let i=0, l = arr.length; i < l; i++) {
-                    if (arr[i][key] === value) {
-                        // console.log('getKeyByValue', arr, key, value, i);
+            // saveExternal: function(column, entry, input){
+            //     console.log('table.saveExternal', arguments);
+            //     let fn = {};
+            //     if (fn = this.getExtendedMethod('store')) {
+            //         return fn(column, entry, input);
+            //     }
+            //     return false;
+            // },
+            getKeyByValue: function (array, key, value) {
+
+                if (typeof value === 'undefined') {
+                    return false;
+                }
+
+                for (let i=0, count = array.length; i < count; i++) {
+                    if (array[i][key] === value) {
                         return i;
                     }
                 }
-            }
-            ,
-            fireCellDataModifiedEvent: function (originalValue, newValue, columnTitle, entry) {
-                this.$parent.$emit('cellDataModifiedEvent', originalValue, newValue, columnTitle, entry);
-            }
-            ,
+                return false;
+
+            },
             sortFilteredValues: function () {
                 return lodashorderby(this.filteredValues, this.sortKeys, this.sortOrders);
             },
@@ -466,16 +497,31 @@
                 let result = null;
 
                 if (type === 'decimal') {
-                    result =  parseFloat(String(value).replace(',','.'));
+                    result = parseFloat(parseFloat(String(value).replace(',','.')).toFixed(9));
+                    if (isNaN(result)) {
+                        result = 0;
+                    }
                 } else if (type === 'money') {
                     result = parseFloat(parseFloat(String(value).replace(',','.')).toFixed(2));
+                    if (isNaN(result)) {
+                        result = 0;
+                    }
                 } else if (type === 'integer') {
                     result = parseInt(value);
+                    if (isNaN(result)) {
+                        result = 0;
+                    }
                 } else {
                     // Treat as string
                     result = value;
                 }
-                console.log('castToType', value, type, result);
+
+
+                if (typeof result === 'undefined') {
+                    result = '?';
+                }
+
+                // console.log('castToType', value, type, result);
                 return result;
 
             }
@@ -529,10 +575,7 @@
                         }
                     }
                 }
-
-
-            }
-            ,
+            },
             processFilter: function () {
                 let self = this;
 
@@ -604,10 +647,7 @@
                     this.loading = false;
                 }
 
-                this.fireFilterModifiedEvent(this.filterKey);
-
-            }
-            ,
+            },
             fetchData: function (dataCallBackFunction) {
                 let self = this;
                 let ajaxParameters = {
@@ -664,10 +704,10 @@
                                 }
                             }
                             dataCallBackFunction(response.data);
-                            this.$parent.$emit('ajaxLoadedEvent', response.data);
+                            this.$emit('ajaxLoaded', response.data);
                         })
                         .catch(e => {
-                            this.$parent.$emit('ajaxLoadingError', e);
+                            this.$emit('ajaxLoadingError', e);
                         });
                 }
                 if (this.ajax.enabled && this.ajax.method === "POST") {
@@ -680,15 +720,14 @@
                             }
 
                             dataCallBackFunction(response.data);
-                            this.$parent.$emit('ajaxLoadedEvent', response.data);
+                            this.$emit('ajaxLoaded', response.data);
 
                         })
                         .catch(e => {
-                            this.$parent.$emit('ajaxLoadingError', e);
+                            this.$emit('ajaxLoadingError', e);
                         });
                 }
-            }
-            ,
+            },
             buildColumnObject: function (column) {
                 let obj = {};
 
@@ -745,8 +784,7 @@
                     obj.cellClasses = "";
 
                 return obj;
-            }
-            ,
+            },
             setColumns: function () {
                 let self = this;
                 this.displayCols = [];
@@ -754,8 +792,7 @@
                     let obj = self.buildColumnObject(column);
                     self.displayCols.push(obj);
                 });
-            }
-            ,
+            },
             setSorting: function () {
                 if (this.hasDefaultSorting) {
                     this.setDefaultSorting();
@@ -763,8 +800,7 @@
                     this.sortKeys = [];
                     this.sortOrders = [];
                 }
-            }
-            ,
+            },
 
             /**
              * Example: { "votes":"desc", "id":"asc" }
@@ -776,12 +812,10 @@
             setDefaultSorting: function () {
                 this.sortKeys = this.defaultSortKeys;
                 this.sortOrders = this.defaultSortOrders;
-            }
-            ,
+            },
             resetSortOrders: function () {
                 this.sortOrders = [];
-            }
-            ,
+            },
             sortBy: function (event, key) {
 
                 if (this.sortable) {
@@ -815,8 +849,7 @@
                     this.fireSortModifiedEvent(this.sortKeys, this.sortOrders);
 
                 }
-            }
-            ,
+            },
             getColumnClasses: function (column) {
                 let classes = [column.columnClasses];
                 let key = column.name;
@@ -839,47 +872,41 @@
                     }
                 }
                 return classes;
-            }
-            ,
+            },
             getCellClasses: function (column, entry) {
                 let result = column.cellClasses;
                 if (column.editable) {
                     result = result + " editable";
                 }
                 return result;
-            }
-            ,
+            },
             toggleColumn: function (column) {
                 column.visible = !column.visible;
                 this.fireColumnToggledEvent(column);
-            }
-            ,
+            },
             closeDropdown: function () {
                 this.columnMenuOpen = false;
-            }
-            ,
+            },
+            fireCellDataModifiedEvent: function (column, entry, input) {
+                this.$emit('cell-data-modified', this.table, column, entry, input);
+            },
             fireColumnToggledEvent: function (column) {
-                this.$parent.$emit('columnToggledEvent', column, this.displayColsVisible);
-            }
-            ,
-            fireFilterModifiedEvent: function (filter, sort) {
-                this.$parent.$emit('filterModifiedEvent', filter, sort);
-            }
-            ,
+                this.$emit('column-toggled', this.table, column, this.displayColsVisible);
+            },
+            fireFilterKeyModifiedEvent: function (filterKey) {
+                this.$emit('filter-key-modified', this.table, filterKey);
+            },
             fireSortModifiedEvent: function (sortKeys, sortOrders) {
-                this.$parent.$emit('sortModifiedEvent', sortKeys, sortOrders)
-            }
-            ,
+                this.$emit('sort-modified', this.table, sortKeys, sortOrders)
+            },
             fireRowClickedEvent: function (entry) {
-                this.$parent.$emit('rowClickedEvent', entry);
-            }
-            ,
+                this.$emit('row-clicked', this.table, entry);
+            },
             fireCellClickedEvent: function (entry, column) {
-                this.$parent.$emit('cellClickedEvent', entry, column);
-            }
-            ,
+                this.$emit('cell-clicked', this.table, entry, column);
+            },
             fireFooterCellClickedEvent: function (column) {
-                this.$parent.$emit('footerCellClickedEvent', column);
+                this.$emit('footer-cell-clicked', this.table, column);
             }
         },
         events: {}

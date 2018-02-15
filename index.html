@@ -20,6 +20,7 @@
             </div>
             <br/><br/>
             <vue-bootstrap-table
+                    :table="table"
                     :columns="columns"
                     :values="values"
                     :show-filter="showFilter"
@@ -33,12 +34,16 @@
                     :default-sort-orders="defaultSortOrders"
                     :extended-methods="extendedMethods"
                     :messages="messages"
+
+                    @cell-data-modified="onCellDataModified"
+                    @column-toggled="onColumnToggled"
+                    @filter-key-modified="onFilterKeyModified"
+                    @sort-modified="onSortModified"
+                    @row-clicked="onRowClicked"
+                    @cell-clicked="onCellClicked"
+                    @footer-cell-clicked="onFooterCellClicked"
             >
             </vue-bootstrap-table>
-        </div>
-        <h2>Events Received</h2>
-        <div>
-            {{ logging }}
         </div>
     </div>
 

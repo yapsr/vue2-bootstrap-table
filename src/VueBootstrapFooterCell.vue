@@ -20,19 +20,20 @@
             function () {
                 return {
                     enabled: false,
-                    entryValue: "",
+                    input: "",
                     message: {}
                 }
             }
 
         ,
         computed: {
-            value: function() {
+            value: function () {
                 let result = "";
 
                 let fn = {};
 
                 let params = {
+                    'caller': this,
                     'column': this.column,
                     'values': this.values,
                 };
@@ -47,25 +48,6 @@
                 return result;
 
             },
-            rendered: function () {
-
-                console.log('footer.rendered()', this.column.name);
-
-                let result = this.value;
-
-                let fn = {};
-
-                let params = {
-                    'column': this.column,
-                    'values': this.values,
-                };
-
-                if (fn = this.$parent.getExtendedMethod(this.column.footer.render)) {
-                    return fn(result, params);
-                }
-
-                return result;
-            },
             isValid: function () {
 
                 let fn = {};
@@ -73,6 +55,7 @@
                 if (fn = this.$parent.getExtendedMethod(this.column.footer.validate)) {
 
                     let params = {
+                        caller: this,
                         column: this.column,
                         values: this.values
                     };
@@ -92,7 +75,35 @@
 
                 return true;
             },
+            rendered: function () {
+
+                console.log('footer.rendered()', this.column.name);
+
+                let value = this.value;
+
+                let fn = {};
+
+                if (fn = this.$parent.getExtendedMethod(this.column.footer.render)) {
+
+                    let params = {
+                        'caller': this,
+                        'column': this.column,
+                        'values': this.values,
+                    };
+
+                    return fn(value, params);
+                }
+
+                if (typeof value !== 'undefined') {
+                    return String(value);
+                }
+
+                return '';
+
+            },
         },
+
+
         methods: {}
     }
 

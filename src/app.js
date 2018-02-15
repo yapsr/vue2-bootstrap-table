@@ -1,139 +1,149 @@
 import VueBootstrapTable from './VueBootstrapTable.vue';
 
-var myJSONFunction = function () {
-    return JSON.stringify(arguments);
-};
+let helpers = {
 
-var myCalculationFunction = function ({column, entry}) {
-    return Math.round(entry.price * entry.amount * 100) / 100;
-};
+    myJSONFunction: function () {
+        return JSON.stringify(arguments);
+    },
+
+    myCalculationFunction: function ({caller, column, entry}) {
+        return Math.round(entry.price * entry.amount * 100) / 100;
+    },
 
 //  0              900         1000
 //    ... success ... warning ... danger
-var myValidationFunction = function ({column, entry}) {
+    myValidationFunction: function ({caller, column, entry}) {
 
-    var result = {};
+        var result = {};
 
-    var min = 0;
-    var threshold = 900;
-    var max = 1000;
+        var min = 0;
+        var threshold = 900;
+        var max = 1000;
 
-    var value = entry[column.name];
+        var value = entry[column.name];
 
-    if (value < min) {
-        result = {
-            'error': 1,
-            'message': {
-                'text': 'Lower than ' + min,
-                'class': 'alert alert-warning',
-                'iconClass': 'glyphicon glyphicon-warning-sign'
+        if (value < min) {
+            result = {
+                'error': 1,
+                'message': {
+                    'text': 'Lower than ' + min,
+                    'class': 'alert alert-warning',
+                    'iconClass': 'glyphicon glyphicon-warning-sign'
+                }
+            }
+        } else if (value > max) {
+            result = {
+                'error': 1,
+                'message': {
+                    'text': 'Higher than ' + max,
+                    'class': 'alert alert-warning',
+                    'iconClass': 'glyphicon glyphicon-warning-sign'
+                }
+            }
+        } else if (value < threshold) {
+            result = {
+                'error': 0,
+                'message': {
+                    'text': 'Ok',
+                    'class': 'alert alert-success',
+                    'iconClass': 'glyphicon glyphicon-ok'
+                }
+            }
+        } else {
+            result = {
+                'error': 0,
+                'message': {
+                    'text': 'Watch out, you are between ' + threshold + ' and ' + max,
+                    'class': 'alert alert-warning',
+                    'iconClass': 'glyphicon glyphicon-exclamation-sign'
+                }
             }
         }
-    } else if (value > max) {
-        result = {
-            'error': 1,
-            'message': {
-                'text': 'Higher than ' + max,
-                'class': 'alert alert-warning',
-                'iconClass': 'glyphicon glyphicon-warning-sign'
+
+        // console.log('myValidationFunction', arguments, result);
+
+        return result;
+    },
+
+    myFooterValidationFunction: function ({caller, column, values}) {
+
+
+        var result = {};
+
+        var min = 0;
+        var threshold = 9000;
+        var max = 10000;
+
+        var value = helpers.mySumFunction({column: column, values: values});
+
+        console.log('myFooterValidationFunction', arguments, value);
+
+        if (value < min) {
+            result = {
+                'error': 1,
+                'message': {
+                    'text': 'Lower than ' + min,
+                    'class': 'alert alert-warning',
+                    'iconClass': 'glyphicon glyphicon-warning-sign'
+                }
+            }
+        } else if (value > max) {
+            result = {
+                'error': 1,
+                'message': {
+                    'text': 'Higher than ' + max,
+                    'class': 'alert alert-warning',
+                    'iconClass': 'glyphicon glyphicon-warning-sign'
+                }
+            }
+        } else if (value < threshold) {
+            result = {
+                'error': 0,
+                'message': {
+                    'text': 'Ok',
+                    'class': 'alert alert-success',
+                    'iconClass': 'glyphicon glyphicon-ok'
+                }
+            }
+        } else {
+            result = {
+                'error': 0,
+                'message': {
+                    'text': 'Watch out, you are between ' + threshold + ' and ' + max,
+                    'class': 'alert alert-warning',
+                    'iconClass': 'glyphicon glyphicon-exclamation-sign'
+                }
             }
         }
-    } else if (value < threshold) {
-        result = {
-            'error': 0,
-            'message': {
-                'text': 'Ok',
-                'class': 'alert alert-success',
-                'iconClass': 'glyphicon glyphicon-ok'
-            }
+
+        // console.log('myFooterValidationFunction', arguments, result);
+
+        return result;
+    },
+
+    mySumFunction: function ({caller, column, values}) {
+        let result = 0;
+        for (let i in values) {
+            result = result + (values[i][column.name] * 1);
         }
-    } else {
-        result = {
-            'error': 0,
-            'message': {
-                'text': 'Watch out, you are between ' + threshold + ' and ' + max,
-                'class': 'alert alert-warning',
-                'iconClass': 'glyphicon glyphicon-exclamation-sign'
-            }
+        ;
+        return result;
+    },
+
+    myMoneyRenderFunction: function (value, {caller, column, entry}) {
+        if (value > 0 || value < 0) {
+            return '&euro;' + value.toFixed(2).replace('.', ',');
         }
+        return "";
+    },
+
+    myStoreFunction: function() {
+        console.log('Storing...', arguments);
+        // You could add your ajax PATCH call here ...
     }
-
-    // console.log('myValidationFunction', arguments, result);
-
-    return result;
 }
 
-var mySumFunction = function ({column, values}) {
-    let result = 0;
-    for (let i in values) {
-        result = result + (values[i][column.name] * 1);
-    }
-    ;
-    return result;
-};
 
-var myMoneyFunction = function (value, {column, entry}) {
-    if (value > 0 || value < 0) {
-        return '&euro;' + value.toFixed(2).replace('.', ',');
-    }
-    return "";
-};
-
-var myFooterValidationFunction = function ({column, values}) {
-
-
-    var result = {};
-
-    var min = 0;
-    var threshold = 9000;
-    var max = 10000;
-
-    var value = mySumFunction({column:column, values:values});
-
-    console.log('myFooterValidationFunction', arguments, value);
-
-    if (value < min) {
-        result = {
-            'error': 1,
-            'message': {
-                'text': 'Lower than ' + min,
-                'class': 'alert alert-warning',
-                'iconClass': 'glyphicon glyphicon-warning-sign'
-            }
-        }
-    } else if (value > max) {
-        result = {
-            'error': 1,
-            'message': {
-                'text': 'Higher than ' + max,
-                'class': 'alert alert-warning',
-                'iconClass': 'glyphicon glyphicon-warning-sign'
-            }
-        }
-    } else if (value < threshold) {
-        result = {
-            'error': 0,
-            'message': {
-                'text': 'Ok',
-                'class': 'alert alert-success',
-                'iconClass': 'glyphicon glyphicon-ok'
-            }
-        }
-    } else {
-        result = {
-            'error': 0,
-            'message': {
-                'text': 'Watch out, you are between ' + threshold + ' and ' + max,
-                'class': 'alert alert-warning',
-                'iconClass': 'glyphicon glyphicon-exclamation-sign'
-            }
-        }
-    }
-
-    // console.log('myFooterValidationFunction', arguments, result);
-
-    return result;
-}
 
 
 Vue.config.debug = true;
@@ -145,7 +155,6 @@ new Vue({
         VueBootstrapTable,
     },
     data: {
-        logging: [],
         showFilter: true,
         showPicker: true,
         paginated: true,
@@ -154,9 +163,9 @@ new Vue({
         defaultSortKeys: ['amount', 'id'],
         defaultSortOrders: ['desc', 'asc'],
         extendedMethods: {
-            'calculation': myCalculationFunction,
-            'sum': mySumFunction,
-            'money': myMoneyFunction
+            'calculation': helpers.myCalculationFunction,
+            'sum': helpers.mySumFunction,
+            'money': helpers.myMoneyRenderFunction
         },
         messages: [
             {
@@ -182,8 +191,7 @@ new Vue({
                             'Bearer TESTTESTTESTTESTTEST'
                     }
                 }
-        }
-        ,
+        },
         columns: [
             {
                 title: "Id",
@@ -202,7 +210,7 @@ new Vue({
                 name: "price",
                 visible: true,
                 editable: true,
-                render: myMoneyFunction,
+                render: helpers.myMoneyRenderFunction,
                 type: 'money'
             },
             {
@@ -219,7 +227,7 @@ new Vue({
                 name: "json",
                 title: "JSON",
                 visible: false,
-                render: myJSONFunction
+                render: helpers.myJSONFunction
             },
             {
                 name: "computed",
@@ -235,20 +243,18 @@ new Vue({
                 name: "computed_and_rendered_and_validated",
                 title: "Computed, validated and rendered",
                 visible: true,
-                computed: myCalculationFunction,
-                validate: myValidationFunction,
+                computed: helpers.myCalculationFunction,
+                validate: helpers.myValidationFunction,
                 render: 'return "&euro;"+(arguments[0]).toFixed(2);',
                 type: 'decimal',
                 footer: {
                     computed: 'sum',
                     render: 'money',
-                    validate: myFooterValidationFunction
+                    validate: helpers.myFooterValidationFunction
                 }
             }
         ],
-        values:
-            [
-
+        values: [
                 {
                     // "id": 2,
                     "title": "jack",
@@ -316,57 +322,66 @@ new Vue({
                     "amount": 0
                 },
 
-            ]
+            ],
+        table: 'myTable',
     },
     mounted: function () {
     },
     created: function () {
 
-
-        this.$on('cellDataModifiedEvent',
-            function (originalValue, newValue, columnTitle, entry) {
-                this.logging.push("cellDataModifiedEvent - Original Value : " + originalValue +
-                    " | New Value : " + newValue +
-                    " | Column : " + columnTitle +
-                    " | Complete Entry : " + entry);
-            }
-        );
-
-        this.$on('ajaxLoadedEvent',
-            function (data) {
-                this.logging.push("ajaxLoadedEvent - data : " + data);
-            }
-        );
-
-        this.$on('ajaxLoadingError',
-            function (error) {
-                this.logging.push("ajaxLoadingError - error : " + error);
-            }
-        );
-
-        this.$on('columnToggledEvent', function (column, visibleColumns) {
-            this.logging.push('Column toggled ' + column.name +
-                " | Visible columns : " + JSON.stringify(visibleColumns))
-        });
-
-        this.$on('filterModifiedEvent', function (value) {
-            this.logging.push('Filter modified : ' + value)
-        });
-
-        this.$on('sortModifiedEvent', function (keys, orders) {
-            this.logging.push('Sort modified: ' + keys + ', ' + orders)
-        });
-
-        this.$on('rowClickedEvent', function (entry) {
-            this.logging.push('Row clicked: ' + JSON.stringify(entry)
-            )
-        });
-
-        this.$on('cellClickedEvent', function (entry, column) {
-            this.logging.push('Cell clicked: ' + column +
-                ' | entry: ' + JSON.stringify(entry.name)
-            )
-        });
+        // var oldEmit = this.compiler.emitter.emit;
+        // this.compiler.emitter.emit = function () {
+        //     console.log('got event: ' + arguments[0])
+        //     oldEmit.apply(this, arguments)
+        // }
+        console.log('Overriding $on...');
+        this.$on = function (event, ...args) {
+            console.log('Event', event, args);
+        }
+        // this.$on('cellDataModifiedEvent',
+        //     function (originalValue, newValue, columnTitle, entry) {
+        //         this.logging.push("cellDataModifiedEvent - Original Value : " + originalValue +
+        //             " | New Value : " + newValue +
+        //             " | Column : " + columnTitle +
+        //             " | Complete Entry : " + entry);
+        //     }
+        // );
+        //
+        // this.$on('ajaxLoadedEvent',
+        //     function (data) {
+        //         this.logging.push("ajaxLoadedEvent - data : " + data);
+        //     }
+        // );
+        //
+        // this.$on('ajaxLoadingError',
+        //     function (error) {
+        //         this.logging.push("ajaxLoadingError - error : " + error);
+        //     }
+        // );
+        //
+        // this.$on('columnToggledEvent', function (column, visibleColumns) {
+        //     this.logging.push('Column toggled ' + column.name +
+        //         " | Visible columns : " + JSON.stringify(visibleColumns))
+        // });
+        //
+        // this.$on('filterModifiedEvent', function (value) {
+        //     this.logging.push('Filter modified : ' + value)
+        // });
+        //
+        // this.$on('sortModifiedEvent', function (keys, orders) {
+        //     this.logging.push('Sort modified: ' + keys + ', ' + orders)
+        // });
+        //
+        // this.$on('rowClickedEvent', function (entry) {
+        //     this.logging.push('Row clicked: ' + JSON.stringify(entry)
+        //     )
+        // });
+        //
+        // this.$on('cellClickedEvent', function (entry, column) {
+        //     this.logging.push('Cell clicked: ' + column +
+        //         ' | entry: ' + JSON.stringify(entry.name)
+        //     )
+        // });
 
     }
     ,
@@ -374,23 +389,47 @@ new Vue({
         addItem: function () {
             var item = {
                 "id": this.values.length + 1,
-                "name": "name " + (this.values.length + 1)
+                "name": "name " + (this.values.length + 1),
+                "amount": 0,
+                "price": 0.00,
             };
             this.values.push(item);
-        }
-        ,
+        },
         toggleFilter: function () {
             this.showFilter = !this.showFilter;
-        }
-        ,
+        },
         togglePicker: function () {
             this.showPicker = !this.showPicker;
-        }
-        ,
+        },
         togglePagination: function () {
             this.paginated = !this.paginated;
-        }
+        },
+        onCellDataModified: function(...args) {
+            console.log('onCellDataModifiedEvent', args);
+            helpers.myStoreFunction(...args);
+        },
+        onColumnToggled: function(...args) {
+            console.log('onColumnToggledEvent', args);
+        },
+        onFilterKeyModified: function(...args) {
+            console.log('onFilterKeyModifiedEvent', args);
+        },
+        onSortModified: function(...args) {
+            console.log('onSortModifiedEvent', args);
+        },
+        onRowClicked: function(...args) {
+            console.log('onRowClickedEvent', args);
+        },
+        onCellClicked: function(...args) {
+            console.log('onCellClickedEvent', args);
+        },
+        onFooterCellClicked: function(...args) {
+            console.log('onFooterCellClickedEvent', args);
+        },
     }
     ,
-})
-;
+});
+
+
+
+
