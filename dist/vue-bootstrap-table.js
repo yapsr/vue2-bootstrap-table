@@ -870,6 +870,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return result;
 	        },
+	        getFooterCellClasses: function getFooterCellClasses(column) {
+	            var result = column.cellClasses;
+	            return result;
+	        },
 	        toggleColumn: function toggleColumn(column) {
 	            column.visible = !column.visible;
 	            this.fireColumnToggledEvent(column);
@@ -971,7 +975,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	//                     </td>
 	//                 </tr>
 	//                 <tr class="footer">
-	//                     <td v-for="(column, index) in displayColsVisible" v-show="column.visible" :class="getCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
+	//                     <td v-for="(column, index) in displayColsVisible" v-show="column.visible" :class="getFooterCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
 	//                         <vue-bootstrap-footer-cell :column="column" :values="filteredValuesSorted"></vue-bootstrap-footer-cell>
 	//                     </td>
 	//                 </tr>
@@ -9102,10 +9106,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	// <template>
 	//     <div>
-	//         <span v-if="!column.editable" v-html="rendered"></span>
-	//         <span v-else-if="!enabled" @click="toggle" v-html="rendered"></span>
-	//         <span v-else>
-	//               <input type="text" ref="input" class="form-control" v-model="input"
+	//         <div v-if="message.text" class="message">
+	//             <span :class="message.iconClass" :title="message.text"></span>
+	//         </div>
+	//         <div :class="getClasses">
+	//             <div v-if="!column.editable" v-html="rendered"></div>
+	//             <div v-else-if="!enabled" @click="toggle" v-html="rendered" class="editable"></div>
+	//             <div v-else>
+	//               <input type="text" ref="input" class="form-control editable" v-model="input"
 	//                      @keyup.enter="onKeyEnter"
 	//                      @keyup.tab="onKeyTab"
 	//                      @keyup.esc="onKeyEsc"
@@ -9117,11 +9125,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	//                      @keyup.109="onKeyMinus"
 	//                      @keyup="onAnyKey"
 	//                      @blur="onBlur"
-	//               /></span>
-	//         <span v-if="message.text">
-	//             <span :class="message.iconClass" :title="message.text"></span>
-	//         </span>
-	//
+	//               /></div>
+	//         </div>
 	//     </div>
 	// </template>
 	//
@@ -9147,6 +9152,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    },
 	    computed: {
+	        getClasses: function getClasses() {
+	            var result = 'input';
+	            if (this.column.enabled) {
+	                result = result + ' enabled';
+	            }
+	            if (this.column.editable) {
+	                result = result + ' editable';
+	            }
+	            return result;
+	        },
 	        value: function value() {
 	
 	            var result = this.entry[this.column.name];
@@ -10680,7 +10695,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 110 */
 /***/ (function(module, exports) {
 
-	module.exports = "\n<div>\n    <span v-if=\"!column.editable\" v-html=\"rendered\"></span>\n    <span v-else-if=\"!enabled\" @click=\"toggle\" v-html=\"rendered\"></span>\n    <span v-else>\n          <input type=\"text\" ref=\"input\" class=\"form-control\" v-model=\"input\"\n                 @keyup.enter=\"onKeyEnter\"\n                 @keyup.tab=\"onKeyTab\"\n                 @keyup.esc=\"onKeyEsc\"\n                 @keyup.down=\"onKeyDown\"\n                 @keyup.up=\"onKeyUp\"\n                 @keyup.left=\"onKeyLeft\"\n                 @keyup.right=\"onKeyRight\"\n                 @keyup.107=\"onKeyPlus\"\n                 @keyup.109=\"onKeyMinus\"\n                 @keyup=\"onAnyKey\"\n                 @blur=\"onBlur\"\n          /></span>\n    <span v-if=\"message.text\">\n        <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n    </span>\n\n</div>\n";
+	module.exports = "\n<div>\n    <div v-if=\"message.text\" class=\"message\">\n        <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n    </div>\n    <div :class=\"getClasses\">\n        <div v-if=\"!column.editable\" v-html=\"rendered\"></div>\n        <div v-else-if=\"!enabled\" @click=\"toggle\" v-html=\"rendered\" class=\"editable\"></div>\n        <div v-else>\n          <input type=\"text\" ref=\"input\" class=\"form-control editable\" v-model=\"input\"\n                 @keyup.enter=\"onKeyEnter\"\n                 @keyup.tab=\"onKeyTab\"\n                 @keyup.esc=\"onKeyEsc\"\n                 @keyup.down=\"onKeyDown\"\n                 @keyup.up=\"onKeyUp\"\n                 @keyup.left=\"onKeyLeft\"\n                 @keyup.right=\"onKeyRight\"\n                 @keyup.107=\"onKeyPlus\"\n                 @keyup.109=\"onKeyMinus\"\n                 @keyup=\"onAnyKey\"\n                 @blur=\"onBlur\"\n          /></div>\n    </div>\n</div>\n";
 
 /***/ }),
 /* 111 */
@@ -10726,15 +10741,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	// <template>
 	//     <div>
-	//         <span v-html="rendered"></span>
-	//
-	//         <span v-if="message.text">
+	//         <div v-if="message.text" class="message">
 	//             <span :class="message.iconClass" :title="message.text"></span>
-	//         </span>
+	//         </div>
+	//         <div v-html="rendered" class="input"></div>
 	//     </div>
-	//
 	// </template>
-	//
 	// <script>
 	
 	exports.default = {
@@ -10835,13 +10847,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 113 */
 /***/ (function(module, exports) {
 
-	module.exports = "\n<div>\n    <span v-html=\"rendered\"></span>\n\n    <span v-if=\"message.text\">\n        <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n    </span>\n</div>\n\n";
+	module.exports = "\n<div>\n    <div v-if=\"message.text\" class=\"message\">\n        <span :class=\"message.iconClass\" :title=\"message.text\"></span>\n    </div>\n    <div v-html=\"rendered\" class=\"input\"></div>\n</div>\n";
 
 /***/ }),
 /* 114 */
 /***/ (function(module, exports) {
 
-	module.exports = "\n<div id=\"maindiv\" @click=\"closeDropdown\" @keyup.esc=\"closeDropdown\">\n\n    <div class=\"col-sm-12\">\n        <div v-for=\"message in messages\" :class=\"message.class\" v-html=\"message.render()\"></div>\n    </div>\n    <div class=\"col-sm-6\">\n        <div v-if=\"showFilter\" style=\"padding-top: 10px;padding-bottom: 10px;\">\n            <div class=\"input-group\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Filter\" v-model=\"filterKey\">\n                <div class=\"input-group-addon\">\n                    <i class=\"glyphicon glyphicon-search\"></i>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-6\">\n        <div v-if=\"showColumnPicker\" style=\"padding-top: 10px;padding-bottom: 10px;float:right;\">\n            <div class=\"btn-group\" :class=\"{'open' : columnMenuOpen}\">\n                <button @click.stop.prevent=\"columnMenuOpen = !columnMenuOpen\" @keyup.esc=\"columnMenuOpen = false\"\n                        type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"\n                        aria-haspopup=\"true\">\n                    Columns <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\">\n                    <li v-for=\"(column, index) in displayCols\">\n                        <a href=\"#\" @click.stop.prevent=\"toggleColumn(column)\">\n                            <i v-if=\"column.visible\" class=\"glyphicon glyphicon-ok\"></i> {{column.title}}\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-12\">\n        <div id=\"loadingdiv\" :class=\"{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}\">\n            <div class=\"spinner\"></div>\n        </div>\n        <table class=\"table table-bordered table-hover table-condensed table-striped vue-table\">\n            <thead>\n            <tr>\n                <th v-for=\"(column, index) in displayColsVisible\" @click=\"sortBy($event, column.name)\" :class=\"getColumnClasses(column)\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr v-for=\"(entry, row) in filteredValuesSorted\" track-by=\"entry.id\" @click=\"fireRowClickedEvent(entry)\">\n                <td v-for=\"(column, col) in displayColsVisible\"\n                    v-show=\"column.visible\"\n                    :class=\"getCellClasses(column, entry)\"\n                    @click=\"fireCellClickedEvent(column, entry)\"\n                ><vue-bootstrap-cell\n                            :column=\"column\"\n                            :entry=\"entry\"\n                            :ref=\"getCellReference(col, row)\"\n                            @cell-data-modified=\"onCellDataModified\"\n                            @down=\"onDown(col, row, ...arguments)\"\n                            @up=\"onUp(col, row, ...arguments)\"\n                            @right=\"onRight(col, row, ...arguments)\"\n                            @left=\"onLeft(col, row, ...arguments)\"\n                    ></vue-bootstrap-cell>\n                </td>\n            </tr>\n            <tr class=\"footer\">\n                <td v-for=\"(column, index) in displayColsVisible\" v-show=\"column.visible\" :class=\"getCellClasses(column)\" @click=\"fireFooterCellClickedEvent(column)\">\n                    <vue-bootstrap-footer-cell :column=\"column\" :values=\"filteredValuesSorted\"></vue-bootstrap-footer-cell>\n                </td>\n            </tr>\n            </tbody>\n        </table>\n    </div>\n    <div v-if=\"paginated\" class=\"col-sm-12\">\n        <div class=\"btn-toolbar\" role=\"toolbar\" aria-label=\"pagination bar\">\n            <div class=\"btn-group\" role=\"group\" aria-label=\"first page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=1\">&laquo;</button>\n            </div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"pages\">\n                <button v-for=\"(pageNumber, index) in validPageNumbers\"\n                        type=\"button\" class=\"btn btn-default\"\n                        :class=\"{ active: page===pageNumber }\"\n                        @click=\"page=pageNumber\">\n                    {{index}}\n                </button>\n            </div>\n            <div class=\"btn-group\" v-if=\"showPaginationEtc\">...</div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"last page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=maxPage\">&raquo;</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	module.exports = "\n<div id=\"maindiv\" @click=\"closeDropdown\" @keyup.esc=\"closeDropdown\">\n\n    <div class=\"col-sm-12\">\n        <div v-for=\"message in messages\" :class=\"message.class\" v-html=\"message.render()\"></div>\n    </div>\n    <div class=\"col-sm-6\">\n        <div v-if=\"showFilter\" style=\"padding-top: 10px;padding-bottom: 10px;\">\n            <div class=\"input-group\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Filter\" v-model=\"filterKey\">\n                <div class=\"input-group-addon\">\n                    <i class=\"glyphicon glyphicon-search\"></i>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-6\">\n        <div v-if=\"showColumnPicker\" style=\"padding-top: 10px;padding-bottom: 10px;float:right;\">\n            <div class=\"btn-group\" :class=\"{'open' : columnMenuOpen}\">\n                <button @click.stop.prevent=\"columnMenuOpen = !columnMenuOpen\" @keyup.esc=\"columnMenuOpen = false\"\n                        type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"\n                        aria-haspopup=\"true\">\n                    Columns <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\">\n                    <li v-for=\"(column, index) in displayCols\">\n                        <a href=\"#\" @click.stop.prevent=\"toggleColumn(column)\">\n                            <i v-if=\"column.visible\" class=\"glyphicon glyphicon-ok\"></i> {{column.title}}\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div class=\"col-sm-12\">\n        <div id=\"loadingdiv\" :class=\"{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}\">\n            <div class=\"spinner\"></div>\n        </div>\n        <table class=\"table table-bordered table-hover table-condensed table-striped vue-table\">\n            <thead>\n            <tr>\n                <th v-for=\"(column, index) in displayColsVisible\" @click=\"sortBy($event, column.name)\" :class=\"getColumnClasses(column)\">\n                    {{ column.title }}\n                </th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr v-for=\"(entry, row) in filteredValuesSorted\" track-by=\"entry.id\" @click=\"fireRowClickedEvent(entry)\">\n                <td v-for=\"(column, col) in displayColsVisible\"\n                    v-show=\"column.visible\"\n                    :class=\"getCellClasses(column, entry)\"\n                    @click=\"fireCellClickedEvent(column, entry)\"\n                ><vue-bootstrap-cell\n                            :column=\"column\"\n                            :entry=\"entry\"\n                            :ref=\"getCellReference(col, row)\"\n                            @cell-data-modified=\"onCellDataModified\"\n                            @down=\"onDown(col, row, ...arguments)\"\n                            @up=\"onUp(col, row, ...arguments)\"\n                            @right=\"onRight(col, row, ...arguments)\"\n                            @left=\"onLeft(col, row, ...arguments)\"\n                    ></vue-bootstrap-cell>\n                </td>\n            </tr>\n            <tr class=\"footer\">\n                <td v-for=\"(column, index) in displayColsVisible\" v-show=\"column.visible\" :class=\"getFooterCellClasses(column)\" @click=\"fireFooterCellClickedEvent(column)\">\n                    <vue-bootstrap-footer-cell :column=\"column\" :values=\"filteredValuesSorted\"></vue-bootstrap-footer-cell>\n                </td>\n            </tr>\n            </tbody>\n        </table>\n    </div>\n    <div v-if=\"paginated\" class=\"col-sm-12\">\n        <div class=\"btn-toolbar\" role=\"toolbar\" aria-label=\"pagination bar\">\n            <div class=\"btn-group\" role=\"group\" aria-label=\"first page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=1\">&laquo;</button>\n            </div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"pages\">\n                <button v-for=\"(pageNumber, index) in validPageNumbers\"\n                        type=\"button\" class=\"btn btn-default\"\n                        :class=\"{ active: page===pageNumber }\"\n                        @click=\"page=pageNumber\">\n                    {{index}}\n                </button>\n            </div>\n            <div class=\"btn-group\" v-if=\"showPaginationEtc\">...</div>\n            <div class=\"btn-group\" role=\"group\" aria-label=\"last page\">\n                <button type=\"button\" class=\"btn btn-default\" @click=\"page=maxPage\">&raquo;</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
 
 /***/ })
 /******/ ])
