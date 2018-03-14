@@ -91,6 +91,7 @@
         </div>
     </div>
 </template>
+
 <script>
 
     import axios from 'axios';
@@ -456,7 +457,7 @@
                 let obj = this.values;
                 let key = this.getKeyByValue(this.values, 'id', entry.id);
                 if (key === false) {
-                    console.warn('table.update: Adding new entry, because id was not found in values.')
+                    console.log('WARNING: table.update: Adding new entry, because id was not found in values.');
                 }
                 let val = entry;
 
@@ -563,6 +564,7 @@
                             let value = this.values[j];
 
                             let params = {
+                                caller: this,
                                 column: this.columns[i],
                                 entry: value
                             };
@@ -916,5 +918,3 @@
         events: {}
     }
 </script>
-
-

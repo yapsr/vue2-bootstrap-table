@@ -1,4 +1,6 @@
-import VueBootstrapTable from './VueBootstrapTable.vue';
+var BabelPolyfill = require("babel-polyfill")
+
+import VueBootstrapTable from './VueBootstrapTable.vue'
 
 let helpers = {
 
@@ -7,6 +9,7 @@ let helpers = {
     },
 
     myCalculationFunction: function ({caller, column, entry}) {
+        console.log('myCalculationFunction', arguments);
         return Math.round(entry.price * entry.amount * 100) / 100;
     },
 

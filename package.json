@@ -1,6 +1,6 @@
 {
   "name": "yapsr-vue2-bootstrap-table2",
-  "version": "1.2.19",
+  "version": "1.2.23",
   "description": "A sortable and searchable vue table, as a Vue component, using bootstrap styling.",
   "keywords": [
     "table",
@@ -25,12 +25,13 @@
   },
   "author": "Jasper Gremmen (Yapsr) <info@yapsr.nl> (https://www.yapsr.nl)",
   "dependencies": {
-    "babel-runtime": "^6.0.0",
     "axios": "^0.16.1",
-    "qs": "^6.0.0",
-    "lodash.orderby": "^4.6.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-runtime": "^6.0.0",
     "lodash.findindex": "^4.6.0",
-    "lodash.includes": "^4.3.0"
+    "lodash.includes": "^4.3.0",
+    "lodash.orderby": "^4.6.0",
+    "qs": "^6.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",

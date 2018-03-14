@@ -41,7 +41,7 @@
         },
         watch: {
             enabled: function () {
-                console.log('watch enabled', this.enabled);
+                // console.log('watch enabled', this.enabled);
             },
             entryValue: function () {
                 // console.log('watch: input', this.input);
@@ -76,41 +76,16 @@
 
                     // Hack: Set computed value to entry
                     this.entry[this.column.name] = result;
+                    // console.log('computed', this.column.name, this.column.computed, result);
 
                 }
 
                 // trigger validation
-                let valid = this.isValid;
+                let valid = this.validate();
+                // console.log('value.isValid()', this.column.name, valid);
 
                 return result;
 
-            },
-            isValid: function () {
-
-                let fn = {};
-
-                if (fn = this.$parent.getExtendedMethod(this.column.validate)) {
-
-                    let params = {
-                        caller: this,
-                        column: this.column,
-                        entry: this.entry
-                    };
-
-                    let result = fn(params);
-
-                    this.message = result.message;
-
-                    if (result.error === 1) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-
-                this.message = {};
-
-                return true;
             },
             rendered: function () {
 
@@ -141,7 +116,38 @@
         }
         ,
         methods: {
+            validate: function () {
 
+                let fn = {};
+
+                if (fn = this.$parent.getExtendedMethod(this.column.validate)) {
+
+                    let params = {
+                        caller: this,
+                        column: this.column,
+                        entry: this.entry
+                    };
+
+                    let result = fn(params);
+
+                    // console.log('validate', this.column.name, this.column.validate, params, result, (result.error===1));
+
+
+                    this.message = result.message;
+
+                    if (result.error === 1) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
+                // console.log('no validation', this.column.name);
+
+                this.message = {};
+
+                return true;
+            },
             save: function () {
                 console.log('cell.save', this.column, this.entry, this.input);
                 let originalValue = this.entry[this.column.name];

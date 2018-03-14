@@ -1,3 +1,4 @@
+var BabelPolyfill = require("babel-polyfill")
 var vue = require('vue-loader')
 var webpack = require("webpack")
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
@@ -6,7 +7,7 @@ var cssLoader = ExtractTextPlugin.extract("style-loader", "css-loader")
 
 module.exports = {
     entry: {
-        app: './src/app.js'
+        app: ["babel-polyfill", './src/app.js']
     },
     output: {
         path: './build',
