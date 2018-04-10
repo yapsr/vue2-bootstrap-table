@@ -60,17 +60,17 @@
             },
             value: function () {
 
-                let result = this.entry[this.column.name];
-
                 let fn = {};
 
-                let params = {
-                    caller: this,
-                    column: this.column,
-                    entry: this.entry
-                };
+                let result = this.entry[this.column.name];
 
                 if (fn = this.$parent.getExtendedMethod(this.column.computed)) {
+
+                    let params = {
+                        caller: this,
+                        column: this.column,
+                        entry: this.entry
+                    };
 
                     result = fn(params);
 
@@ -116,6 +116,36 @@
         }
         ,
         methods: {
+            step: function ({up, down, value}) {
+
+                let fn = {};
+
+                let result = parseInt(value); // @todo Fix for type=decimal|money
+
+                if (fn = this.$parent.getExtendedMethod(this.column.step)) {
+
+                    let params = {
+                        caller: this,
+                        column: this.column,
+                        entry: this.entry,
+                        value: value,
+                        up: up,
+                        down: down
+                    };
+
+                    result = fn(params);
+
+                } else {
+                    if (up) {
+                        result += 1;
+                    } else {
+                        result -= 1;
+                    }
+                }
+
+                return result;
+
+            },
             validate: function () {
 
                 let fn = {};
@@ -233,23 +263,23 @@
             },
             onKeyPlus: function (event) {
                 console.log('onKeyPlus', event);
-                if (this.column.type === 'integer') {
-                    this.input = parseInt(this.input) + 1;
-                } else if (this.column.type === 'decimal') {
-                    this.input = this.$parent.castToType(this.input, 'decimal') + 1;
-                } else if (this.column.type === 'money') {
-                    this.input = this.$parent.castToType(this.input, 'decimal') + 1;
-                }
+                let params = {
+                    up: true,
+                    down: false,
+                    value: this.input.slice(0, -1),
+                    event: event
+                };
+                this.input = this.step(params);
             },
             onKeyMinus: function (event) {
                 console.log('onKeyMinus', event);
-                if (this.column.type === 'integer') {
-                    this.input = parseInt(this.input) - 1;
-                } else if (this.column.type === 'decimal') {
-                    this.input = this.$parent.castToType(this.input, 'decimal') - 1;
-                } else if (this.column.type === 'money') {
-                    this.input = this.$parent.castToType(this.input, 'decimal') - 1;
-                }
+                let params = {
+                    up: false,
+                    down: true,
+                    value: this.input.slice(0, -1),
+                    event: event
+                };
+                this.input = this.step(params);
             },
             onAnyKey: function (event) {
                 // console.log('onAnyKey', event);

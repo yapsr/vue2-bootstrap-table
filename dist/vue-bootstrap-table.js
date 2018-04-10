@@ -775,6 +775,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            if (typeof column.cellClasses !== "undefined") obj.cellClasses = column.cellClasses;else obj.cellClasses = "";
 	
+	            if (typeof column.step !== "undefined") obj.step = column.step;else obj.step = null;
+	
 	            return obj;
 	        },
 	        setColumns: function setColumns() {
@@ -9166,17 +9168,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        value: function value() {
 	
-	            var result = this.entry[this.column.name];
-	
 	            var fn = {};
 	
-	            var params = {
-	                caller: this,
-	                column: this.column,
-	                entry: this.entry
-	            };
+	            var result = this.entry[this.column.name];
 	
 	            if (fn = this.$parent.getExtendedMethod(this.column.computed)) {
+	
+	                var params = {
+	                    caller: this,
+	                    column: this.column,
+	                    entry: this.entry
+	                };
 	
 	                result = fn(params);
 	
@@ -9219,6 +9221,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	
 	    methods: {
+	        step: function step(_ref) {
+	            var up = _ref.up,
+	                down = _ref.down,
+	                value = _ref.value;
+	
+	
+	            var fn = {};
+	
+	            var result = parseInt(value); // @todo Fix for type=decimal|money
+	
+	            if (fn = this.$parent.getExtendedMethod(this.column.step)) {
+	
+	                var params = {
+	                    caller: this,
+	                    column: this.column,
+	                    entry: this.entry,
+	                    value: value,
+	                    up: up,
+	                    down: down
+	                };
+	
+	                result = fn(params);
+	            } else {
+	                if (up) {
+	                    result += 1;
+	                } else {
+	                    result -= 1;
+	                }
+	            }
+	
+	            return result;
+	        },
 	        validate: function validate() {
 	
 	            var fn = {};
@@ -9338,23 +9372,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        onKeyPlus: function onKeyPlus(event) {
 	            console.log('onKeyPlus', event);
-	            if (this.column.type === 'integer') {
-	                this.input = parseInt(this.input) + 1;
-	            } else if (this.column.type === 'decimal') {
-	                this.input = this.$parent.castToType(this.input, 'decimal') + 1;
-	            } else if (this.column.type === 'money') {
-	                this.input = this.$parent.castToType(this.input, 'decimal') + 1;
-	            }
+	            var params = {
+	                up: true,
+	                down: false,
+	                value: this.input.slice(0, -1),
+	                event: event
+	            };
+	            this.input = this.step(params);
 	        },
 	        onKeyMinus: function onKeyMinus(event) {
 	            console.log('onKeyMinus', event);
-	            if (this.column.type === 'integer') {
-	                this.input = parseInt(this.input) - 1;
-	            } else if (this.column.type === 'decimal') {
-	                this.input = this.$parent.castToType(this.input, 'decimal') - 1;
-	            } else if (this.column.type === 'money') {
-	                this.input = this.$parent.castToType(this.input, 'decimal') - 1;
-	            }
+	            var params = {
+	                up: false,
+	                down: true,
+	                value: this.input.slice(0, -1),
+	                event: event
+	            };
+	            this.input = this.step(params);
 	        },
 	        onAnyKey: function onAnyKey(event) {
 	            // console.log('onAnyKey', event);

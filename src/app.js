@@ -143,6 +143,23 @@ let helpers = {
     myStoreFunction: function() {
         console.log('Storing...', arguments);
         // You could add your ajax PATCH call here ...
+    },
+
+    myStepFunction: function({caller, column, entry, value, up, down}) {
+        console.log('Step', arguments);
+        value = parseInt(value);
+        let pieces = parseInt(entry.pieces);
+        if (value%pieces) {
+            if (up) {
+                return value + (pieces - value%pieces);
+            }
+            return value-(value%pieces);
+        } else {
+            if (up) {
+                return value + pieces;
+            }
+            return value-pieces;
+        }
     }
 }
 
@@ -217,11 +234,19 @@ new Vue({
                 type: 'money'
             },
             {
+                title: "Pieces",
+                name: "pieces",
+                visible: true,
+                editable: true,
+                type: 'integer'
+            },
+            {
                 title: "Amount",
                 name: "amount",
                 visible: true,
                 editable: true,
                 type: 'integer',
+                step: helpers.myStepFunction,
                 footer: {
                     computed: 'sum'
                 }
@@ -262,66 +287,77 @@ new Vue({
                     // "id": 2,
                     "title": "jack",
                     "price": 1.00,
+                    "pieces": 1,
                     "amount": 12
                 },
                 {
                     "id": 4,
                     "title": "ana",
                     "price": 2.220,
+                    "pieces": 1,
                     "amount": 21
                 },
                 {
                     "id": 8,
                     "title": "mickey",
                     "price": 500.55,
+                    "pieces": 1,
                     "amount": 12
                 },
                 {
                     "id": 5,
                     "title": "rita",
                     "price": 4.20,
+                    "pieces": 12,
                     "amount": 87
                 },
                 {
                     "id": 6,
                     "title": "mario",
                     "price": 1000.01,
+                    "pieces": 10,
                     "amount": 2
                 },
                 {
                     "id": 3,
                     "title": "joe",
                     "price": 1.50,
+                    "pieces": 1,
                     "amount": 87
                 },
                 {
                     "id": 7,
                     "title": "luigi",
                     "price": 2000,
+                    "pieces": 1,
                     "amount": 1
                 },
                 {
                     "id": 1,
                     "title": "mary",
                     "price": 0.00,
+                    "pieces": 1,
                     "amount": 12
                 },
                 {
                     "id": 11,
                     "title": "paul",
                     "price": 9.95,
+                    "pieces": 1,
                     "amount": 5
                 },
                 {
                     "id": 9,
                     "title": "donald",
                     "price": 80,
+                    "pieces": 1,
                     "amount": 12
                 },
                 {
                     "id": 10,
                     "title": "juliet",
                     "price": 99.95,
+                    "pieces": 1,
                     "amount": 0
                 },
 

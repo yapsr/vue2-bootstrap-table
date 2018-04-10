@@ -785,6 +785,11 @@
                 else
                     obj.cellClasses = "";
 
+                if (typeof column.step !== "undefined")
+                    obj.step = column.step;
+                else
+                    obj.step = null;
+
                 return obj;
             },
             setColumns: function () {
