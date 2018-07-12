@@ -39,9 +39,7 @@
             <table class="table table-bordered table-hover table-condensed table-striped vue-table">
                 <thead>
                 <tr>
-                    <th v-for="(column, index) in displayColsVisible" @click="sortBy($event, column.name)" :class="getColumnClasses(column)">
-                        {{ column.title }}
-                    </th>
+                    <th v-for="(column, index) in displayColsVisible" @click="sortBy($event, column.name)" :class="getColumnClasses(column)"><span>{{ column.title }}</span></th>
                 </tr>
                 </thead>
                 <tbody>
