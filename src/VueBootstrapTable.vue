@@ -36,7 +36,7 @@
             <div id="loadingdiv" :class="{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}">
                 <div class="spinner"></div>
             </div>
-            <table class="table table-bordered table-hover table-condensed table-striped vue-table">
+            <table v-bind:class="getTableClasses()">
                 <thead>
                 <tr>
                     <th v-for="(column, index) in displayColsVisible" @click="sortBy($event, column.name)" :class="getColumnClasses(column)"><span>{{ column.title }}</span></th>
@@ -265,6 +265,14 @@
                     return '';
                 }
             },
+
+            tableClasses: {
+                type: String,
+                required: false,
+                default: function() {
+                    return '';
+                }
+            }
 
         },
         data: function () {
@@ -854,6 +862,10 @@
                     this.fireSortModifiedEvent(this.sortKeys, this.sortOrders);
 
                 }
+            },
+            getTableClasses: function() {
+                console.log('getTableClasess', this.tableClasses);
+                return this.tableClasses;
             },
             getColumnClasses: function (column) {
                 let classes = [column.columnClasses];
