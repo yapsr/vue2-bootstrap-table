@@ -363,7 +363,7 @@ new Vue({
 
             ],
         table: 'myTable',
-        tableClasses: 'table table-bordered table-hover table-condensed table-striped vue-table hello'
+        tableClasses: 'table table-bordered table-hover table-condensed table-striped vue-table'
     },
     mounted: function () {
     },
