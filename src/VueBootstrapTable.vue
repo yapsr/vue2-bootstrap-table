@@ -1,54 +1,61 @@
 <template>
-    <div id="maindiv" @click="closeDropdown" @keyup.esc="closeDropdown">
-
-        <div class="col-sm-12">
-            <div v-for="message in messages" :class="message.class" v-html="message.render()"></div>
-        </div>
-        <div class="col-sm-6">
-            <div v-if="showFilter" style="padding-top: 10px;padding-bottom: 10px;">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Filter" v-model="filterKey">
-                    <div class="input-group-addon">
-                        <i class="glyphicon glyphicon-search"></i>
+    <div class="vue-bootstrap-table" @click="closeDropdown" @keyup.esc="closeDropdown">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div v-for="message in messages" :class="message.class" v-html="message.render()"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div v-if="showFilter" class="filterButton">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Filter" v-model="filterKey">
+                            <div class="input-group-addon">
+                                <i class="fa fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div v-if="showColumnPicker" class="columnPickerButton">
+                        <div class="dropdown" :class="{'show' : columnMenuOpen}">
+                            <button class="btn btn-default dropdown-toggle"
+                                    type="button"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                            >Columns</button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a v-for="(column, index) in displayCols" class="dropdown-item" @click.stop.prevent="toggleColumn(column)" href="javascript:">
+                                    <i v-if="column.visible" class="fas fa-check"></i> {{column.title}}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div v-if="showColumnPicker" style="padding-top: 10px;padding-bottom: 10px;float:right;">
-                <div class="btn-group" :class="{'open' : columnMenuOpen}">
-                    <button @click.stop.prevent="columnMenuOpen = !columnMenuOpen" @keyup.esc="columnMenuOpen = false"
-                            type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true">
-                        Columns <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li v-for="(column, index) in displayCols">
-                            <a href="#" @click.stop.prevent="toggleColumn(column)">
-                                <i v-if="column.visible" class="glyphicon glyphicon-ok"></i> {{column.title}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <div class="col-sm-12">
-            <div id="loadingdiv" :class="{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}">
+            <div :class="{'vue-table-loading': this.loading , 'vue-table-loading-hidden': !this.loading}">
                 <div class="spinner"></div>
             </div>
             <table v-bind:class="getTableClasses()">
                 <thead>
                 <tr>
-                    <th v-for="(column, index) in displayColsVisible" @click="sortBy($event, column.name)" :class="getColumnClasses(column)"><span>{{ column.title }}</span></th>
+                    <th v-for="(column, index) in displayColsVisible" @click="sortBy($event, column.name)"
+                        :class="getColumnClasses(column)"><span>{{ column.title }}</span></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(entry, row) in filteredValuesSorted" track-by="entry.id" @click="fireRowClickedEvent(entry)">
+                <tr v-for="(entry, row) in filteredValuesSorted" track-by="entry.id"
+                    @click="fireRowClickedEvent(entry)">
                     <td v-for="(column, col) in displayColsVisible"
                         v-show="column.visible"
                         :class="getCellClasses(column, entry)"
                         @click="fireCellClickedEvent(column, entry)"
-                    ><vue-bootstrap-cell
+                    >
+                        <vue-bootstrap-cell
                                 :column="column"
                                 :entry="entry"
                                 :ref="getCellReference(col, row)"
@@ -61,8 +68,10 @@
                     </td>
                 </tr>
                 <tr class="footer">
-                    <td v-for="(column, index) in displayColsVisible" v-show="column.visible" :class="getFooterCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
-                        <vue-bootstrap-footer-cell :column="column" :values="filteredValuesSorted"></vue-bootstrap-footer-cell>
+                    <td v-for="(column, index) in displayColsVisible" v-show="column.visible"
+                        :class="getFooterCellClasses(column)" @click="fireFooterCellClickedEvent(column)">
+                        <vue-bootstrap-footer-cell :column="column"
+                                                   :values="filteredValuesSorted"></vue-bootstrap-footer-cell>
                     </td>
                 </tr>
                 </tbody>
@@ -269,7 +278,7 @@
             tableClasses: {
                 type: String,
                 required: false,
-                default: function() {
+                default: function () {
                     return '';
                 }
             }
@@ -360,7 +369,7 @@
             }
         },
         computed: {
-            config: function() {
+            config: function () {
                 return this.getConfig();
             },
             filteredValuesSorted: function () {
@@ -406,10 +415,8 @@
 
         },
         methods: {
-            getConfig: function() {
-                return {
-
-                }
+            getConfig: function () {
+                return {}
             },
             getExtendedMethod: function (value) {
 
@@ -428,7 +435,7 @@
                 return result;
             },
             getCellReference(col, row) {
-                return col+':'+row;
+                return col + ':' + row;
             },
             enableCell(ref, index) {
                 if (typeof index === 'undefined') {
@@ -436,20 +443,20 @@
                 }
                 this.$refs[ref][index].enable();
             },
-            onDown: function(col, row, ...arg) {
-                let ref = this.getCellReference(col, row+1);
+            onDown: function (col, row, ...arg) {
+                let ref = this.getCellReference(col, row + 1);
                 this.enableCell(ref);
             },
-            onUp: function(col, row, ...arg) {
-                let ref = this.getCellReference(col, row-1);
+            onUp: function (col, row, ...arg) {
+                let ref = this.getCellReference(col, row - 1);
                 this.enableCell(ref);
             },
-            onLeft: function(col, row, ...arg) {
-                let ref = this.getCellReference(col-1, row);
+            onLeft: function (col, row, ...arg) {
+                let ref = this.getCellReference(col - 1, row);
                 this.enableCell(ref);
             },
-            onRight: function(col, row, ...arg) {
-                let ref = this.getCellReference(col+1, row);
+            onRight: function (col, row, ...arg) {
+                let ref = this.getCellReference(col + 1, row);
                 this.enableCell(ref);
             },
             onCellDataModified: function (column, entry, input) {
@@ -458,7 +465,7 @@
                 // this.saveExternal(column, entry, input);
 
             },
-            saveInternal: function(column, entry, input){
+            saveInternal: function (column, entry, input) {
                 console.log('table.saveInternal', arguments);
                 let obj = this.values;
                 let key = this.getKeyByValue(this.values, 'id', entry.id);
@@ -488,7 +495,7 @@
                     return false;
                 }
 
-                for (let i=0, count = array.length; i < count; i++) {
+                for (let i = 0, count = array.length; i < count; i++) {
                     if (array[i][key] === value) {
                         return i;
                     }
@@ -504,12 +511,12 @@
                 let result = null;
 
                 if (type === 'decimal') {
-                    result = parseFloat(parseFloat(String(value).replace(',','.')).toFixed(9));
+                    result = parseFloat(parseFloat(String(value).replace(',', '.')).toFixed(9));
                     if (isNaN(result)) {
                         result = 0;
                     }
                 } else if (type === 'money') {
-                    result = parseFloat(parseFloat(String(value).replace(',','.')).toFixed(2));
+                    result = parseFloat(parseFloat(String(value).replace(',', '.')).toFixed(2));
                     if (isNaN(result)) {
                         result = 0;
                     }
@@ -533,7 +540,7 @@
 
             }
             ,
-            setValueTypes: function() {
+            setValueTypes: function () {
                 for (let i in this.columns) {
                     let column = this.columns[i];
 
@@ -542,7 +549,7 @@
                         for (let j in this.values) {
                             let entry = this.values[j];
 
-                            this.castToType( entry[ column.name ], column.type);
+                            this.castToType(entry[column.name], column.type);
 
                         }
                     }
@@ -844,8 +851,8 @@
                         // });
                     } else {
                         if (lodashfindindex(this.sortKeys, function (o) {
-                                return o === key;
-                            }) === -1) {
+                            return o === key;
+                        }) === -1) {
                             this.sortKeys.push(key);
                         }
                         pos = this.sortKeys.indexOf(key);
@@ -863,8 +870,7 @@
 
                 }
             },
-            getTableClasses: function() {
-                console.log('getTableClasess', this.tableClasses);
+            getTableClasses: function () {
                 return this.tableClasses;
             },
             getColumnClasses: function (column) {
@@ -876,8 +882,8 @@
                         classes.push("active");
                     }*/
                     if (lodashfindindex(this.sortKeys, function (o) {
-                            return o === key;
-                        }) !== -1) {
+                        return o === key;
+                    }) !== -1) {
                         classes.push("active");
                     }
 
@@ -898,8 +904,7 @@
                 return result;
             },
             getFooterCellClasses: function (column) {
-                let result = column.cellClasses;
-                return result;
+                return column.cellClasses;
             },
             toggleColumn: function (column) {
                 column.visible = !column.visible;

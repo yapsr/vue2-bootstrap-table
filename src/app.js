@@ -208,7 +208,7 @@ new Vue({
                 {
                     headers: {
                         'Authorization':
-                            'Bearer TESTTESTTESTTESTTEST'
+                            'Bearer'
                     }
                 }
         },
@@ -366,18 +366,20 @@ new Vue({
         tableClasses: 'table table-bordered table-hover table-condensed table-striped vue-table'
     },
     mounted: function () {
+        console.log('Mounted...');
     },
     created: function () {
+        console.log('Created...');
 
         // var oldEmit = this.compiler.emitter.emit;
         // this.compiler.emitter.emit = function () {
         //     console.log('got event: ' + arguments[0])
         //     oldEmit.apply(this, arguments)
         // }
-        console.log('Overriding $on...');
-        this.$on = function (event, ...args) {
-            console.log('Event', event, args);
-        }
+        // console.log('Overriding $on...');
+        // this.$on = function (event, ...args) {
+        //     console.log('Event', event, args);
+        // }
         // this.$on('cellDataModifiedEvent',
         //     function (originalValue, newValue, columnTitle, entry) {
         //         this.logging.push("cellDataModifiedEvent - Original Value : " + originalValue +
