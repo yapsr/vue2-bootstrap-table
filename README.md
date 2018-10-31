@@ -251,8 +251,8 @@ There must be a javascript function called `myTestRender`  :
 <script>
     var myTestRender = function (colname, entry) {
         return '<div class="btn-group" role="group" >'+
-            '  <button type="button" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>'+
-            '  <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>'+
+            '  <button type="button" class="btn btn-sm btn-primary"><span class="fas fa-check" aria-hidden="true"></span></button>'+
+            '  <button type="button" class="btn btn-sm btn-danger"><span class="fas fa-trash" aria-hidden="true"></span></button>'+
             '</div><span>'+JSON.stringify(entry)+'</span>';
     };
 </script>

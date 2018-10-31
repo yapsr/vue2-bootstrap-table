@@ -31,7 +31,7 @@ let helpers = {
                 'message': {
                     'text': 'Lower than ' + min,
                     'class': 'alert alert-warning',
-                    'iconClass': 'glyphicon glyphicon-warning-sign'
+                    'iconClass': 'fas fa-exclamation-triangle'
                 }
             }
         } else if (value > max) {
@@ -40,7 +40,7 @@ let helpers = {
                 'message': {
                     'text': 'Higher than ' + max,
                     'class': 'alert alert-warning',
-                    'iconClass': 'glyphicon glyphicon-warning-sign'
+                    'iconClass': 'fas fa-exclamation-triangle'
                 }
             }
         } else if (value < threshold) {
@@ -49,7 +49,7 @@ let helpers = {
                 'message': {
                     'text': 'Ok',
                     'class': 'alert alert-success',
-                    'iconClass': 'glyphicon glyphicon-ok'
+                    'iconClass': 'fas fa-check'
                 }
             }
         } else {
@@ -58,7 +58,7 @@ let helpers = {
                 'message': {
                     'text': 'Watch out, you are between ' + threshold + ' and ' + max,
                     'class': 'alert alert-warning',
-                    'iconClass': 'glyphicon glyphicon-exclamation-sign'
+                    'iconClass': 'fas fa-exclamation-triangle'
                 }
             }
         }
@@ -87,7 +87,7 @@ let helpers = {
                 'message': {
                     'text': 'Lower than ' + min,
                     'class': 'alert alert-warning',
-                    'iconClass': 'glyphicon glyphicon-warning-sign'
+                    'iconClass': 'fas fa-exclamation-triangle'
                 }
             }
         } else if (value > max) {
@@ -96,7 +96,7 @@ let helpers = {
                 'message': {
                     'text': 'Higher than ' + max,
                     'class': 'alert alert-warning',
-                    'iconClass': 'glyphicon glyphicon-warning-sign'
+                    'iconClass': 'fas fa-exclamation-triangle'
                 }
             }
         } else if (value < threshold) {
@@ -105,7 +105,7 @@ let helpers = {
                 'message': {
                     'text': 'Ok',
                     'class': 'alert alert-success',
-                    'iconClass': 'glyphicon glyphicon-ok'
+                    'iconClass': 'fas fa-check'
                 }
             }
         } else {
@@ -114,7 +114,7 @@ let helpers = {
                 'message': {
                     'text': 'Watch out, you are between ' + threshold + ' and ' + max,
                     'class': 'alert alert-warning',
-                    'iconClass': 'glyphicon glyphicon-exclamation-sign'
+                    'iconClass': 'fas fa-exclamation-triangle'
                 }
             }
         }
