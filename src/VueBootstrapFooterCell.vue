@@ -47,9 +47,9 @@
             },
             isValid: function () {
 
-                let fn = {};
+                let fn = this.$parent.getExtendedMethod(this.column.footer.validate);
 
-                if (fn = this.$parent.getExtendedMethod(this.column.footer.validate)) {
+                if (typeof fn === 'function') {
 
                     let params = {
                         caller: this,
@@ -78,9 +78,9 @@
 
                 let value = this.value;
 
-                let fn = {};
+                let fn = this.$parent.getExtendedMethod(this.column.footer.render);
 
-                if (fn = this.$parent.getExtendedMethod(this.column.footer.render)) {
+                if (typeof fn === 'function') {
 
                     let params = {
                         'caller': this,

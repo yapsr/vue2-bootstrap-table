@@ -223,7 +223,7 @@ new Vue({
             {
                 name: "title",
                 title: "Name",
-                description: "Name of the person",
+                description: "Description of the title",
                 visible: true,
                 editable: true,
             },
