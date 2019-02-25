@@ -11,8 +11,10 @@
                     <div v-if="showFilter" class="filterButton">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Filter" v-model="filterKey">
-                            <div class="input-group-addon">
-                                <i class="fa fa-search"></i>
+                            <div class="input-group-append">
+                                <button type="button" class="btn">
+                                    <i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -44,7 +46,8 @@
                 <thead>
                 <tr>
                     <th v-for="(column, index) in displayColsVisible" @click="sortBy($event, column.name)"
-                        :class="getColumnClasses(column)"><span>{{ column.title }}</span></th>
+                        :class="getColumnClasses(column)"
+                        :title="column.description"><span class="title">{{ column.title }}</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -753,6 +756,11 @@
                 else
                     obj.name = column.title;
 
+                if (typeof column.description !== "undefined")
+                    obj.description = column.description;
+                else
+                    obj.description = '';
+
                 if (typeof column.visible !== "undefined")
                     obj.visible = column.visible;
                 else
@@ -933,7 +941,15 @@
             },
             fireFooterCellClickedEvent: function (column) {
                 this.$emit('footer-cell-clicked', this.table, column);
-            }
+            },
+            hasDescription: function(column) {
+                if( typeof column.description !== 'undefined' ) {
+                    if (column.description) {
+                        return true;
+                    }
+                }
+                return false;
+            },
         },
         events: {}
     }

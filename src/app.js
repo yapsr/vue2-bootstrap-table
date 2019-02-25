@@ -214,35 +214,40 @@ new Vue({
         },
         columns: [
             {
-                title: "Id",
                 name: "id",
+                title: "Id",
+                description: "",
                 columnClasses: "columnClassesTest",
                 cellClasses: "cellClassesTest"
             },
             {
-                title: "Name",
                 name: "title",
+                title: "Name",
+                description: "Name of the person",
                 visible: true,
                 editable: true,
             },
             {
-                title: "Price",
                 name: "price",
+                title: "Price",
+                description: "",
                 visible: true,
                 editable: true,
                 render: helpers.myMoneyRenderFunction,
                 type: 'money'
             },
             {
-                title: "Pieces",
                 name: "pieces",
+                title: "Pieces",
+                description: "",
                 visible: true,
                 editable: true,
                 type: 'integer'
             },
             {
-                title: "Amount",
                 name: "amount",
+                title: "Amount",
+                description: "",
                 visible: true,
                 editable: true,
                 type: 'integer',
@@ -254,12 +259,14 @@ new Vue({
             {
                 name: "json",
                 title: "JSON",
+                description: "",
                 visible: false,
                 render: helpers.myJSONFunction
             },
             {
                 name: "computed",
                 title: "Computed",
+                description: "",
                 visible: true,
                 computed: 'calculation',
                 type: 'decimal',
@@ -270,6 +277,7 @@ new Vue({
             {
                 name: "computed_and_rendered_and_validated",
                 title: "Computed, validated and rendered",
+                description: "",
                 visible: true,
                 computed: helpers.myCalculationFunction,
                 validate: helpers.myValidationFunction,
