@@ -29,7 +29,7 @@
                                     aria-expanded="false"
                             >Columns</button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a v-for="(column, index) in displayCols" class="dropdown-item" @click.stop.prevent="toggleColumn(column)" href="javascript:">
+                                <a v-for="(column, index) in displayCols" class="dropdown-item" @click.stop.prevent="toggleColumn(column)" href="javascript:" :title="column.description">
                                     <i v-if="column.visible" class="fas fa-check"></i> {{column.title}}
                                 </a>
                             </div>
