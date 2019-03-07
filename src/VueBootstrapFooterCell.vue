@@ -27,7 +27,7 @@
             value: function () {
 
                 // Set default result
-                let result = "";
+                let result;
 
                 let fn = this.$parent.getExtendedMethod(this.column.footer.computed);
                 if (typeof(fn) === 'function') {
@@ -41,7 +41,8 @@
                     result = fn(params);
                 }
 
-                // trigger validation
+                // Trigger validation
+                // @todo Refactor
                 this.validate();
 
                 console.log('footerCell.computed.value()', this.column.name, result);
@@ -58,7 +59,6 @@
 
                 // Get render method
                 let fn = this.$parent.getExtendedMethod(this.column.footer.render);
-
                 if (typeof fn === 'function') {
 
                     let params = {

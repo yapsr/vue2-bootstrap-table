@@ -61,7 +61,7 @@
             value: function () {
 
                 // Set default value
-                let result = null;
+                let result;
 
                 // Check if value must be computed
                 let fn = this.$parent.getExtendedMethod(this.column.computed);
@@ -78,7 +78,7 @@
                     // Hack: Set computed value to entry
                     this.entry[this.column.name] = result;
 
-                } else if(this.entry.hasOwnProperty(this.column.name)) {
+                } else if(typeof this.entry[this.column.name] !== 'undefined') {
 
                     result = this.entry[this.column.name];
 
@@ -93,7 +93,7 @@
             },
             rendered: function () {
 
-                let result = null;
+                let result;
 
                 let fn = this.$parent.getExtendedMethod(this.column.render);
                 if (typeof(fn) === 'function') {
