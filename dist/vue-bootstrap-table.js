@@ -9209,11 +9209,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        value: function value() {
 	
-	            var fn = {};
-	
-	            var result = this.entry[this.column.name];
-	
-	            if (fn = this.$parent.getExtendedMethod(this.column.computed)) {
+	            // Check if value must be computed
+	            var fn = this.$parent.getExtendedMethod(this.column.computed);
+	            if (typeof fn === 'function') {
 	
 	                var params = {
 	                    caller: this,
@@ -9225,20 +9223,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	                // Hack: Set computed value to entry
 	                this.entry[this.column.name] = result;
-	                // console.log('computed', this.column.name, this.column.computed, result);
+	            } else {
+	
+	                // Set default value
+	                var _result = this.entry[this.column.name];
 	            }
 	
 	            // trigger validation
-	            var valid = this.validate();
-	            // console.log('value.isValid()', this.column.name, valid);
+	            this.validate();
 	
 	            return result;
 	        },
 	        rendered: function rendered() {
 	
-	            var fn = {};
-	
-	            if (fn = this.$parent.getExtendedMethod(this.column.render)) {
+	            var fn = this.$parent.getExtendedMethod(this.column.render);
+	            if (typeof fn === 'function') {
 	
 	                var params = {
 	                    caller: this,
@@ -9247,17 +9246,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	                };
 	
 	                return String(fn(this.value, params));
-	            }
-	
-	            if (this.value === null) {
+	            } else if (this.value === null) {
 	                return '';
 	            } else if (this.value === undefined) {
 	                return '';
 	            } else if ((0, _typeof3.default)(this.value) === 'object') {
 	                return '[...]';
-	            } else {
-	                return String(this.value);
 	            }
+	            return String(this.value);
 	        }
 	    },
 	
@@ -9268,11 +9264,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                value = _ref.value;
 	
 	
-	            var fn = {};
-	
 	            var result = parseInt(value); // @todo Fix for type=decimal|money
 	
-	            if (fn = this.$parent.getExtendedMethod(this.column.step)) {
+	            var fn = this.$parent.getExtendedMethod(this.column.step);
+	            if (typeof fn === 'function') {
 	
 	                var params = {
 	                    caller: this,
@@ -9285,6 +9280,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	                result = fn(params);
 	            } else {
+	
 	                if (up) {
 	                    result += 1;
 	                } else {
@@ -9296,9 +9292,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        validate: function validate() {
 	
-	            var fn = {};
+	            var fn = this.$parent.getExtendedMethod(this.column.validate);
 	
-	            if (fn = this.$parent.getExtendedMethod(this.column.validate)) {
+	            if (typeof fn === 'function') {
 	
 	                var params = {
 	                    caller: this,
@@ -9306,14 +9302,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    entry: this.entry
 	                };
 	
-	                var result = fn(params);
+	                var _result2 = fn(params);
 	
-	                // console.log('validate', this.column.name, this.column.validate, params, result, (result.error===1));
+	                this.message = _result2.message;
 	
-	
-	                this.message = result.message;
-	
-	                if (result.error === 1) {
+	                if (_result2.error === 1) {
 	                    return false;
 	                } else {
 	                    return true;
@@ -10846,17 +10839,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    computed: {
 	        value: function value() {
+	
+	            console.log('footerCell.computed.value()', this.column.name);
+	
+	            // Set default result
 	            var result = "";
 	
-	            var fn = {};
+	            var fn = this.$parent.getExtendedMethod(this.column.footer.computed);
+	            if (typeof fn === 'function') {
 	
-	            var params = {
-	                'caller': this,
-	                'column': this.column,
-	                'values': this.values
-	            };
+	                var params = {
+	                    'caller': this,
+	                    'column': this.column,
+	                    'values': this.values
+	                };
 	
-	            if (fn = this.$parent.getExtendedMethod(this.column.footer.computed)) {
 	                result = fn(params);
 	            }
 	
@@ -10867,8 +10864,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        isValid: function isValid() {
 	
-	            var fn = this.$parent.getExtendedMethod(this.column.footer.validate);
+	            console.log('footerCell.computed.isValid()', this.column.name);
 	
+	            var fn = this.$parent.getExtendedMethod(this.column.footer.validate);
 	            if (typeof fn === 'function') {
 	
 	                var params = {
@@ -10894,10 +10892,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        rendered: function rendered() {
 	
-	            console.log('footer.rendered()', this.column.name);
+	            console.log('VueBootstrapFooterCell.computed.rendered()', this.column.name, this.value);
 	
+	            // Get value, possibly computed
 	            var value = this.value;
 	
+	            // Get render method
 	            var fn = this.$parent.getExtendedMethod(this.column.footer.render);
 	
 	            if (typeof fn === 'function') {

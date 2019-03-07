@@ -60,11 +60,12 @@
             },
             value: function () {
 
-                let fn = {};
+                // Set default value
+                let result = null;
 
-                let result = this.entry[this.column.name];
-
-                if (fn = this.$parent.getExtendedMethod(this.column.computed)) {
+                // Check if value must be computed
+                let fn = this.$parent.getExtendedMethod(this.column.computed);
+                if (typeof(fn) === 'function') {
 
                     let params = {
                         caller: this,
@@ -76,22 +77,26 @@
 
                     // Hack: Set computed value to entry
                     this.entry[this.column.name] = result;
-                    // console.log('computed', this.column.name, this.column.computed, result);
+
+                } else if(this.entry.hasOwnProperty(this.column.name)) {
+
+                    result = this.entry[this.column.name];
 
                 }
 
+
                 // trigger validation
-                let valid = this.validate();
-                // console.log('value.isValid()', this.column.name, valid);
+                this.validate();
 
                 return result;
 
             },
             rendered: function () {
 
-                let fn = {};
+                let result = null;
 
-                if (fn = this.$parent.getExtendedMethod(this.column.render)) {
+                let fn = this.$parent.getExtendedMethod(this.column.render);
+                if (typeof(fn) === 'function') {
 
                     let params = {
                         caller: this,
@@ -99,30 +104,27 @@
                         entry: this.entry
                     };
 
-                    return String(fn(this.value, params));
-                }
-
-                if (this.value === null) {
-                    return '';
+                    result = String(fn(this.value, params));
+                } else if (this.value === null) {
+                    result = '';
                 } else if (this.value === undefined) {
-                    return '';
+                    result = '';
                 } else if (typeof this.value === 'object') {
-                    return '[...]';
+                    result = '[...]';
                 } else {
-                    return String(this.value);
+                    result = String(this.value);
                 }
 
+                return result;
             }
-        }
-        ,
+        },
         methods: {
             step: function ({up, down, value}) {
 
-                let fn = {};
-
                 let result = parseInt(value); // @todo Fix for type=decimal|money
 
-                if (fn = this.$parent.getExtendedMethod(this.column.step)) {
+                let fn = this.$parent.getExtendedMethod(this.column.step);
+                if (typeof fn === 'function' ) {
 
                     let params = {
                         caller: this,
@@ -136,6 +138,7 @@
                     result = fn(params);
 
                 } else {
+
                     if (up) {
                         result += 1;
                     } else {
@@ -148,9 +151,8 @@
             },
             validate: function () {
 
-                let fn = {};
-
-                if (fn = this.$parent.getExtendedMethod(this.column.validate)) {
+                let fn = this.$parent.getExtendedMethod(this.column.validate);
+                if (typeof fn === 'function') {
 
                     let params = {
                         caller: this,
@@ -159,9 +161,6 @@
                     };
 
                     let result = fn(params);
-
-                    // console.log('validate', this.column.name, this.column.validate, params, result, (result.error===1));
-
 
                     this.message = result.message;
 

@@ -25,59 +25,38 @@
         ,
         computed: {
             value: function () {
+
+                // Set default result
                 let result = "";
 
-                let fn = {};
+                let fn = this.$parent.getExtendedMethod(this.column.footer.computed);
+                if (typeof(fn) === 'function') {
 
-                let params = {
-                    'caller': this,
-                    'column': this.column,
-                    'values': this.values,
-                };
+                    let params = {
+                        'caller': this,
+                        'column': this.column,
+                        'values': this.values,
+                    };
 
-                if (fn = this.$parent.getExtendedMethod(this.column.footer.computed)) {
                     result = fn(params);
                 }
 
                 // trigger validation
-                let valid = this.isValid;
+                this.validate();
+
+                console.log('footerCell.computed.value()', this.column.name, result);
 
                 return result;
 
             },
-            isValid: function () {
-
-                let fn = this.$parent.getExtendedMethod(this.column.footer.validate);
-
-                if (typeof fn === 'function') {
-
-                    let params = {
-                        caller: this,
-                        column: this.column,
-                        values: this.values
-                    };
-
-                    let result = fn(params);
-
-                    this.message = result.message;
-
-                    if (result.error === 1) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-
-                this.message = {};
-
-                return true;
-            },
             rendered: function () {
 
-                console.log('footer.rendered()', this.column.name);
+                console.log('VueBootstrapFooterCell.computed.rendered()', this.column.name, this.value);
 
+                // Get value, possibly computed
                 let value = this.value;
 
+                // Get render method
                 let fn = this.$parent.getExtendedMethod(this.column.footer.render);
 
                 if (typeof fn === 'function') {
@@ -101,7 +80,37 @@
         },
 
 
-        methods: {}
+        methods: {
+            validate: function () {
+
+                console.log('footerCell.methods.validate()', this.column.name);
+
+                // Set default value
+                let result = true;
+
+                let fn = this.$parent.getExtendedMethod(this.column.footer.validate);
+                if (typeof fn === 'function') {
+
+                    let params = {
+                        caller: this,
+                        column: this.column,
+                        values: this.values
+                    };
+
+                    result = fn(params);
+
+                    this.message = result.message;
+
+                    if (result.error === 1) {
+                        result = false;
+                    }
+                }
+
+                this.message = {};
+
+                return result;
+            },
+        }
     }
 
 
